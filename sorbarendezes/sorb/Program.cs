@@ -21,8 +21,8 @@ namespace sorb
 
             for (int j = 0; j < tombhossz; j++)
             {
-                //tömbhöz adjuk a véletlen számot (1-1000000)
-                tomb.Add(rnd.Next(1, 1000000));
+                //tömbhöz adjuk a véletlen számot (1-10)
+                tomb.Add(rnd.Next(1, 10));
             }
 
             Console.WriteLine("Rendezetlen:");
