@@ -17,7 +17,7 @@ namespace sorb
             Random rnd = new Random();
 
             int lepesszam = 0;
-            int tombhossz = 1000;
+            int tombhossz = 6;
 
             for (int j = 0; j < tombhossz; j++)
             {
