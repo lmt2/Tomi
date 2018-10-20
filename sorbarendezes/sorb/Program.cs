@@ -12,10 +12,11 @@ namespace sorb
         {
 
 			ConsoleKeyInfo info;
-			Console.WriteLine("sorbarendezes program, press any key...");
+			Console.WriteLine("sorbarendezes program, nyomjon egy gombot a folytatáshoz...");
 
 			info = Console.ReadKey();
 
+            //végtelen ciklus amíg X-et nem üt
 			while (info.Key != ConsoleKey.X) {
 
 				Console.Clear();
@@ -30,10 +31,11 @@ namespace sorb
 
 				for (int j = 0; j < tombhossz; j++)
 				{
-					//tömbhöz adjuk a véletlen számot (1-1000000)
-					tomb.Add(rnd.Next(1, 1000000));
+					//tömbhöz adjuk a véletlen számot (1-100)
+					tomb.Add(rnd.Next(1, 100));
 				}
 
+                //kiírjuk a rendezetlen tömböt
 				Console.WriteLine("Rendezetlen:");
 				for (int j = 0; j < tombhossz; j++)
 				{
@@ -42,17 +44,20 @@ namespace sorb
 
 
 				Console.WriteLine("1: buborék\n2: min-max\n3:beszúrásos\nx: exit");
-
+                //a felhasználó választása
 				info = Console.ReadKey();
 
+                //buborék,csökkenő
 				if (info.Key == ConsoleKey.D1)
 				{
 					for (int j = 0; j < tombhossz - 1; j++)
 					{
 						for (int i = 0; i < tombhossz - 1; i++)
 						{
+                            //itt döntünk, hogy csökkenő-e vagy növekvő
 							if (tomb[i] < tomb[i + 1])
 							{
+                                //az i-edik és az i+1-edik elemet megcseréljük
 								int temp = tomb[i];
 								tomb[i] = tomb[i + 1];
 								tomb[i + 1] = temp;
@@ -61,6 +66,7 @@ namespace sorb
 						}
 					}
 				}
+                //min-max,csökkenő
 				if (info.Key == ConsoleKey.D2)
 				{
 					//A tömb 1..N eleme közül kiválasztjuk a legkisebbet, majd azt a legelső elem helyére tesszük.
@@ -83,23 +89,23 @@ namespace sorb
 						tomb[i] = max;
 					}
 				}
-
+                //beszúrásos, növekvő
 				if (info.Key == ConsoleKey.D3)
 				{
 					for (int i = 1; i < tombhossz; i++)
 					{
-						int urshely = i;
+						int ureshely = i;
 						int kivalasztott = tomb[i];
 						for (int j = i - 1; j > -1; j--)
 						{
 							if (kivalasztott < tomb[j])
 							{
-								urshely = j;
+								ureshely = j;
 								tomb[j + 1] = tomb[j];
 								lepesszam++;
 							}
 						}
-						tomb[urshely] = kivalasztott;
+						tomb[ureshely] = kivalasztott;
 					}
 				}
 
