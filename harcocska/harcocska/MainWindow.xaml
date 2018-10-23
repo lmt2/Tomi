@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:harcocska"
         mc:Ignorable="d"
-        Title="Harcocska" Height="450" Width="800" Background="{x:Null}">
+        Title="Harcocska" Height="737.561" Width="800" Background="{x:Null}">
 	<Grid RenderTransformOrigin="0.502,0.611" Background="Gray" Margin="0,0,-8,0">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="171*"/>
 			<ColumnDefinition Width="127*"/>
 		</Grid.ColumnDefinitions>
-		<Canvas x:Name="aaa" HorizontalAlignment="Left" Height="248" Margin="13,100,0,0" VerticalAlignment="Top" Width="333" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
-		<Button x:Name="b1" Content="Button" HorizontalAlignment="Left" Margin="51,91,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="50" Grid.Column="1">
+		<Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="385" Margin="0,24,0,0" VerticalAlignment="Top" Width="594" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
+		<Button x:Name="b1" Content="Tick" HorizontalAlignment="Left" Margin="40,46,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="33" Grid.Column="1">
 			<Button.Effect>
 				<DropShadowEffect BlurRadius="20"/>
 			</Button.Effect>
@@ -20,7 +20,7 @@
 				<TransformGroup>
 					<ScaleTransform/>
 					<SkewTransform/>
-					<RotateTransform Angle="-21.862"/>
+					<RotateTransform Angle="-13.066"/>
 					<TranslateTransform/>
 				</TransformGroup>
 			</Button.RenderTransform>
@@ -29,9 +29,12 @@
 			<MenuItem Width="36" Header="File">
 				<MenuItem/>
 				<MenuItem/>
-				<MenuItem Background="#FFEC6262" Header="Exit" Click="MenuItem_Click_1"/>
+				<MenuItem Background="#FFEC6262" Header="Exit" Click="Exit_MenuItem_Click"/>
 			</MenuItem>
-			<MenuItem Header="Game"/>
+			<MenuItem Header="Game">
+				<MenuItem Header="Start" Click="MenuItem_Click"/>
+			</MenuItem>
 		</Menu>
+		<StackPanel x:Name="stackpanel" HorizontalAlignment="Right" Margin="0,40,10,34" Width="289" Grid.Column="1"/>
 	</Grid>
 </Window>

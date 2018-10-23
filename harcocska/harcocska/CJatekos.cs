@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-    class CJatekos
+    public class CJatekos
     {
-        string nev { get; set; }
-        List<CTerkepiEgyseg> egysegekLista = new List<CTerkepiEgyseg>();
+        public string nev { get; set; }
+        public List<CTerkepiEgyseg> egysegekLista = new List<CTerkepiEgyseg>();
+		public CFejlesztes f { get; set; }
 
-        public CJatekos()
+
+		public CJatekos()
         {
 
         }
@@ -21,6 +23,8 @@ namespace harcocska
             CTerkepiEgyseg e1 = new CTerkepiEgyseg();
             e1.jatekos = this;
             egysegekLista.Add(e1);
+
+
 
         }
     }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-    class CTerkep
+    public class CTerkep
     {
-        int szelesseg { get; set; }
-        int magassag { get; set; }
+        public int szelesseg { get; set; }
+        public int magassag { get; set; }
 
-        List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
+        public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
         public CTerkep()
         {
             szelesseg = 20;
@@ -21,7 +21,7 @@ namespace harcocska
                 List<CTerkepiCella> sor = new List<CTerkepiCella>();
                 for (int i = 0; i < szelesseg; i++)
                 {
-                    CTerkepiCella c = new CTerkepiCella();
+                    CTerkepiCella c = new CTerkepiCella(i,j);
                     c.cellaTipus = ECellaTipus.viz;
                     sor.Add(c);
                 }

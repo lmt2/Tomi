@@ -73,11 +73,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CFejlesztes.cs" />
+    <Compile Include="CFejlsztesiElem.cs" />
     <Compile Include="CGame.cs" />
     <Compile Include="CJatekos.cs" />
     <Compile Include="CTerkep.cs" />
     <Compile Include="CTerkepiCella.cs" />
     <Compile Include="CTerkepiEgyseg.cs" />
+    <Compile Include="TreeNode.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>

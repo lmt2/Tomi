@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-    class CTerkepiEgyseg
+    public class CTerkepiEgyseg
     {
         public CJatekos jatekos;
-        CTerkepiCella aktuálisCella;
+        CTerkepiCella aktualisCella;
     }
 }
