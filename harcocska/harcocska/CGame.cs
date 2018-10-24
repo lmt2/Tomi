@@ -24,15 +24,23 @@ namespace harcocska
 
 		public CGame()
         {
+			
+
+
+
+		}
+
+
+		public void init() {
 			Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory);
 			oldalhossz = 30;
 
-			CJatekos jatekos1 = new CJatekos("aaaaa");
-            CJatekos jatekos2 = new CJatekos("bbbbb");
-            CJatekos jatekos3 = new CJatekos("ccccc");
-            jatekosok.Add(jatekos1);
-            jatekosok.Add(jatekos2);
-            jatekosok.Add(jatekos3);
+			CJatekos jatekos1 = new CJatekos("aaaaa", ESzin.piros);
+			CJatekos jatekos2 = new CJatekos("bbbbb", ESzin.kek);
+			CJatekos jatekos3 = new CJatekos("ccccc", ESzin.sarga);
+			jatekosok.Add(jatekos1);
+			jatekosok.Add(jatekos2);
+			jatekosok.Add(jatekos3);
 
 			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
 			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
@@ -42,13 +50,7 @@ namespace harcocska
 			jatekos1.f = new CFejlesztes();
 			jatekos2.f = new CFejlesztes();
 			jatekos3.f = new CFejlesztes();
-
-
-
 		}
-		
-
-
 
 		private void AllapotValtoTimer_Tick(object sender, EventArgs e)
 		{

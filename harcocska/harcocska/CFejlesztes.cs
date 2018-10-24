@@ -12,42 +12,43 @@ namespace harcocska
 	public class CFejlesztes
 	{
 		//ez a fa
-		public TreeNode<CFejlsztesiElem> Root { get; set; }
+		public TreeNode<CFejlesztesiElem> Root { get; set; }
 
 		#region constructors
 		public CFejlesztes() {
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem alap = new CFejlsztesiElem("alap");
+			CFejlesztesiElem alap = new CFejlesztesiElem("alap");
+			alap.feloldott = true;
 			//ez lesz a gyökér
-			Root = new TreeNode<CFejlsztesiElem>(alap);
+			Root = new TreeNode<CFejlesztesiElem>(alap);
 
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem katonasag = new CFejlsztesiElem("katonasag");
+			CFejlesztesiElem katonasag = new CFejlesztesiElem("katonasag");
 			//hozzáadjuk a gyökérhez
-			TreeNode<CFejlsztesiElem> katonasagnode =Root.AddChild(katonasag);
+			TreeNode<CFejlesztesiElem> katonasagnode =Root.AddChild(katonasag);
 
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem barakk = new CFejlsztesiElem("barakk");
+			CFejlesztesiElem barakk = new CFejlesztesiElem("barakk");
 			//hozzáadjuk a katonasag node-hoz
-			TreeNode<CFejlsztesiElem> barakknode = katonasagnode.AddChild(barakk);
+			TreeNode<CFejlesztesiElem> barakknode = katonasagnode.AddChild(barakk);
 
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem bunker = new CFejlsztesiElem("bunker");
+			CFejlesztesiElem bunker = new CFejlesztesiElem("bunker");
 			//hozzáadjuk a katonasag node-hoz
 			katonasagnode.AddChild(bunker);
 
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem barakk2 = new CFejlsztesiElem("barakk2");
+			CFejlesztesiElem barakk2 = new CFejlesztesiElem("barakk2");
 			//hozzáadjuk a barakk node-hoz
-			TreeNode<CFejlsztesiElem> barakknode2 = barakknode.AddChild(barakk2);
+			TreeNode<CFejlesztesiElem> barakknode2 = barakknode.AddChild(barakk2);
 
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem gazdasag = new CFejlsztesiElem("gazdasag");
+			CFejlesztesiElem gazdasag = new CFejlesztesiElem("gazdasag");
 			//hozzáadjuk a fához
-			TreeNode<CFejlsztesiElem> gazdasagnode = Root.AddChild(gazdasag);
+			TreeNode<CFejlesztesiElem> gazdasagnode = Root.AddChild(gazdasag);
 
 			//készítünk egy fejlesztési elemet
-			CFejlsztesiElem olajkut= new CFejlsztesiElem("olajkút");
+			CFejlesztesiElem olajkut= new CFejlesztesiElem("olajkút");
 			//hozzáadjuk a barakk node-hoz
 			gazdasagnode.AddChild(olajkut);
 		}

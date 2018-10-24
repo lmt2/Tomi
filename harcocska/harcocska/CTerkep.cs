@@ -28,5 +28,21 @@ namespace harcocska
                 cellak.Add(sor);
             }
         }
-    }
+		public CTerkepiCella right(CTerkepiCella c)
+		{
+			CTerkepiCella ret=null;
+			foreach (List<CTerkepiCella> sor in cellak)
+			{
+				foreach (CTerkepiCella cell in sor)
+				{
+					if (cell == c)
+					{
+						ret = sor[cell.X+1];
+					}
+				}
+
+			}
+			return ret;
+		}
+	}
 }

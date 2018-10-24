@@ -44,7 +44,7 @@ namespace harcocska
 
 			TreeViewItem root = null;
 
-			foreach (TreeNode<CFejlsztesiElem> node in jatekos.f.Root)
+			foreach (TreeNode<CFejlesztesiElem> node in jatekos.f.Root)
 			{
 
 				string indent = CreateIndent(node.Level);
@@ -80,8 +80,18 @@ namespace harcocska
 				{
 					ExpandAllNodes(treeItem);
 					treeItem.IsExpanded = true;
+					
 				}
+				treeIcon(treeItem);
 			}
+		}
+		public BitmapImage CreateImage(string path)
+		{
+			BitmapImage myBitmapImage = new BitmapImage();
+			myBitmapImage.BeginInit();
+			myBitmapImage.UriSource = new Uri(path);
+			myBitmapImage.EndInit();
+			return myBitmapImage;
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		private void ExpandAllNodes(TreeViewItem rootItem)
@@ -94,8 +104,38 @@ namespace harcocska
 				{
 					ExpandAllNodes(treeItem);
 					treeItem.IsExpanded = true;
+
 				}
+				treeIcon(treeItem);
 			}
+		}
+
+		private void treeIcon(TreeViewItem treeItem) {
+			TreeNode<CFejlesztesiElem> found = jatekos.f.Root.FindTreeNode(node => node.Data != null && node.Data.name == treeItem.Header);
+			//if (found!=null)
+			//{
+			string s = treeItem.Header.ToString();
+			StackPanel stack = new StackPanel();
+			stack.Orientation = Orientation.Horizontal;
+			treeItem.Header = stack;
+			ImageSource iconSource;
+			if (found.Data.feloldott)
+				iconSource = CreateImage(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "fejlesztes_engedett.png"));
+			else
+				iconSource = CreateImage(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "fejlesztes_tiltott.png"));
+
+			Image icon = new Image();
+			icon.VerticalAlignment = VerticalAlignment.Center;
+			icon.Margin = new Thickness(0, 0, 4, 0);
+			icon.Source = iconSource;
+			stack.Children.Add(icon);
+
+			//Add the HeaderText After Adding the icon
+			TextBlock textBlock = new TextBlock();
+			textBlock.Text = s;
+			textBlock.VerticalAlignment = VerticalAlignment.Center;
+			stack.Children.Add(textBlock);
+			//}
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		private TreeViewItem RecursiveFaBejaras(TreeViewItem treeViewItem, string keresett)

@@ -8,7 +8,10 @@ namespace harcocska
 {
     public class CTerkepiEgyseg
     {
-        public CJatekos jatekos;
-        CTerkepiCella aktualisCella;
+        public CJatekos jatekos { get; set; }
+		public CTerkepiCella aktualisCella { get; set; }
+		public void jobbra() {
+			aktualisCella=App.jatek.terkep.right(aktualisCella);
+		}
     }
 }

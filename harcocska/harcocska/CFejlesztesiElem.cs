@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-	public class CFejlsztesiElem
+	public class CFejlesztesiElem
 	{
 		public string name;
+		public bool feloldott { get; set; }
 
 		#region constructors
-		public CFejlsztesiElem() {
+		public CFejlesztesiElem() {
 
 		}
-		public CFejlsztesiElem(string n) {
+		public CFejlesztesiElem(string n) {
 			name = n;
+			feloldott = false;
 		}
 		#endregion
 	}

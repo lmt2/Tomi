@@ -74,7 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CFejlesztes.cs" />
-    <Compile Include="CFejlsztesiElem.cs" />
+    <Compile Include="CFejlesztesiElem.cs" />
     <Compile Include="CGame.cs" />
     <Compile Include="CJatekos.cs" />
     <Compile Include="CTerkep.cs" />

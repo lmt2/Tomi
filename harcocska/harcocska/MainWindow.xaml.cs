@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Windows.Threading;
 
 namespace harcocska
 {
@@ -23,8 +24,7 @@ namespace harcocska
     public partial class MainWindow : Window
     {
 		#region members
-		//a játék (kezdetben null)
-		//public CGame jatek=null;
+		DispatcherTimer RajzoloTimer = new DispatcherTimer();
 		#endregion
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		#region constructors
@@ -32,7 +32,12 @@ namespace harcocska
 		public MainWindow()
         {
             InitializeComponent();
-			//jatek = new CGame();
+
+			App.jatek.init();
+			RajzoloTimer.Tick += RajzoloTimer_Tick;
+			RajzoloTimer.Interval = new TimeSpan(0, 0, 2);
+			RajzoloTimer.Start();
+
 			UserControl1 u1 = new UserControl1(App.jatek.jatekosok[0]);
 			UserControl1 u2 = new UserControl1(App.jatek.jatekosok[1]);
 			UserControl1 u3 = new UserControl1(App.jatek.jatekosok[2]);
@@ -40,9 +45,15 @@ namespace harcocska
 			stackpanel.Children.Add(u2);
 			stackpanel.Children.Add(u3);
 
+			
 			App.jatek.run();
+
         }
 		#endregion
+		private void RajzoloTimer_Tick(object sender, EventArgs e)
+		{
+			terkeprajzolas();
+		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		/// <summary>
 		/// 
@@ -53,7 +64,6 @@ namespace harcocska
         {
 			App.jatek.lepes();
 
-			terkeprajzolas();
 
 			//Line myLine = new Line();
 			//myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
@@ -131,30 +141,7 @@ namespace harcocska
 				}
 			}
 
-			// Create Image Element
-			Image myImage = new Image();
-			myImage.Width = 20;
-
-			// Create source
-			BitmapImage myBitmapImage = new BitmapImage();
-
-			// BitmapImage.UriSource must be in a BeginInit/EndInit block
-			myBitmapImage.BeginInit();
-			
-			myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "tank.png"), UriKind.Absolute);
-			
-
-			myBitmapImage.DecodePixelWidth = 20;
-			myBitmapImage.EndInit();
-			//set image source
-			myImage.Source = myBitmapImage;
-			canvas1.Children.Add(myImage);
-
-			myImage.MouseUp += MyImage_MouseUp;
-
-			Canvas.SetTop(myImage, 100);
-			Canvas.SetLeft(myImage, 100);
-
+			Image myImage = null; ;
 			ContextMenu contextMenu = new ContextMenu();
 
 			contextMenu.Items.Add("One");
@@ -166,6 +153,42 @@ namespace harcocska
 			item.Header = "Three";
 
 			item.Click += delegate { MessageBox.Show("Test"); };
+
+
+			foreach (CTerkepiEgyseg te in App.jatek.jatekosok[0].egysegekLista)
+			{
+
+				// Create Image Element
+				myImage = new Image();
+				myImage.Width = 20;
+
+				// Create source
+				BitmapImage myBitmapImage = new BitmapImage();
+
+				// BitmapImage.UriSource must be in a BeginInit/EndInit block
+				myBitmapImage.BeginInit();
+
+				myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "tank.png"), UriKind.Absolute);
+
+
+				myBitmapImage.DecodePixelWidth = 20;
+				myBitmapImage.EndInit();
+				//set image source
+				myImage.Source = myBitmapImage;
+				canvas1.Children.Add(myImage);
+
+				myImage.MouseUp += MyImage_MouseUp;
+
+
+				Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
+				Canvas.SetLeft(myImage, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
+
+				te.jobbra();
+
+			}
+			
+
+			
 
 			contextMenu.Items.Add(item);
 
