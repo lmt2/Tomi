@@ -125,6 +125,7 @@ namespace harcocska
 				iconSource = CreateImage(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "fejlesztes_tiltott.png"));
 
 			Image icon = new Image();
+			icon.Width = 10;
 			icon.VerticalAlignment = VerticalAlignment.Center;
 			icon.Margin = new Thickness(0, 0, 4, 0);
 			icon.Source = iconSource;
