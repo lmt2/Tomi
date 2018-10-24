@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-    public class CTerkepiEgyseg
-    {
+    public class CTerkepiEgyseg : IHarcoloTerkepiEgyseg
+	{
         public CJatekos jatekos { get; set; }
 		public CTerkepiCella aktualisCella { get; set; }
-		public void jobbra() {
-			aktualisCella=App.jatek.terkep.right(aktualisCella);
+		public string bitmap { get; set; }
+
+		void IHarcoloTerkepiEgyseg.Tamadas()
+		{
+			
 		}
-    }
+
+	}
 }

@@ -168,7 +168,7 @@ namespace harcocska
 				// BitmapImage.UriSource must be in a BeginInit/EndInit block
 				myBitmapImage.BeginInit();
 
-				myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "tank.png"), UriKind.Absolute);
+				myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, te.bitmap), UriKind.Absolute);
 
 
 				myBitmapImage.DecodePixelWidth = 20;
@@ -183,7 +183,7 @@ namespace harcocska
 				Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
 				Canvas.SetLeft(myImage, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
 
-				te.jobbra();
+				((IMozgoTerkepiEgyseg)te).MozgasJobbra();
 
 			}
 			
