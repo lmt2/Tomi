@@ -13,7 +13,7 @@ namespace harcocska
     {
 		#region members
 		public List<CJatekos> jatekosok = new List<CJatekos>();
-        public CTerkep terkep = new CTerkep();
+        public CTerkep terkep = null;
 		bool isRunning = false;
 		bool update = false;
 		int korszamlalo=0;
@@ -42,6 +42,8 @@ namespace harcocska
 			jatekosok.Add(jatekos2);
 			jatekosok.Add(jatekos3);
 
+			terkep = new CTerkep();
+
 			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
 			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
 
@@ -50,6 +52,24 @@ namespace harcocska
 			jatekos1.f = new CFejlesztes();
 			jatekos2.f = new CFejlesztes();
 			jatekos3.f = new CFejlesztes();
+
+			CKatona e1 = new CKatona();
+			e1.aktualisCella = App.jatek.terkep.cellak[1][0];
+			e1.bitmap = "katona.png";
+			e1.jatekos = jatekos1;
+			jatekos1.egysegekLista.Add(e1);
+
+			CMozgoTerkepiEgyseg e2 = new CMozgoTerkepiEgyseg();
+			e2.aktualisCella = App.jatek.terkep.cellak[2][2];
+			e2.bitmap = "tank.png";
+			e2.jatekos = jatekos2;
+			jatekos2.egysegekLista.Add(e2);
+
+			CMozgoTerkepiEgyseg e3 = new CMozgoTerkepiEgyseg();
+			e3.aktualisCella = App.jatek.terkep.cellak[5][1];
+			e3.bitmap = "tank.png";
+			e3.jatekos = jatekos3;
+			jatekos3.egysegekLista.Add(e3);
 		}
 
 		private void AllapotValtoTimer_Tick(object sender, EventArgs e)
@@ -110,19 +130,5 @@ namespace harcocska
 		}
     }
 
-	public enum EJatekAllapotok
-	{
-		elokeszulet,
-		penzosztas,
-		fejlesztes,
-		egysegmozgatas,
-		harc,
-		vege
-
-	}
-    public enum ECellaTipus
-    {
-        szarazfold,
-        viz
-    }
+	
 }

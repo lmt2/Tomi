@@ -34,6 +34,7 @@ namespace harcocska
             InitializeComponent();
 
 			App.jatek.init();
+			App.jatek.terkep.canvas = canvas1;
 			RajzoloTimer.Tick += RajzoloTimer_Tick;
 			RajzoloTimer.Interval = new TimeSpan(0, 0, 2);
 			RajzoloTimer.Start();
@@ -52,7 +53,7 @@ namespace harcocska
 		#endregion
 		private void RajzoloTimer_Tick(object sender, EventArgs e)
 		{
-			terkeprajzolas();
+			App.jatek.terkep.terkeprajzolas();
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		/// <summary>
@@ -121,83 +122,8 @@ namespace harcocska
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 
-		public void terkeprajzolas()
-		{
-			for (int j = 0; j < App.jatek.terkep.magassag; j++)
-			{
-				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
-				{
-					PointCollection curvePoints = App.jatek.terkep.cellak[i][j].getScreenCoords();
+		
 
-					Polygon p = new Polygon();
-					p.Stroke = Brushes.Black;
-					p.Fill = Brushes.LightBlue;
-					p.StrokeThickness = 1;
-					p.HorizontalAlignment = HorizontalAlignment.Left;
-					p.VerticalAlignment = VerticalAlignment.Center;
-					p.Points = curvePoints;
-					canvas1.Children.Add(p);
-
-				}
-			}
-
-			Image myImage = null; ;
-			ContextMenu contextMenu = new ContextMenu();
-
-			contextMenu.Items.Add("One");
-
-			contextMenu.Items.Add("Two");
-
-			MenuItem item = new MenuItem();
-
-			item.Header = "Three";
-
-			item.Click += delegate { MessageBox.Show("Test"); };
-
-
-			foreach (CTerkepiEgyseg te in App.jatek.jatekosok[0].egysegekLista)
-			{
-
-				// Create Image Element
-				myImage = new Image();
-				myImage.Width = 20;
-
-				// Create source
-				BitmapImage myBitmapImage = new BitmapImage();
-
-				// BitmapImage.UriSource must be in a BeginInit/EndInit block
-				myBitmapImage.BeginInit();
-
-				myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, te.bitmap), UriKind.Absolute);
-
-
-				myBitmapImage.DecodePixelWidth = 20;
-				myBitmapImage.EndInit();
-				//set image source
-				myImage.Source = myBitmapImage;
-				canvas1.Children.Add(myImage);
-
-				myImage.MouseUp += MyImage_MouseUp;
-
-
-				Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
-				Canvas.SetLeft(myImage, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
-
-				((IMozgoTerkepiEgyseg)te).MozgasJobbra();
-
-			}
-			
-
-			
-
-			contextMenu.Items.Add(item);
-
-			myImage.ContextMenu = contextMenu;
-		}
-
-		private void MyImage_MouseUp(object sender, MouseButtonEventArgs e)
-		{
-			
-		}
+		
 	}
 }
