@@ -80,6 +80,7 @@
     <Compile Include="CTerkep.cs" />
     <Compile Include="CTerkepiCella.cs" />
     <Compile Include="CTerkepiEgyseg.cs" />
+    <Compile Include="CTerkepiImage.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="IMozgoTerkepiEgyseg.cs" />
     <Compile Include="CMozgoTerkepiEgyseg.cs" />

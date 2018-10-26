@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Threading;
+using System.Drawing;
 
 namespace harcocska
 {
@@ -22,11 +23,14 @@ namespace harcocska
         public int szelesseg { get; set; }
         public int magassag { get; set; }
 		public Canvas canvas { get; set; }
+		public ETerkepAllapot terkepAllapot { get; set; }
+		public CTerkepiEgyseg mozgatottEgyseg { get; set; }
 
 		public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
         public CTerkep()
         {
-            szelesseg = 20;
+			terkepAllapot = ETerkepAllapot.szabad;
+			szelesseg = 20;
             magassag = 20;
 			int szamlalo = 0;
             for (int j = 0; j < magassag; j++)
@@ -99,7 +103,7 @@ namespace harcocska
 				}
 			}
 
-			Image myImage = null; ;
+			CTerkepiImage myImage = null;
 			ContextMenu contextMenu = new ContextMenu();
 
 			//contextMenu.Items.Add("Mozgás");
@@ -109,10 +113,10 @@ namespace harcocska
 			MenuItem item = new MenuItem();
 
 			item.Header = "mozgás";
-
-			item.Click += delegate { MessageBox.Show("Test"); };
+			item.Click += delegate { MyImage_Mozgas(); };
 
 			contextMenu.Items.Add(item);
+
 
 			foreach (CJatekos j in App.jatek.jatekosok) { 
 
@@ -120,7 +124,7 @@ namespace harcocska
 				{
 
 					// Create Image Element
-					myImage = new Image();
+					myImage = new CTerkepiImage(te);
 					myImage.Width = 20;
 
 					// Create source
@@ -139,6 +143,7 @@ namespace harcocska
 					canvas.Children.Add(myImage);
 
 					myImage.MouseUp += MyImage_MouseUp;
+					myImage.MouseRightButtonDown += MyImage_RightMouseDown;
 					myImage.ContextMenu = contextMenu;
 
 					Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
@@ -155,9 +160,85 @@ namespace harcocska
 
 		}
 
-		private void MyImage_MouseUp(object sender, MouseButtonEventArgs e)
+		public CTerkepiCella getTerkepiCellaAtScreenPosition(Point p)
+		{
+			CTerkepiCella ret = null;
+			double MinDist = 10000;
+
+			for (int j = 0; j < App.jatek.terkep.magassag; j++)
+			{
+				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
+				{
+					PointCollection curvePoints = App.jatek.terkep.cellak[i][j].getScreenCoords();
+
+					for (int k = 0; k < 6; k++)
+					{
+						if (IsPointInPolygon4(curvePoints, p))
+						{
+							ret = App.jatek.terkep.cellak[i][j];
+							return ret;
+						}
+						
+					}
+
+				}
+			}
+
+			
+
+			return ret;
+		}
+
+		public static bool IsPointInPolygon4(PointCollection polygon, Point testPoint)
+		{
+			bool result = false;
+			int j = polygon.Count() - 1;
+			for (int i = 0; i < polygon.Count(); i++)
+			{
+				if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y || polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+				{
+					if (polygon[i].X + (testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+					{
+						result = !result;
+					}
+				}
+				j = i;
+			}
+			return result;
+		}
+
+		
+
+		private void MyImage_Mozgas()
+		{
+			terkepAllapot = ETerkepAllapot.egysegmozgatas;
+			
+		}
+
+		private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)
 		{
 
+			mozgatottEgyseg=((CTerkepiImage)sender).terkepiEgyseg;
+		}
+
+		private void MyImage_RightMouseUp(object sender, MouseButtonEventArgs e)
+		{
+
+			mozgatottEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
+		}
+
+		private void MyImage_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			
+		}
+
+		public void mozgasIde(Point ide)
+		{
+			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
+			{
+				mozgatottEgyseg.aktualisCella = getTerkepiCellaAtScreenPosition(ide);
+				terkepAllapot = ETerkepAllapot.szabad;
+			}
 		}
 	}
 

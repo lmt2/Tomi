@@ -29,4 +29,10 @@ namespace harcocska
 		sarga,
 		barna
 	}
+
+	public enum ETerkepAllapot
+	{
+		szabad,
+		egysegmozgatas
+	}
 }

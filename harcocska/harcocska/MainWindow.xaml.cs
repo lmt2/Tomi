@@ -119,11 +119,26 @@ namespace harcocska
 		{
 			App.jatek.start();
 		}
+
+		private void canvas1_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+
+		}
+
+		private void canvas1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			Point pointToWindow = Mouse.GetPosition(canvas1);
+			//Point pointToScreen = PointToScreen(pointToWindow);
+
+			//Point controlRelatedCoords = canvas1.mo PointToClient(pointToWindow);
+			//controlRelatedCoords.Offset(panel1.HorizontalScroll.Value, panel1.VerticalScroll.Value);
+			App.jatek.terkep.mozgasIde(pointToWindow);
+		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 
-		
 
-		
+
+
 	}
 }
