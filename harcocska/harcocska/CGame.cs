@@ -53,8 +53,16 @@ namespace harcocska
 			jatekos2.f = new CFejlesztes();
 			jatekos3.f = new CFejlesztes();
 
+			CKatona e0 = new CKatona();
+			e0.aktualisCella = App.jatek.terkep.cellak[7][7];
+			e0.range = 2;
+			e0.bitmap = "katona.png";
+			e0.jatekos = jatekos1;
+			jatekos1.egysegekLista.Add(e0);
+
 			CKatona e1 = new CKatona();
 			e1.aktualisCella = App.jatek.terkep.cellak[1][0];
+			e0.range = 4;
 			e1.bitmap = "katona.png";
 			e1.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e1);
@@ -70,6 +78,8 @@ namespace harcocska
 			e3.bitmap = "tank.png";
 			e3.jatekos = jatekos3;
 			jatekos3.egysegekLista.Add(e3);
+
+			App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[0][0], App.jatek.terkep.cellak[2][7]);
 		}
 
 		private void AllapotValtoTimer_Tick(object sender, EventArgs e)

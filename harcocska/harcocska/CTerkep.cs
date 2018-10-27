@@ -163,14 +163,11 @@ namespace harcocska
 		public CTerkepiCella getTerkepiCellaAtScreenPosition(Point p)
 		{
 			CTerkepiCella ret = null;
-			double MinDist = 10000;
-
 			for (int j = 0; j < App.jatek.terkep.magassag; j++)
 			{
 				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
 				{
 					PointCollection curvePoints = App.jatek.terkep.cellak[i][j].getScreenCoords();
-
 					for (int k = 0; k < 6; k++)
 					{
 						if (IsPointInPolygon4(curvePoints, p))
@@ -178,14 +175,9 @@ namespace harcocska
 							ret = App.jatek.terkep.cellak[i][j];
 							return ret;
 						}
-						
 					}
-
 				}
 			}
-
-			
-
 			return ret;
 		}
 
@@ -207,6 +199,154 @@ namespace harcocska
 			return result;
 		}
 
+
+		public CTerkepiCella BalraFel(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			if ((tc.X % 2) == 0)
+			{
+				ret = cellak[tc.Y - 1][tc.X - 1];
+			}
+			else
+			{
+				ret = cellak[tc.Y][tc.X - 1];
+			}
+			return ret;
+		}
+
+		public CTerkepiCella BalraLe(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			if ((tc.X % 2) == 0)
+			{
+				ret = cellak[tc.Y][tc.X - 1];
+			}
+			else
+			{
+				ret = cellak[tc.Y + 1][tc.X - 1];
+			}
+			return ret;
+		}
+
+		public CTerkepiCella JobbraFel(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			if ((tc.X % 2) == 0)
+			{
+				ret = cellak[tc.Y - 1][tc.X + 1];
+			}
+			else
+			{
+				ret = cellak[tc.Y][tc.X + 1];
+			}
+			return ret;
+		}
+		public CTerkepiCella JobbraLe(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			if ((tc.X % 2) == 0)
+			{
+				ret = cellak[tc.Y][tc.X + 1];
+			}
+			else
+			{
+				ret = cellak[tc.Y + 1][tc.X + 1];
+			}
+			return ret;
+		}
+		public CTerkepiCella Le(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			ret = cellak[tc.Y + 1][tc.X];
+			return ret;
+		}
+		public CTerkepiCella Fel(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			ret = cellak[tc.Y - 1][tc.X];
+			return ret;
+		}
+
+		public CTerkepiCella Balra(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			ret = cellak[tc.Y][tc.X - 1];
+			return ret;
+		}
+		public CTerkepiCella Jobbra(CTerkepiCella tc)
+		{
+			CTerkepiCella ret = null;
+			ret = cellak[tc.Y][tc.X + 1];
+			return ret;
+		}
+
+		public bool EgySorbanVannak(CTerkepiCella tc1, CTerkepiCella tc2)
+		{
+			bool ret = false; ;
+			if (tc1.Y == tc2.Y)
+				ret = true;
+			return ret;
+		}
+
+		public bool EgyOszlopbanVannak(CTerkepiCella tc1, CTerkepiCella tc2)
+		{
+			bool ret = false; ;
+			if (tc1.X == tc2.X)
+				ret = true;
+			return ret;
+		}
+
+		public int Tavolsag(CTerkepiCella from, CTerkepiCella to)
+		{
+			int tavolsag=0;
+
+			CTerkepiCella dummy = to;
+
+
+			while (dummy.X != from.X || dummy.Y != from.Y)
+			{
+				if (!EgySorbanVannak(from, dummy))
+				{
+					if (dummy.X > 0 && dummy.Y > 0)
+					{
+						dummy = BalraFel(dummy);
+						tavolsag++;
+					}
+						
+				}
+
+				if (EgySorbanVannak(from, dummy))
+				{
+					if (dummy.X > 0)
+					{
+						dummy = Balra(dummy);
+						tavolsag++;
+					}
+
+				}
+
+				if (EgyOszlopbanVannak(from, dummy))
+				{
+					if (dummy.Y > 0)
+					{
+						dummy = Fel(dummy);
+						tavolsag++;
+					}
+				}
+
+			}
+
+
+			
+
+			
+
+
+
+			Console.WriteLine("Távolság:{0}", tavolsag);
+			return tavolsag;
+		}
+
 		
 
 		private void MyImage_Mozgas()
@@ -224,7 +364,7 @@ namespace harcocska
 		private void MyImage_RightMouseUp(object sender, MouseButtonEventArgs e)
 		{
 
-			mozgatottEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
+			//mozgatottEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
 		}
 
 		private void MyImage_MouseUp(object sender, MouseButtonEventArgs e)
@@ -236,7 +376,8 @@ namespace harcocska
 		{
 			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			{
-				mozgatottEgyseg.aktualisCella = getTerkepiCellaAtScreenPosition(ide);
+
+				((IMozgoTerkepiEgyseg)mozgatottEgyseg).mozgasIde(getTerkepiCellaAtScreenPosition(ide));
 				terkepAllapot = ETerkepAllapot.szabad;
 			}
 		}

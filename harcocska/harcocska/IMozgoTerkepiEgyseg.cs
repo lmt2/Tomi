@@ -9,10 +9,12 @@ namespace harcocska
 	public interface IMozgoTerkepiEgyseg
 	{
 		void MozgasJobbra();
+		void mozgasIde(CTerkepiCella tc);
 	}
 
 	public interface IHarcoloTerkepiEgyseg
 	{
 		void Tamadas();
 	}
+
 }

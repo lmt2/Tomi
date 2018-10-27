@@ -120,10 +120,6 @@ namespace harcocska
 			App.jatek.start();
 		}
 
-		private void canvas1_MouseUp(object sender, MouseButtonEventArgs e)
-		{
-
-		}
 
 		private void canvas1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
@@ -133,6 +129,12 @@ namespace harcocska
 			//Point controlRelatedCoords = canvas1.mo PointToClient(pointToWindow);
 			//controlRelatedCoords.Offset(panel1.HorizontalScroll.Value, panel1.VerticalScroll.Value);
 			App.jatek.terkep.mozgasIde(pointToWindow);
+		}
+
+		private void canvas1_MouseUp_1(object sender, MouseButtonEventArgs e)
+		{
+			Point pointToWindow = Mouse.GetPosition(canvas1);
+			App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[0][0], App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 

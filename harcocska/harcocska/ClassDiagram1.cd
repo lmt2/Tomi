@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="harcocska.App" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CFejlesztes" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CFejlesztes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CFejlesztesiElem" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CFejlesztesiElem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CGame" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAgAIAAAAEBBgAAAAACIAAACAAAoAAAAAAAAEAAA=</HashCode>
+      <FileName>CGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CJatekos" Collapsed="true">
+    <Position X="3.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAACAAAAQAAAAAAAACAA=</HashCode>
+      <FileName>CJatekos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CMozgoTerkepiEgyseg" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQIAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>CMozgoTerkepiEgyseg.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="harcocska.CKatona" Collapsed="true">
+    <Position X="1.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CMozgoTerkepiEgyseg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CTerkep" Collapsed="true">
+    <Position X="5.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACIAAAAAAAAEAAQQCACAgAgAAAAAAAgAwAAgAQ=</HashCode>
+      <FileName>CTerkep.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CTerkepiCella" Collapsed="true">
+    <Position X="7.25" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAABAAAAAAAAADAAAAAAAAAAAAgAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>CTerkepiCella.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.CTerkepiEgyseg" Collapsed="true">
+    <Position X="1.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAgAAAAAQAAAAABA=</HashCode>
+      <FileName>CTerkepiEgyseg.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="harcocska.CTerkepiImage" Collapsed="true">
+    <Position X="9" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTerkepiImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAgAAABABAAAAAAAgAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="harcocska.TreeNode&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAEhAEAAAEUAAEAAAAABAFAQAAAAAAAAA=</HashCode>
+      <FileName>TreeNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="harcocska.UserControl1" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAgAAAAAAAAAAAQAAgBAEAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>UserControl1.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="harcocska.Properties.Resources" Collapsed="true">
+    <Position X="5.5" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="harcocska.Properties.Settings" Collapsed="true">
+    <Position X="7.25" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="harcocska.IMozgoTerkepiEgyseg" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMozgoTerkepiEgyseg.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="harcocska.IHarcoloTerkepiEgyseg" Collapsed="true">
+    <Position X="3.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMozgoTerkepiEgyseg.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="harcocska.EJatekAllapotok" Collapsed="true">
+    <Position X="5.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAABAAAAAAIAABAAAgAAAAAAAAEAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="harcocska.ECellaTipus" Collapsed="true">
+    <Position X="3.75" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="harcocska.ESzin" Collapsed="true">
+    <Position X="7.25" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAARAAEAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="harcocska.ETerkepAllapot" Collapsed="true">
+    <Position X="9" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
