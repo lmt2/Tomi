@@ -11,7 +11,7 @@
 			<ColumnDefinition Width="171*"/>
 			<ColumnDefinition Width="127*"/>
 		</Grid.ColumnDefinitions>
-		<Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="385" Margin="0,24,0,0" VerticalAlignment="Top" Width="594" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" MouseLeftButtonUp="canvas1_MouseLeftButtonUp" MouseUp="canvas1_MouseUp_1"/>
+		<Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="385" Margin="0,24,0,0" VerticalAlignment="Top" Width="594" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" MouseLeftButtonUp="canvas1_MouseLeftButtonUp" MouseUp="canvas1_MouseUp_1" MouseRightButtonUp="canvas1_MouseRightButtonUp"/>
 		<Button x:Name="b1" Content="Tick" HorizontalAlignment="Left" Margin="40,46,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="33" Grid.Column="1">
 			<Button.Effect>
 				<DropShadowEffect BlurRadius="20"/>

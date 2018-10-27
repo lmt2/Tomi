@@ -51,22 +51,7 @@ namespace harcocska
                 cellak.Add(sor);
             }
         }
-		public CTerkepiCella right(CTerkepiCella c)
-		{
-			CTerkepiCella ret=null;
-			foreach (List<CTerkepiCella> sor in cellak)
-			{
-				foreach (CTerkepiCella cell in sor)
-				{
-					if (cell == c)
-					{
-						ret = sor[cell.X+1];
-					}
-				}
-
-			}
-			return ret;
-		}
+		
 		public void terkeprajzolas()
 		{
 			for (int j = 0; j < App.jatek.terkep.magassag; j++)
@@ -153,11 +138,6 @@ namespace harcocska
 
 				}
 			}
-
-
-
-
-
 		}
 
 		public CTerkepiCella getTerkepiCellaAtScreenPosition(Point p)
@@ -302,48 +282,147 @@ namespace harcocska
 
 			CTerkepiCella dummy = to;
 
-
-			while (dummy.X != from.X || dummy.Y != from.Y)
+			while (!(dummy.X == from.X && dummy.Y == from.Y))
 			{
-				if (!EgySorbanVannak(from, dummy))
-				{
-					if (dummy.X > 0 && dummy.Y > 0)
-					{
-						dummy = BalraFel(dummy);
-						tavolsag++;
-					}
-						
-				}
+                bool lepesVolt = false;
+                if (dummy.X >= from.X && dummy.Y >= from.Y)
+                {
+                    if (!EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X > from.X && dummy.Y > from.Y)
+                        {
+                            dummy = BalraFel(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X > from.X)
+                        {
+                            dummy = Balra(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgyOszlopbanVannak(from, dummy))
+                    {
+                        if (dummy.Y > from.Y)
+                        {
+                            dummy = Fel(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                }
+                if (!lepesVolt)
+                if (dummy.X >= from.X && dummy.Y <= from.Y)
+                {
+                    if (!EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X > from.X && dummy.Y < magassag)
+                        {
+                            dummy = BalraLe(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X > from.X)
+                        {
+                            dummy = Balra(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgyOszlopbanVannak(from, dummy))
+                    {
+                        if (dummy.Y < from.Y)
+                        {
+                            dummy = Le(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                }
+                if (!lepesVolt)
+                if (dummy.X <= from.X && dummy.Y >= from.Y)
+                {
+                    if (!EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X < from.X && dummy.Y > from.Y)
+                        {
+                            dummy = JobbraFel(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X < from.X)
+                        {
+                            dummy = Jobbra(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgyOszlopbanVannak(from, dummy))
+                    {
+                        if (dummy.Y > from.Y)
+                        {
+                            dummy = Fel(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                }
+                if (!lepesVolt)
+                if (dummy.X <= from.X && dummy.Y <= from.Y)
+                {
+                    if (!EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X < szelesseg && dummy.Y < magassag)
+                        {
+                            dummy = JobbraLe(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgySorbanVannak(from, dummy))
+                    {
+                        if (dummy.X < from.X)
+                        {
+                            dummy = Jobbra(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                    if (EgyOszlopbanVannak(from, dummy))
+                    {
+                        if (dummy.Y > from.Y)
+                        {
+                            dummy = Le(dummy);
+                            lepesVolt = true;
+                            tavolsag++;
+                        }
+                    }
+                }
 
-				if (EgySorbanVannak(from, dummy))
-				{
-					if (dummy.X > 0)
-					{
-						dummy = Balra(dummy);
-						tavolsag++;
-					}
-
-				}
-
-				if (EgyOszlopbanVannak(from, dummy))
-				{
-					if (dummy.Y > 0)
-					{
-						dummy = Fel(dummy);
-						tavolsag++;
-					}
-				}
-
-			}
-
-
-			
-
-			
 
 
 
-			Console.WriteLine("Távolság:{0}", tavolsag);
+
+            }
+
+
+
+
+
+
+
+
+            Console.WriteLine("Távolság:{0}", tavolsag);
 			return tavolsag;
 		}
 

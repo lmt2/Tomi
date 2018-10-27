@@ -16,7 +16,7 @@ namespace harcocska
 		}
 		void IMozgoTerkepiEgyseg.MozgasJobbra()
 		{
-			aktualisCella = App.jatek.terkep.right(aktualisCella);
+			aktualisCella = App.jatek.terkep.Jobbra(aktualisCella);
 		}
 		void IMozgoTerkepiEgyseg.mozgasIde(CTerkepiCella tc)
 		{

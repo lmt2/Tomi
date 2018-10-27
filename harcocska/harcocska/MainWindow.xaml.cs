@@ -25,6 +25,7 @@ namespace harcocska
     {
 		#region members
 		DispatcherTimer RajzoloTimer = new DispatcherTimer();
+        CTerkepiCella from;
 		#endregion
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		#region constructors
@@ -129,18 +130,26 @@ namespace harcocska
 			//Point controlRelatedCoords = canvas1.mo PointToClient(pointToWindow);
 			//controlRelatedCoords.Offset(panel1.HorizontalScroll.Value, panel1.VerticalScroll.Value);
 			App.jatek.terkep.mozgasIde(pointToWindow);
-		}
+
+            from = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+            Console.WriteLine("Kezdopont:{0},{1}",from.X,from.Y);
+        }
 
 		private void canvas1_MouseUp_1(object sender, MouseButtonEventArgs e)
 		{
-			Point pointToWindow = Mouse.GetPosition(canvas1);
-			App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[0][0], App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
+			
 		}
-		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+        private void canvas1_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Point pointToWindow = Mouse.GetPosition(canvas1);
+            App.jatek.terkep.Tavolsag(from, App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
+        }
+        //mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 
 
 
 
-	}
+    }
 }

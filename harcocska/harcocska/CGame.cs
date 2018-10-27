@@ -79,7 +79,7 @@ namespace harcocska
 			e3.jatekos = jatekos3;
 			jatekos3.egysegekLista.Add(e3);
 
-			App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[0][0], App.jatek.terkep.cellak[2][7]);
+			//App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[5][5], App.jatek.terkep.cellak[2][7]);
 		}
 
 		private void AllapotValtoTimer_Tick(object sender, EventArgs e)
