@@ -14,7 +14,7 @@ namespace harcocska
 
 	public interface IHarcoloTerkepiEgyseg
 	{
-		void Tamadas();
+		void Tamadas(CTerkepiEgyseg te);
 	}
 
 }

@@ -110,20 +110,25 @@ namespace harcocska
 			//contextMenu.Items.Add("Harc");
 
 			MenuItem item = new MenuItem();
-
 			item.Header = "mozgás";
 			item.Click += delegate { MyImage_Mozgas(); };
-
 			contextMenu.Items.Add(item);
 
+            MenuItem item1 = new MenuItem();
+            item1.Header = "harc";
+            item1.Click += delegate { MyImage_Harc(); };
+            contextMenu.Items.Add(item1);
 
-			foreach (CJatekos j in App.jatek.jatekosok) { 
+
+            foreach (CJatekos j in App.jatek.jatekosok) { 
 
 				foreach (CTerkepiEgyseg te in j.egysegekLista)
 				{
 
-					// Create Image Element
-					myImage = new CTerkepiImage(te);
+
+
+                    // Create Image Element
+                    myImage = new CTerkepiImage(te);
 					myImage.Width = 20;
 
 					// Create source
@@ -148,9 +153,30 @@ namespace harcocska
 					Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
 					Canvas.SetLeft(myImage, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
 
-					//((IMozgoTerkepiEgyseg)te).MozgasJobbra();
 
-				}
+                    if (te.elet==0) { 
+                    Image myImage1 = new Image();
+                    myImage1.Width = 20;
+
+                    // Create source
+                    BitmapImage myBitmapImage1 = new BitmapImage();
+
+                    // BitmapImage.UriSource must be in a BeginInit/EndInit block
+                    myBitmapImage1.BeginInit();
+
+                    myBitmapImage1.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "megsemmisult.png"), UriKind.Absolute);
+                    
+
+                    myBitmapImage1.DecodePixelWidth = 20;
+                    myBitmapImage1.EndInit();
+                    myImage1.Source = myBitmapImage1;
+                    canvas.Children.Add(myImage1);
+                    Canvas.SetTop(myImage1, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
+                    Canvas.SetLeft(myImage1, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
+                    }
+                    //((IMozgoTerkepiEgyseg)te).MozgasJobbra();
+
+                }
 			}
 		}
 
@@ -175,7 +201,23 @@ namespace harcocska
 			return ret;
 		}
 
-		public static bool IsPointInPolygon4(PointCollection polygon, Point testPoint)
+        public CTerkepiEgyseg getTerkepiEgysegAtScreenPosition(Point p)
+        {
+            CTerkepiEgyseg ret = null;
+            CTerkepiCella tc= getTerkepiCellaAtScreenPosition(p);
+            foreach (CJatekos j in App.jatek.jatekosok)
+            {
+                foreach (CTerkepiEgyseg te in j.egysegekLista)
+                {
+                    if (te.aktualisCella.X == tc.X && te.aktualisCella.Y == tc.Y) {
+                        return te;
+                    }
+                }
+            }
+            return ret;
+        }
+
+        public static bool IsPointInPolygon4(PointCollection polygon, Point testPoint)
 		{
 			bool result = false;
 			int j = polygon.Count() - 1;
@@ -445,10 +487,14 @@ namespace harcocska
 		private void MyImage_Mozgas()
 		{
 			terkepAllapot = ETerkepAllapot.egysegmozgatas;
-			
 		}
 
-		private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)
+        private void MyImage_Harc()
+        {
+            terkepAllapot = ETerkepAllapot.harc;
+        }
+
+        private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)
 		{
 
 			mozgatottEgyseg=((CTerkepiImage)sender).terkepiEgyseg;
@@ -467,7 +513,19 @@ namespace harcocska
 
 		public void mozgasIde(Point ide)
 		{
-			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
+            if (terkepAllapot == ETerkepAllapot.harc)
+            {
+                if (Tavolsag(getTerkepiCellaAtScreenPosition(ide), mozgatottEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
+                {
+                    return;
+                }
+                IHarcoloTerkepiEgyseg temp = null;
+                temp = (IHarcoloTerkepiEgyseg)mozgatottEgyseg;
+                if (temp != null)
+                    temp.Tamadas(getTerkepiEgysegAtScreenPosition(ide));
+                terkepAllapot = ETerkepAllapot.szabad;
+            }
+            if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			{
 				if (Tavolsag(getTerkepiCellaAtScreenPosition(ide), mozgatottEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
 				{
