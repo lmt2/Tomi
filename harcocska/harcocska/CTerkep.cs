@@ -67,6 +67,7 @@ namespace harcocska
 					{
 						case ESzin.piros:
 							p.Fill = Brushes.PaleVioletRed;
+							
 							break;
 
 						case ESzin.kek:
@@ -79,7 +80,20 @@ namespace harcocska
 
 
 					}
-					p.StrokeThickness = 1;
+					if (terkepAllapot == ETerkepAllapot.egysegmozgatas) {
+						if (Tavolsag(cellak[i][j], mozgatottEgyseg.aktualisCella) <= ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
+						{
+							p.StrokeThickness = 3;
+							p.Stroke = Brushes.Yellow;
+						}
+						else
+						{
+							p.StrokeThickness = 1;
+							p.Stroke = Brushes.Black;
+						}
+					}
+
+					//p.StrokeThickness = 0.5;
 					p.HorizontalAlignment = HorizontalAlignment.Left;
 					p.VerticalAlignment = VerticalAlignment.Center;
 					p.Points = curvePoints;
@@ -422,7 +436,7 @@ namespace harcocska
 
 
 
-            Console.WriteLine("Távolság:{0}", tavolsag);
+            //Console.WriteLine("Távolság:{0}", tavolsag);
 			return tavolsag;
 		}
 
@@ -455,8 +469,14 @@ namespace harcocska
 		{
 			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			{
-
-				((IMozgoTerkepiEgyseg)mozgatottEgyseg).mozgasIde(getTerkepiCellaAtScreenPosition(ide));
+				if (Tavolsag(getTerkepiCellaAtScreenPosition(ide), mozgatottEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
+				{
+					return;
+				}
+				IMozgoTerkepiEgyseg temp = null;
+				temp = (IMozgoTerkepiEgyseg)mozgatottEgyseg;
+				if (temp!=null)
+					temp.mozgasIde(getTerkepiCellaAtScreenPosition(ide));
 				terkepAllapot = ETerkepAllapot.szabad;
 			}
 		}

@@ -142,8 +142,8 @@ namespace harcocska
 
         private void canvas1_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Point pointToWindow = Mouse.GetPosition(canvas1);
-            App.jatek.terkep.Tavolsag(from, App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
+            //Point pointToWindow = Mouse.GetPosition(canvas1);
+            //App.jatek.terkep.Tavolsag(from, App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
         }
         //mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
