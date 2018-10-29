@@ -328,7 +328,7 @@ namespace harcocska
 
 		public bool EgySorbanVannak(CTerkepiCella tc1, CTerkepiCella tc2)
 		{
-			bool ret = false; ;
+			bool ret = false;
 			if (tc1.Y == tc2.Y)
 				ret = true;
 			return ret;
@@ -336,7 +336,7 @@ namespace harcocska
 
 		public bool EgyOszlopbanVannak(CTerkepiCella tc1, CTerkepiCella tc2)
 		{
-			bool ret = false; ;
+			bool ret = false;
 			if (tc1.X == tc2.X)
 				ret = true;
 			return ret;
@@ -394,8 +394,6 @@ namespace harcocska
 					}
 
 				}
-
-
 
 				if (EgySorbanVannak(from, dummy))
 				{
