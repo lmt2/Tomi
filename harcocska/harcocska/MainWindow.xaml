@@ -32,7 +32,8 @@
 				<MenuItem Background="#FFEC6262" Header="Exit" Click="Exit_MenuItem_Click"/>
 			</MenuItem>
 			<MenuItem Header="Game">
-				<MenuItem Header="Start" Click="MenuItem_Click"/>
+				<MenuItem Header="Start" Click="MenuItem_Click" Margin="0,0,-20,0"/>
+				<MenuItem Header="térképrajzolás" HorizontalAlignment="Left" Height="21" Width="165" Margin="0,0,-25,0" Click="MenuItem_Terkeprajzolas_Click"/>
 			</MenuItem>
 		</Menu>
 		<StackPanel x:Name="stackpanel" HorizontalAlignment="Right" Margin="0,40,10,34" Width="289" Grid.Column="1"/>

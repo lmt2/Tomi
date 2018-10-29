@@ -24,7 +24,7 @@ namespace harcocska
         public int magassag { get; set; }
 		public Canvas canvas { get; set; }
 		public ETerkepAllapot terkepAllapot { get; set; }
-		public CTerkepiEgyseg mozgatottEgyseg { get; set; }
+		public CTerkepiEgyseg aktualisEgyseg { get; set; }
 
 		public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
         public CTerkep()
@@ -32,7 +32,7 @@ namespace harcocska
 			terkepAllapot = ETerkepAllapot.szabad;
 			szelesseg = 20;
             magassag = 20;
-			int szamlalo = 0;
+			//int szamlalo = 0;
             for (int j = 0; j < magassag; j++)
             {
                 List<CTerkepiCella> sor = new List<CTerkepiCella>();
@@ -41,10 +41,10 @@ namespace harcocska
                     CTerkepiCella c = new CTerkepiCella(i,j);
                     c.cellaTipus = ECellaTipus.viz;
                     sor.Add(c);
-					szamlalo++;
-					if (szamlalo>0 && szamlalo < 133) { c.tulaj = App.jatek.jatekosok[0]; }
-					else if (szamlalo >= 133 && szamlalo < 266) { c.tulaj = App.jatek.jatekosok[1]; }
-					else { c.tulaj = App.jatek.jatekosok[2]; }
+					//szamlalo++;
+					//if (szamlalo>0 && szamlalo < 133) { c.tulaj = App.jatek.jatekosok[0]; }
+					//else if (szamlalo >= 133 && szamlalo < 266) { c.tulaj = App.jatek.jatekosok[1]; }
+					//else { c.tulaj = App.jatek.jatekosok[2]; }
 
 
 				}
@@ -54,46 +54,56 @@ namespace harcocska
 		
 		public void terkeprajzolas()
 		{
+			canvas.Children.Clear();
 			for (int j = 0; j < App.jatek.terkep.magassag; j++)
 			{
 				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
 				{
 					PointCollection curvePoints = App.jatek.terkep.cellak[i][j].getScreenCoords();
 
+					
 					Polygon p = new Polygon();
+					RenderOptions.SetEdgeMode((DependencyObject)p, EdgeMode.Aliased);
 					p.Stroke = Brushes.Black;
 					
-					switch (App.jatek.terkep.cellak[i][j].tulaj.szin)
-					{
-						case ESzin.piros:
-							p.Fill = Brushes.PaleVioletRed;
+					if (App.jatek.terkep.cellak[i][j].tulaj != null) { 
+						switch (App.jatek.terkep.cellak[i][j].tulaj.szin)
+						{
+							case ESzin.piros:
+								p.Fill = Brushes.PaleVioletRed;
 							
-							break;
+								break;
 
-						case ESzin.kek:
-							p.Fill = Brushes.LightBlue;
-							break;
+							case ESzin.kek:
+								p.Fill = Brushes.LightBlue;
+								break;
 
-						case ESzin.sarga:
-							p.Fill = Brushes.LightYellow;
-							break;
+							case ESzin.sarga:
+								p.Fill = Brushes.LightYellow;
+								break;
 
-
+						
+						}
+					}
+					else
+					{
+						p.Fill = Brushes.Gray;
 					}
 					if (terkepAllapot == ETerkepAllapot.egysegmozgatas) {
-						if (Tavolsag(cellak[i][j], mozgatottEgyseg.aktualisCella) <= ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
+						if (Tavolsag(cellak[i][j], aktualisEgyseg.aktualisCella) <= ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 						{
-							p.StrokeThickness = 3;
+							p.StrokeThickness = 2;
 							p.Stroke = Brushes.Yellow;
 						}
 						else
 						{
-							p.StrokeThickness = 1;
+							
+							//p.StrokeThickness = 0.8;
 							p.Stroke = Brushes.Black;
 						}
 					}
-
-					//p.StrokeThickness = 0.5;
+					else
+						p.StrokeThickness = 1;
 					p.HorizontalAlignment = HorizontalAlignment.Left;
 					p.VerticalAlignment = VerticalAlignment.Center;
 					p.Points = curvePoints;
@@ -340,144 +350,107 @@ namespace harcocska
 
 			while (!(dummy.X == from.X && dummy.Y == from.Y))
 			{
-                bool lepesVolt = false;
-                if (dummy.X >= from.X && dummy.Y >= from.Y)
-                {
-                    if (!EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X > from.X && dummy.Y > from.Y)
-                        {
-                            dummy = BalraFel(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X > from.X)
-                        {
-                            dummy = Balra(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgyOszlopbanVannak(from, dummy))
-                    {
-                        if (dummy.Y > from.Y)
-                        {
-                            dummy = Fel(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                }
-                if (!lepesVolt)
-                if (dummy.X >= from.X && dummy.Y <= from.Y)
-                {
-                    if (!EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X > from.X && dummy.Y < magassag)
-                        {
-                            dummy = BalraLe(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X > from.X)
-                        {
-                            dummy = Balra(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgyOszlopbanVannak(from, dummy))
-                    {
-                        if (dummy.Y < from.Y)
-                        {
-                            dummy = Le(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                }
-                if (!lepesVolt)
-                if (dummy.X <= from.X && dummy.Y >= from.Y)
-                {
-                    if (!EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X < from.X && dummy.Y > from.Y)
-                        {
-                            dummy = JobbraFel(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X < from.X)
-                        {
-                            dummy = Jobbra(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgyOszlopbanVannak(from, dummy))
-                    {
-                        if (dummy.Y > from.Y)
-                        {
-                            dummy = Fel(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                }
-                if (!lepesVolt)
-                if (dummy.X <= from.X && dummy.Y <= from.Y)
-                {
-                    if (!EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X < szelesseg && dummy.Y < magassag)
-                        {
-                            dummy = JobbraLe(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgySorbanVannak(from, dummy))
-                    {
-                        if (dummy.X < from.X)
-                        {
-                            dummy = Jobbra(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                    if (EgyOszlopbanVannak(from, dummy))
-                    {
-                        if (dummy.Y > from.Y)
-                        {
-                            dummy = Le(dummy);
-                            lepesVolt = true;
-                            tavolsag++;
-                        }
-                    }
-                }
+                int lepesVolt = 0;
 
 
 
+				if (!EgySorbanVannak(from, dummy) && !EgyOszlopbanVannak(from, dummy))
+				{
+					if (dummy.X > from.X && dummy.Y > from.Y)
+					{
+						if (BalraFel(dummy).tulaj != null)
+						{
+							dummy = BalraFel(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+					if (dummy.X < from.X && dummy.Y > from.Y)
+					{
+						if (JobbraFel(dummy).tulaj != null)
+						{
+							dummy = JobbraFel(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+					if (dummy.X < from.X && dummy.Y < from.Y)
+					{
+						if (JobbraLe(dummy).tulaj != null)
+						{
+							dummy = JobbraLe(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+					if (dummy.X > from.X && dummy.Y < from.Y)
+					{
+						if (BalraLe(dummy).tulaj != null)
+						{
+							dummy = BalraLe(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+
+				}
 
 
-            }
+
+				if (EgySorbanVannak(from, dummy))
+				{
+					if (dummy.X > from.X)
+					{
+						if (Balra(dummy).tulaj != null)
+						{
+							dummy = Balra(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+					if (dummy.X < from.X)
+					{
+						if (Jobbra(dummy).tulaj != null)
+						{
+							dummy = Jobbra(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+				}
 
 
+				if (EgyOszlopbanVannak(from, dummy))
+				{
+					if (dummy.Y > from.Y)
+					{
+						if (Fel(dummy).tulaj != null)
+						{
+							dummy = Fel(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+					if (dummy.Y < from.Y)
+					{
+						if (Le(dummy).tulaj != null)
+						{
+							dummy = Le(dummy);
+							lepesVolt++;
+							tavolsag++;
+						}
+					}
+				}
 
 
+				if (lepesVolt == 0)
+				{
+					tavolsag = 100000;
+					break;
+				}
 
 
-
-
+			}
             //Console.WriteLine("Távolság:{0}", tavolsag);
 			return tavolsag;
 		}
@@ -497,12 +470,11 @@ namespace harcocska
         private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)
 		{
 
-			mozgatottEgyseg=((CTerkepiImage)sender).terkepiEgyseg;
+			aktualisEgyseg=((CTerkepiImage)sender).terkepiEgyseg;
 		}
 
 		private void MyImage_RightMouseUp(object sender, MouseButtonEventArgs e)
 		{
-
 			//mozgatottEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
 		}
 
@@ -511,30 +483,35 @@ namespace harcocska
 			
 		}
 
-		public void mozgasIde(Point ide)
+		public void OnLeftMouseDown(Point windowCoord)
 		{
             if (terkepAllapot == ETerkepAllapot.harc)
             {
-                if (Tavolsag(getTerkepiCellaAtScreenPosition(ide), mozgatottEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
+                if (Tavolsag(getTerkepiCellaAtScreenPosition(windowCoord), aktualisEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
                 {
                     return;
                 }
-                IHarcoloTerkepiEgyseg temp = null;
-                temp = (IHarcoloTerkepiEgyseg)mozgatottEgyseg;
-                if (temp != null)
-                    temp.Tamadas(getTerkepiEgysegAtScreenPosition(ide));
+                IHarcoloTerkepiEgyseg tempHarcoloEgyseg = null;
+                tempHarcoloEgyseg = (IHarcoloTerkepiEgyseg)aktualisEgyseg;
+                if (tempHarcoloEgyseg != null)
+                    tempHarcoloEgyseg.Tamadas(getTerkepiEgysegAtScreenPosition(windowCoord));
                 terkepAllapot = ETerkepAllapot.szabad;
             }
             if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			{
-				if (Tavolsag(getTerkepiCellaAtScreenPosition(ide), mozgatottEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)mozgatottEgyseg).range)
+				if (Tavolsag(getTerkepiCellaAtScreenPosition(windowCoord), aktualisEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 				{
 					return;
 				}
-				IMozgoTerkepiEgyseg temp = null;
-				temp = (IMozgoTerkepiEgyseg)mozgatottEgyseg;
-				if (temp!=null)
-					temp.mozgasIde(getTerkepiCellaAtScreenPosition(ide));
+				IMozgoTerkepiEgyseg tempMozgoEgyseg = null;
+				tempMozgoEgyseg = (IMozgoTerkepiEgyseg)aktualisEgyseg;
+				if (tempMozgoEgyseg != null)
+				{
+					CTerkepiCella cella= getTerkepiCellaAtScreenPosition(windowCoord);
+					if (cella.tulaj!=null)
+						tempMozgoEgyseg.mozgasIde(cella);
+				}
+					
 				terkepAllapot = ETerkepAllapot.szabad;
 			}
 		}

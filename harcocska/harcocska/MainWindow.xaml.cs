@@ -49,8 +49,10 @@ namespace harcocska
 
 			
 			App.jatek.run();
+			var window = Window.GetWindow(canvas1);
+			window.KeyDown += HandleKeyPressOnCanvas;
 
-        }
+		}
 		#endregion
 		private void RajzoloTimer_Tick(object sender, EventArgs e)
 		{
@@ -119,6 +121,7 @@ namespace harcocska
 		private void MenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			App.jatek.start();
+			
 		}
 
 
@@ -129,10 +132,10 @@ namespace harcocska
 
 			//Point controlRelatedCoords = canvas1.mo PointToClient(pointToWindow);
 			//controlRelatedCoords.Offset(panel1.HorizontalScroll.Value, panel1.VerticalScroll.Value);
-			App.jatek.terkep.mozgasIde(pointToWindow);
+			App.jatek.terkep.OnLeftMouseDown(pointToWindow);
 
             from = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
-            Console.WriteLine("Kezdopont:{0},{1}",from.X,from.Y);
+            //Console.WriteLine("Kezdopont:{0},{1}",from.X,from.Y);
         }
 
 		private void canvas1_MouseUp_1(object sender, MouseButtonEventArgs e)
@@ -145,11 +148,47 @@ namespace harcocska
             //Point pointToWindow = Mouse.GetPosition(canvas1);
             //App.jatek.terkep.Tavolsag(from, App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
         }
-        //mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+		private void MenuItem_Terkeprajzolas_Click(object sender, RoutedEventArgs e)
+		{
+			if (App.jatek.terkep.terkepAllapot == ETerkepAllapot.szabad) { 
+				App.jatek.terkep.terkepAllapot = ETerkepAllapot.szerkesztes;
+				return;
+			}
+			if (App.jatek.terkep.terkepAllapot == ETerkepAllapot.szerkesztes)
+			{
+				App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
+				return;
+			}
+		}
+		private void HandleKeyPressOnCanvas(object sender, KeyEventArgs e)
+		{
+			Point pointToWindow = Mouse.GetPosition(canvas1);
+			if (App.jatek.terkep.terkepAllapot== ETerkepAllapot.szerkesztes)
+			{
+				CTerkepiCella cella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+				if (cella != null) { 
+					if (e.IsDown && e.Key == Key.D1)
+					{
+						cella.tulaj = App.jatek.jatekosok[0];
+					}
+					if (e.IsDown && e.Key == Key.D2)
+					{
+						cella.tulaj = App.jatek.jatekosok[1];
+					}
+					if (e.IsDown && e.Key == Key.D3)
+					{
+						cella.tulaj = App.jatek.jatekosok[2];
+					}
+				}
+			}
+			
+		}
+		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 
 
 
 
-    }
+	}
 }

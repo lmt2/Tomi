@@ -33,6 +33,7 @@ namespace harcocska
 	public enum ETerkepAllapot
 	{
 		szabad,
+		szerkesztes,
 		egysegmozgatas,
         harc
 	}
