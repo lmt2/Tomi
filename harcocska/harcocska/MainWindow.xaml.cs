@@ -135,7 +135,7 @@ namespace harcocska
 			App.jatek.terkep.OnLeftMouseDown(pointToWindow);
 
             from = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
-            //Console.WriteLine("Kezdopont:{0},{1}",from.X,from.Y);
+            Console.WriteLine("Kezdopont:{0},{1}",from.Sor,from.Oszlop);
         }
 
 		private void canvas1_MouseUp_1(object sender, MouseButtonEventArgs e)
@@ -145,9 +145,11 @@ namespace harcocska
 
         private void canvas1_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //Point pointToWindow = Mouse.GetPosition(canvas1);
-            //App.jatek.terkep.Tavolsag(from, App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
-        }
+            Point pointToWindow = Mouse.GetPosition(canvas1);
+			//App.jatek.terkep.Tavolsag(from, App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow));
+			//App.jatek.terkep.Dijkstra(0,0);
+			//Console.WriteLine("Tavolsag:{0}", App.jatek.terkep.dist[App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).Sor][App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).Oszlop]);
+		}
 
 		private void MenuItem_Terkeprajzolas_Click(object sender, RoutedEventArgs e)
 		{

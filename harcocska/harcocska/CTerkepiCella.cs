@@ -12,13 +12,13 @@ namespace harcocska
     {
         public ECellaTipus cellaTipus { get; set; }
         public CJatekos tulaj;
-		public int X { get; set; }
-		public int Y { get; set; }
+		public int Oszlop { get; set; }
+		public int Sor { get; set; }
 		public CTerkepiCella() { }
 
-		public CTerkepiCella(int a, int b) {
-			X = a;
-			Y = b;
+		public CTerkepiCella(int sor, int oszlop) {
+			Oszlop = oszlop;
+			Sor = sor;
 		}
 
 		public static int offsetX()
@@ -33,15 +33,15 @@ namespace harcocska
 		public Point getScreenCoord()
 		{
 			Point p1 = new Point();
-			if ((X % 2) == 0)
+			if ((Oszlop % 2) == 0)
 			{
-				p1.X = (int)(X * offsetX() + X * App.jatek.oldalhossz);
-				p1.Y = (int)(Y * 2 * offsetY());
+				p1.X = (int)(Oszlop * offsetX() + Oszlop * App.jatek.oldalhossz);
+				p1.Y = (int)(Sor * 2 * offsetY());
 			}
 			else
 			{
-				p1.X = (int)(X * offsetX() + X * App.jatek.oldalhossz);
-				p1.Y = (int)(Y * 2 * offsetY() + offsetY());
+				p1.X = (int)(Oszlop * offsetX() + Oszlop * App.jatek.oldalhossz);
+				p1.Y = (int)(Sor * 2 * offsetY() + offsetY());
 			}
 
 			return p1;

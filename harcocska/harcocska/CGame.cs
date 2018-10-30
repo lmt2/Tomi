@@ -55,14 +55,14 @@ namespace harcocska
 
 			CKatona e0 = new CKatona();
 			e0.aktualisCella = App.jatek.terkep.cellak[7][7];
-			e0.range = 2;
+			e0.range = 4;
 			e0.bitmap = "katona.png";
 			e0.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e0);
 
 			CKatona e1 = new CKatona();
 			e1.aktualisCella = App.jatek.terkep.cellak[1][0];
-			e0.range = 3;
+			e0.range = 4;
 			e1.bitmap = "katona.png";
 			e1.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e1);
