@@ -111,7 +111,7 @@ namespace harcocska
 		}
 
 		private void treeIcon(TreeViewItem treeItem) {
-			TreeNode<CFejlesztesiElem> found = jatekos.f.Root.FindTreeNode(node => node.Data != null && node.Data.name == treeItem.Header);
+			TreeNode<CFejlesztesiElem> found = jatekos.f.Root.FindTreeNode(node => node.Data != null && node.Data.name == (string)treeItem.Header);
 			//if (found!=null)
 			//{
 			string s = treeItem.Header.ToString();

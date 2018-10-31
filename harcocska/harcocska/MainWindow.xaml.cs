@@ -182,6 +182,10 @@ namespace harcocska
 					{
 						cella.tulaj = App.jatek.jatekosok[2];
 					}
+					if (e.IsDown && e.Key == Key.D0)
+					{
+						cella.tulaj = null;
+					}
 				}
 			}
 			

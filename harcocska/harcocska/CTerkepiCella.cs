@@ -12,8 +12,8 @@ namespace harcocska
     {
         public ECellaTipus cellaTipus { get; set; }
         public CJatekos tulaj;
-		public int Oszlop { get; set; }
 		public int Sor { get; set; }
+		public int Oszlop { get; set; }
 		public CTerkepiCella() { }
 
 		public CTerkepiCella(int sor, int oszlop) {

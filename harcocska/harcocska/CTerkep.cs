@@ -31,6 +31,7 @@ namespace harcocska
 		public List<List<int>> vertex = new List<List<int>>();
 		public List<List<int>> dist = new List<List<int>>();
 		public List<List<int>> prev = new List<List<int>>();
+		List<csucs> Q = new List<csucs>();
 		public CTerkep()
 		{
 			terkepAllapot = ETerkepAllapot.szabad;
@@ -63,20 +64,20 @@ namespace harcocska
 			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 				Dijkstra(aktualisEgyseg.aktualisCella);
 
-			for (int j = 0; j < App.jatek.terkep.magassag; j++)
+			for (int j = 0; j < magassag; j++)
 			{
-				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
+				for (int i = 0; i < szelesseg; i++)
 				{
-					PointCollection curvePoints = App.jatek.terkep.cellak[j][i].getScreenCoords();
+					PointCollection curvePoints = cellak[j][i].getScreenCoords();
 
 
 					Polygon p = new Polygon();
 					RenderOptions.SetEdgeMode((DependencyObject)p, EdgeMode.Aliased);
 					p.Stroke = Brushes.Black;
 
-					if (App.jatek.terkep.cellak[j][i].tulaj != null)
+					if (cellak[j][i].tulaj != null)
 					{
-						switch (App.jatek.terkep.cellak[j][i].tulaj.szin)
+						switch (cellak[j][i].tulaj.szin)
 						{
 							case ESzin.piros:
 								p.Fill = Brushes.PaleVioletRed;
@@ -102,7 +103,7 @@ namespace harcocska
 					{
 						
 						//if (Tavolsag(cellak[i][j], aktualisEgyseg.aktualisCella) <= ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
-						Console.WriteLine("Tavolsag:{0}", dist[j][i]);
+						//Console.WriteLine("Tavolsag:{0}", dist[j][i]);
 						if (dist[j][i] <= ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 						{
 							p.StrokeThickness = 2;
@@ -122,7 +123,21 @@ namespace harcocska
 					p.Points = curvePoints;
 					canvas.Children.Add(p);
 
-				}
+					if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
+					{
+						if (dist[j][i] < 50000)
+						{
+							TextBlock textBlock = new TextBlock();
+							textBlock.Text = dist[j][i].ToString();
+							//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
+							Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 2);
+							Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y - App.jatek.oldalhossz / 2);
+							canvas.Children.Add(textBlock);
+						}
+					}
+
+
+						}
 			}
 
 			CTerkepiImage myImage = null;
@@ -212,12 +227,12 @@ namespace harcocska
 			{
 				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
 				{
-					PointCollection curvePoints = App.jatek.terkep.cellak[i][j].getScreenCoords();
+					PointCollection curvePoints = cellak[i][j].getScreenCoords();
 					for (int k = 0; k < 6; k++)
 					{
 						if (IsPointInPolygon4(curvePoints, p))
 						{
-							ret = App.jatek.terkep.cellak[i][j];
+							ret = cellak[i][j];
 							return ret;
 						}
 					}
@@ -294,37 +309,37 @@ namespace harcocska
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = JobbraFel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = JobbraLe(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = Le(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = BalraLe(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = BalraFel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 					}
 				}
@@ -339,18 +354,18 @@ namespace harcocska
 				}
 				dist.Add(sor);
 			}
-			for (int j = 0; j < magassag; j++)
-			{
-				List<int> sor = new List<int>();
-				for (int i = 0; i < szelesseg; i++)
-				{
-					sor.Add(-1);
-				}
-				prev.Add(sor);
-			}
+			//for (int j = 0; j < magassag; j++)
+			//{
+			//	List<int> sor = new List<int>();
+			//	for (int i = 0; i < szelesseg; i++)
+			//	{
+			//		sor.Add(-1);
+			//	}
+			//	prev.Add(sor);
+			//}
 			dist[startSor][startOszlop] = 0;
 
-			List<csucs> Q = new List<csucs>();
+			Q.Clear();
 			for (int j = 0; j < magassag; j++)
 			{
 				for (int i = 0; i < szelesseg; i++)
@@ -390,8 +405,8 @@ namespace harcocska
 					if (vertex[u.sor * szelesseg + u.oszlop][i] == 1)
 					{
 						
-						v.sor =i/20;
-						v.oszlop = i % 20;
+						v.sor = i / magassag;
+						v.oszlop = i % szelesseg;
 						int alt = dist[u.sor][u.oszlop] + 1;
 						if (alt < dist[v.sor][v.oszlop])
 						{
@@ -425,7 +440,7 @@ namespace harcocska
 			CTerkepiCella ret = null;
 			if ((tc.Oszlop % 2) == 0)
 			{
-				if (tc.Sor - 1 < 0 || tc.Oszlop - 1 < 0)
+				if ((tc.Sor - 1 < 0) || (tc.Oszlop - 1 < 0))
 					return ret;
 				ret = cellak[tc.Sor - 1][tc.Oszlop - 1];
 			}
@@ -462,7 +477,7 @@ namespace harcocska
 
 			if ((tc.Oszlop % 2) == 0)
 			{
-				if (tc.Sor - 1 < 0 || tc.Oszlop + 1 > szelesseg - 1)
+				if ((tc.Sor - 1 < 0) || (tc.Oszlop + 1 > szelesseg - 1))
 					return ret;
 				ret = cellak[tc.Sor - 1][tc.Oszlop + 1];
 			}
@@ -480,13 +495,13 @@ namespace harcocska
 
 			if ((tc.Oszlop % 2) == 0)
 			{
-				if (tc.Oszlop + 1 > szelesseg - 1)
+				if ((tc.Oszlop + 1) > (szelesseg - 1))
 					return ret;
 				ret = cellak[tc.Sor][tc.Oszlop + 1];
 			}
 			else
 			{
-				if (tc.Sor + 1 > magassag - 1 || tc.Oszlop + 1 > szelesseg - 1)
+				if (((tc.Sor + 1) > (magassag - 1) || (tc.Oszlop + 1) > (szelesseg - 1)))
 					return ret;
 				ret = cellak[tc.Sor + 1][tc.Oszlop + 1];
 			}
@@ -538,108 +553,7 @@ namespace harcocska
 			return ret;
 		}
 
-		public int Tavolsag(CTerkepiCella from, CTerkepiCella to)
-		{
-			int tavolsag = 0;
-
-			CTerkepiCella dummy = to;
-
-			while (!(dummy.Oszlop == from.Oszlop && dummy.Sor == from.Sor))
-			{
-
-				int origTavolsag = tavolsag;
-
-				if (!EgySorbanVannak(from, dummy) && !EgyOszlopbanVannak(from, dummy))
-				{
-					if (dummy.Oszlop > from.Oszlop && dummy.Sor > from.Sor)
-					{
-						if (BalraFel(dummy).tulaj != null)
-						{
-							dummy = BalraFel(dummy);
-							tavolsag++;
-						}
-					}
-					if (origTavolsag == tavolsag && dummy.Oszlop < from.Oszlop && dummy.Sor > from.Sor)
-					{
-						if (JobbraFel(dummy).tulaj != null)
-						{
-							dummy = JobbraFel(dummy);
-							tavolsag++;
-						}
-					}
-					if (origTavolsag == tavolsag && dummy.Oszlop < from.Oszlop && dummy.Sor < from.Sor)
-					{
-						if (JobbraLe(dummy).tulaj != null)
-						{
-							dummy = JobbraLe(dummy);
-							tavolsag++;
-						}
-					}
-					if (origTavolsag == tavolsag && dummy.Oszlop > from.Oszlop && dummy.Sor < from.Sor)
-					{
-						if (BalraLe(dummy).tulaj != null)
-						{
-							dummy = BalraLe(dummy);
-							tavolsag++;
-						}
-					}
-
-				}
-
-				if (origTavolsag == tavolsag && EgySorbanVannak(from, dummy))
-				{
-					if (dummy.Oszlop > from.Oszlop)
-					{
-						if (Balra(dummy).tulaj != null)
-						{
-							dummy = Balra(dummy);
-							tavolsag++;
-						}
-					}
-					if (origTavolsag == tavolsag && dummy.Oszlop < from.Oszlop)
-					{
-						if (Jobbra(dummy).tulaj != null)
-						{
-							dummy = Jobbra(dummy);
-							tavolsag++;
-						}
-					}
-				}
-
-
-				if (origTavolsag == tavolsag && EgyOszlopbanVannak(from, dummy))
-				{
-					if (dummy.Sor > from.Sor)
-					{
-						if (Fel(dummy).tulaj != null)
-						{
-							dummy = Fel(dummy);
-							tavolsag++;
-						}
-					}
-					if (origTavolsag == tavolsag && dummy.Sor < from.Sor)
-					{
-						if (Le(dummy).tulaj != null)
-						{
-							dummy = Le(dummy);
-							tavolsag++;
-						}
-					}
-				}
-
-
-
-				if (origTavolsag == tavolsag)
-				{
-					tavolsag = 100000;
-					break;
-				}
-
-
-			}
-			//Console.WriteLine("Távolság:{0}", tavolsag);
-			return tavolsag;
-		}
+		
 
 
 
@@ -671,9 +585,10 @@ namespace harcocska
 
 		public void OnLeftMouseDown(Point windowCoord)
 		{
+			CTerkepiCella tc = getTerkepiCellaAtScreenPosition(windowCoord);
 			if (terkepAllapot == ETerkepAllapot.harc)
 			{
-				if (Tavolsag(getTerkepiCellaAtScreenPosition(windowCoord), aktualisEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
+				if (dist[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 				{
 					return;
 				}
@@ -685,7 +600,8 @@ namespace harcocska
 			}
 			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			{
-				if (Tavolsag(getTerkepiCellaAtScreenPosition(windowCoord), aktualisEgyseg.aktualisCella) > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
+				
+				if (dist[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 				{
 					return;
 				}

@@ -25,9 +25,6 @@ namespace harcocska
 		public CGame()
         {
 			
-
-
-
 		}
 
 
@@ -62,7 +59,7 @@ namespace harcocska
 
 			CKatona e1 = new CKatona();
 			e1.aktualisCella = App.jatek.terkep.cellak[1][0];
-			e0.range = 4;
+			e1.range = 4;
 			e1.bitmap = "katona.png";
 			e1.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e1);
