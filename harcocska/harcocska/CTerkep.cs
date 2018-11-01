@@ -28,11 +28,11 @@ namespace harcocska
 
 		public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
 
-		public List<List<int>> vertex = new List<List<int>>();
+		public List<List<int>> szomdossagiMatrix = new List<List<int>>();
 		public List<List<int>> latogatottVertex = new List<List<int>>();
-		public List<List<int>> dist = new List<List<int>>();
+		public List<List<int>> tavolsagTabla = new List<List<int>>();
 		public List<csucs> prev = new List<csucs>();
-		List<csucs> Q = new List<csucs>();
+		//List<csucs> Q = new List<csucs>();
 		public CTerkep()
 		{
 			terkepAllapot = ETerkepAllapot.szabad;
@@ -46,7 +46,9 @@ namespace harcocska
 				{
 					CTerkepiCella c = new CTerkepiCella(j, i);
 					c.cellaTipus = ECellaTipus.viz;
+					//c.tulaj = App.jatek.jatekosok[1];
 					sor.Add(c);
+
 					//szamlalo++;
 					//if (szamlalo>0 && szamlalo < 133) { c.tulaj = App.jatek.jatekosok[0]; }
 					//else if (szamlalo >= 133 && szamlalo < 266) { c.tulaj = App.jatek.jatekosok[1]; }
@@ -65,6 +67,10 @@ namespace harcocska
 			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 				Dijkstra(aktualisEgyseg.aktualisCella);
 
+			if (terkepAllapot == ETerkepAllapot.harc)
+				Dijkstra(aktualisEgyseg.aktualisCella);
+
+			List<Line> lines = new List<Line>();
 			for (int j = 0; j < magassag; j++)
 			{
 				for (int i = 0; i < szelesseg; i++)
@@ -78,23 +84,7 @@ namespace harcocska
 
 					if (cellak[j][i].tulaj != null)
 					{
-						switch (cellak[j][i].tulaj.szin)
-						{
-							case ESzin.piros:
-								p.Fill = Brushes.PaleVioletRed;
-
-								break;
-
-							case ESzin.kek:
-								p.Fill = Brushes.LightBlue;
-								break;
-
-							case ESzin.sarga:
-								p.Fill = Brushes.LightYellow;
-								break;
-
-
-						}
+						p.Fill = cellak[j][i].tulaj.getSzin();
 					}
 					else
 					{
@@ -105,7 +95,7 @@ namespace harcocska
 						
 						//if (Tavolsag(cellak[i][j], aktualisEgyseg.aktualisCella) <= ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 						//Console.WriteLine("Tavolsag:{0}", dist[j][i]);
-						if (dist[j][i] <= ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
+						if (tavolsagTabla[j][i] <= ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 						{
 							p.StrokeThickness = 2;
 							p.Stroke = Brushes.Yellow;
@@ -124,12 +114,49 @@ namespace harcocska
 					p.Points = curvePoints;
 					canvas.Children.Add(p);
 
+					//Line myLine = new Line();
+					//myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+					//myLine.X1 = 1;
+					//myLine.X2 = 500;
+					//myLine.Y1 = 1;
+					//myLine.Y2 = 500;
+					//myLine.HorizontalAlignment = HorizontalAlignment.Left;
+					//myLine.VerticalAlignment = VerticalAlignment.Center;
+					//myLine.StrokeThickness = 10;
+					//canvas.Children.Add(myLine);
+
+					if (cellak[j][i].extraSzomszed != null)
+					{
+						foreach (CTerkepiCella extra in cellak[j][i].extraSzomszed)
+						{
+							if (extra != null && extra.tulaj != null)
+							{
+								Line myLine1 = new Line();
+								myLine1.Stroke = cellak[j][i].tulaj.getSzin();
+								Point from=cellak[j][i].getScreenCoord();
+								myLine1.X1 = from.X + App.jatek.oldalhossz / 1.5;
+								myLine1.Y1 = from.Y + App.jatek.oldalhossz / 2;
+
+								Point to = extra.getScreenCoord();
+								myLine1.X2 = to.X + App.jatek.oldalhossz / 1.5;
+								myLine1.Y2 = to.Y + App.jatek.oldalhossz / 2;
+								myLine1.HorizontalAlignment = HorizontalAlignment.Left;
+								myLine1.VerticalAlignment = VerticalAlignment.Center;
+								myLine1.StrokeThickness = 1;
+
+								lines.Add(myLine1);
+								
+							}
+						}
+
+					}
+
 					if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 					{
-						if (dist[j][i] < 50000)
+						if (tavolsagTabla[j][i] < 50000)
 						{
 							TextBlock textBlock = new TextBlock();
-							textBlock.Text = dist[j][i].ToString();
+							textBlock.Text = tavolsagTabla[j][i].ToString();
 							//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
 							Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
 							Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y + App.jatek.oldalhossz / 2-5);
@@ -147,8 +174,15 @@ namespace harcocska
 					canvas.Children.Add(textBlock1);
 
 
+
 				}
 			}
+
+			foreach (Line l in lines)
+			{
+				canvas.Children.Add(l);
+			}
+
 
 			CTerkepiImage myImage = null;
 			ContextMenu contextMenu = new ContextMenu();
@@ -287,16 +321,11 @@ namespace harcocska
 		}
 
 
-		public void Dijkstra(CTerkepiCella startcella)
+		public void Dijkstra(CTerkepiCella startCella)
 		{
 
-			int startSor = startcella.Sor;
-			int startOszlop=startcella.Oszlop;
-
-			vertex.Clear();
-			latogatottVertex = vertex;
-
-			dist.Clear();
+			szomdossagiMatrix.Clear();
+			tavolsagTabla.Clear();
 			prev.Clear();
 
 			for (int j = 0; j < magassag * szelesseg; j++)
@@ -306,7 +335,7 @@ namespace harcocska
 				{
 					sor.Add(0);
 				}
-				vertex.Add(sor);
+				szomdossagiMatrix.Add(sor);
 			}
 
 			for (int j = 0; j < magassag; j++)
@@ -319,39 +348,52 @@ namespace harcocska
 						tc = Fel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
-							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = JobbraFel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
-							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = JobbraLe(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
-							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = Le(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
-							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = BalraLe(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
-							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = BalraFel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
-							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
+						
+						if (cellak[j][i].extraSzomszed != null){ 
+							foreach (CTerkepiCella extra in cellak[j][i].extraSzomszed)
+							{
+								if (extra != null && extra.tulaj != null)
+								{
+									szomdossagiMatrix[j * szelesseg + i][extra.Sor * szelesseg + extra.Oszlop] = 1;
+									szomdossagiMatrix[extra.Sor * szelesseg + extra.Oszlop][j * szelesseg + i] = 1;
+								}
+							}
+						
+						}
+
 					}
 				}
 			}
@@ -363,42 +405,20 @@ namespace harcocska
 				{
 					sor.Add(50000);
 				}
-				dist.Add(sor);
+				tavolsagTabla.Add(sor);
 			}
 
 
-			dist[startSor][startOszlop] = 0;
+			tavolsagTabla[startCella.Sor][startCella.Oszlop] = 0;
 
-			Q.Clear();
-			for (int j = 0; j < magassag; j++)
-			{
-				for (int i = 0; i < szelesseg; i++)
-				{
-					if (cellak[j][i].tulaj != null)
-					{
-						csucs cs;
-						cs.Sor = j;
-						cs.Oszlop = i;
-						Q.Add(cs);
-					}
-				}
-			}
 
-			
-			int next = 0;
-
-			for (int k = 0; k < Q.Count; k++)
-			{
-				if (Q[k].Sor == startSor && Q[k].Oszlop == startOszlop)
-				{
-					next = k;
-					break;
-				}
-			}
 
 			List<csucs> Qv = new List<csucs>();
 
-			Qv.Add(Q[next]);
+			csucs kezdopont;
+			kezdopont.Sor = startCella.Sor;
+			kezdopont.Oszlop = startCella.Oszlop;
+			Qv.Add(kezdopont);
 			csucs v = new csucs();
 
 			while (Qv.Count > 0)
@@ -410,15 +430,15 @@ namespace harcocska
 				int ujUt = 0;
 				for (int i = 0; i < magassag * szelesseg; i++)
 				{
-					if (vertex[u.Sor * szelesseg + u.Oszlop][i] == 1)
+					if (szomdossagiMatrix[u.Sor * szelesseg + u.Oszlop][i] == 1)
 					{
 						v.Sor = i / magassag;
 						v.Oszlop = i % szelesseg;
 						
-						int alt = dist[u.Sor][u.Oszlop] + 1;
-						if (alt < dist[v.Sor][v.Oszlop])
+						int alt = tavolsagTabla[u.Sor][u.Oszlop] + 1;
+						if (alt < tavolsagTabla[v.Sor][v.Oszlop])
 						{
-							dist[v.Sor][v.Oszlop] = alt;
+							tavolsagTabla[v.Sor][v.Oszlop] = alt;
 							prev.Add(u);
 							Qv.Add(v);
 							ujUt++;
@@ -566,6 +586,52 @@ namespace harcocska
 		private void MyImage_Harc()
 		{
 			terkepAllapot = ETerkepAllapot.harc;
+			for (int j = 0; j < magassag; j++)
+			{
+				for (int i = 0; i < szelesseg; i++)
+				{
+					CTerkepiCella tc = null;
+					if (cellak[j][i].tulaj != null)
+					{
+						tc = Fel(cellak[j][i]);
+						if (tc != null && tc.tulaj != null)
+						{
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+						}
+						tc = JobbraFel(cellak[j][i]);
+						if (tc != null && tc.tulaj != null)
+						{
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+						}
+						tc = JobbraLe(cellak[j][i]);
+						if (tc != null && tc.tulaj != null)
+						{
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+						}
+						tc = Le(cellak[j][i]);
+						if (tc != null && tc.tulaj != null)
+						{
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+						}
+						tc = BalraLe(cellak[j][i]);
+						if (tc != null && tc.tulaj != null)
+						{
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+						}
+						tc = BalraFel(cellak[j][i]);
+						if (tc != null && tc.tulaj != null)
+						{
+							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
+							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+						}
+					}
+				}
+			}
 		}
 
 		private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)
@@ -589,7 +655,7 @@ namespace harcocska
 			CTerkepiCella tc = getTerkepiCellaAtScreenPosition(windowCoord);
 			if (terkepAllapot == ETerkepAllapot.harc)
 			{
-				if (dist[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
+				if (tavolsagTabla[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 				{
 					return;
 				}
@@ -602,7 +668,7 @@ namespace harcocska
 			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			{
 				
-				if (dist[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
+				if (tavolsagTabla[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
 				{
 					return;
 				}

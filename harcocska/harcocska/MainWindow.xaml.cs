@@ -185,6 +185,17 @@ namespace harcocska
 					if (e.IsDown && e.Key == Key.D0)
 					{
 						cella.tulaj = null;
+						cella.extraSzomszed = null;
+					}
+					if (e.IsDown && e.Key == Key.LeftCtrl)
+					{
+						from = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+					}
+					if (e.IsDown && e.Key == Key.LeftShift)
+					{
+						if (App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed == null)
+							App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed = new List<CTerkepiCella>();
+						App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed.Add(from);
 					}
 				}
 			}

@@ -23,6 +23,26 @@ namespace harcocska
             nev = n;
 			szin = sz;
 		}
+		public System.Windows.Media.SolidColorBrush getSzin()
+		{
+			switch (szin)
+			{
+				case ESzin.piros:
+					return System.Windows.Media.Brushes.PaleVioletRed;
+					break;
+
+				case ESzin.kek:
+					return System.Windows.Media.Brushes.LightBlue;
+					break;
+
+				case ESzin.sarga:
+					return System.Windows.Media.Brushes.LightYellow;
+					break;
+
+
+			}
+			return System.Windows.Media.Brushes.Black;
+		}
     }
 	
 }

@@ -18,6 +18,8 @@ namespace harcocska
         void IHarcoloTerkepiEgyseg.Tamadas(CTerkepiEgyseg te)
 		{
 			if (te!=null)
+				te.elet -=4;
+			if (te.elet < 0)
 				te.elet = 0;
 		}
 
