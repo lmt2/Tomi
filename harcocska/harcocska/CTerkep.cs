@@ -27,10 +27,11 @@ namespace harcocska
 		public CTerkepiEgyseg aktualisEgyseg { get; set; }
 
 		public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
-		public List<List<int>> graf = new List<List<int>>();
+
 		public List<List<int>> vertex = new List<List<int>>();
+		public List<List<int>> latogatottVertex = new List<List<int>>();
 		public List<List<int>> dist = new List<List<int>>();
-		public List<List<int>> prev = new List<List<int>>();
+		public List<csucs> prev = new List<csucs>();
 		List<csucs> Q = new List<csucs>();
 		public CTerkep()
 		{
@@ -130,14 +131,23 @@ namespace harcocska
 							TextBlock textBlock = new TextBlock();
 							textBlock.Text = dist[j][i].ToString();
 							//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
-							Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 2);
-							Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y - App.jatek.oldalhossz / 2);
+							Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
+							Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y + App.jatek.oldalhossz / 2-5);
 							canvas.Children.Add(textBlock);
 						}
 					}
 
 
-						}
+
+					TextBlock textBlock1 = new TextBlock();
+					textBlock1.Text = String.Format("{0},{1}",j,i);
+					//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
+					Canvas.SetLeft(textBlock1, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
+					Canvas.SetTop(textBlock1, cellak[j][i].getScreenCoord().Y - App.jatek.oldalhossz+2);
+					canvas.Children.Add(textBlock1);
+
+
+				}
 			}
 
 			CTerkepiImage myImage = null;
@@ -284,7 +294,8 @@ namespace harcocska
 			int startOszlop=startcella.Oszlop;
 
 			vertex.Clear();
-			graf.Clear();
+			latogatottVertex = vertex;
+
 			dist.Clear();
 			prev.Clear();
 
@@ -309,37 +320,37 @@ namespace harcocska
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = JobbraFel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = JobbraLe(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = Le(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = BalraLe(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						tc = BalraFel(cellak[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							vertex[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							//vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
+							vertex[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 					}
 				}
@@ -354,15 +365,8 @@ namespace harcocska
 				}
 				dist.Add(sor);
 			}
-			//for (int j = 0; j < magassag; j++)
-			//{
-			//	List<int> sor = new List<int>();
-			//	for (int i = 0; i < szelesseg; i++)
-			//	{
-			//		sor.Add(-1);
-			//	}
-			//	prev.Add(sor);
-			//}
+
+
 			dist[startSor][startOszlop] = 0;
 
 			Q.Clear();
@@ -373,8 +377,8 @@ namespace harcocska
 					if (cellak[j][i].tulaj != null)
 					{
 						csucs cs;
-						cs.sor = j;
-						cs.oszlop = i;
+						cs.Sor = j;
+						cs.Oszlop = i;
 						Q.Add(cs);
 					}
 				}
@@ -385,54 +389,51 @@ namespace harcocska
 
 			for (int k = 0; k < Q.Count; k++)
 			{
-				if (Q[k].sor == startSor && Q[k].oszlop == startOszlop)
+				if (Q[k].Sor == startSor && Q[k].Oszlop == startOszlop)
 				{
 					next = k;
 					break;
 				}
 			}
 
+			List<csucs> Qv = new List<csucs>();
+
+			Qv.Add(Q[next]);
 			csucs v = new csucs();
 
-			while (Q.Count > 0)
+			while (Qv.Count > 0)
 			{
 
-				csucs u = Q[next];
-				Q.RemoveAt(next);
-				
+				csucs u = Qv.Last<csucs>();
+				Qv.Remove(Qv.Last<csucs>());
+
+				int ujUt = 0;
 				for (int i = 0; i < magassag * szelesseg; i++)
 				{
-					if (vertex[u.sor * szelesseg + u.oszlop][i] == 1)
+					if (vertex[u.Sor * szelesseg + u.Oszlop][i] == 1)
 					{
+						v.Sor = i / magassag;
+						v.Oszlop = i % szelesseg;
 						
-						v.sor = i / magassag;
-						v.oszlop = i % szelesseg;
-						int alt = dist[u.sor][u.oszlop] + 1;
-						if (alt < dist[v.sor][v.oszlop])
+						int alt = dist[u.Sor][u.Oszlop] + 1;
+						if (alt < dist[v.Sor][v.Oszlop])
 						{
-							dist[v.sor][v.oszlop] = alt;
-							//prev[v.sor][v.oszlop] = u;
+							dist[v.Sor][v.Oszlop] = alt;
+							prev.Add(u);
+							Qv.Add(v);
+							ujUt++;
 						}
+						
 					}
 				}
-				next = 0;
-				for (int k = 0; k < Q.Count; k++)
-				{
-					if (Q[k].sor == v.sor && Q[k].oszlop == v.oszlop)
-					{
-						next = k;
-						break;
-					}
-				}
-
 			}
 			
 		}
 
-		struct csucs
+		public struct csucs
 		{
-			public int sor;
-			public int oszlop;
+			public int Sor;
+			public int Oszlop;
 		}
 
 		public CTerkepiCella BalraFel(CTerkepiCella tc)
