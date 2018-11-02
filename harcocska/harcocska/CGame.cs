@@ -20,6 +20,7 @@ namespace harcocska
 		public EJatekAllapotok aktualisallapot = EJatekAllapotok.elokeszulet;
 		DispatcherTimer AllapotValtoTimer = new DispatcherTimer();
 		public int oldalhossz { get; set; }
+		public static Random sorsolás = new Random();
 		#endregion
 
 		public CGame()

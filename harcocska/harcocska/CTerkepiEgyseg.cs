@@ -26,7 +26,8 @@ namespace harcocska
         void IHarcoloTerkepiEgyseg.Tamadas(CTerkepiEgyseg tamadott)
 		{
 
-            if (tamadott.jatekos == this.jatekos) {
+            if (tamadott==null || tamadott.jatekos == this.jatekos) {
+				App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
                 return;
             }
             List<int> veletlentomb=new List<int>();
@@ -37,27 +38,30 @@ namespace harcocska
             {
                 veletlentomb.Add(0);
             }
-            Random sorsolás = new Random();
-            sorsolás.Next(0,veletlentomb.Count);
-            int eredmény = sorsolás.Next();
-            if (eredmény == 1)
+            
+            
+            int eredmény = CGame.sorsolás.Next(0, veletlentomb.Count);
+			if (veletlentomb[eredmény] == 1)
             {
-                Console.WriteLine("nyert:{0}", this.jatekos.nev);
+				//ha a támadó nyert
+                Console.WriteLine("támadó nyert:{0}", this.jatekos.nev);
                 tamadott.elet -= this.tamadasikepesseg;
                 this.elet -= tamadott.vedekezesikepesseg;
             }
             else
             {
-                Console.WriteLine("nyert:{0}", tamadott.jatekos.nev);
+				//ha a védekező nyert
+				Console.WriteLine("védekező nyert:{0}", tamadott.jatekos.nev);
                 tamadott.elet -= this.tamadasikepesseg - 1;
-                this.elet -= tamadott.vedekezesikepesseg + 1;
+                this.elet -= tamadott.vedekezesikepesseg ;
             }
             if (tamadott.elet < 0)
                 tamadott.elet = 0;
 
             if (this.elet < 0)
                 this.elet = 0;
-        }
+			App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
+		}
 
 	}
 }

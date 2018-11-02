@@ -207,10 +207,11 @@ namespace harcocska
                 contextMenu.Items.Add(item1);
             }
 
-
+			int szamlalo = 0;
 			foreach (CJatekos j in App.jatek.jatekosok)
 			{
 
+				szamlalo++;
 				foreach (CTerkepiEgyseg te in j.egysegekLista)
 				{
 
@@ -227,8 +228,9 @@ namespace harcocska
 					// BitmapImage.UriSource must be in a BeginInit/EndInit block
 					myBitmapImage.BeginInit();
 
-					myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, te.bitmap), UriKind.Absolute);
+					myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, te.bitmap+"_"+szamlalo.ToString()+".png"), UriKind.Absolute);
 
+					
 
 					myBitmapImage.DecodePixelWidth = 20;
 					myBitmapImage.EndInit();
@@ -240,6 +242,7 @@ namespace harcocska
 					myImage.MouseRightButtonDown += MyImage_RightMouseDown;
 					myImage.ContextMenu = contextMenu;
 
+					
 					Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
 					Canvas.SetLeft(myImage, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
 
@@ -595,52 +598,6 @@ namespace harcocska
 		{
             if (App.jatek.aktualisallapot == EJatekAllapotok.harc)
                 terkepAllapot = ETerkepAllapot.harc;
-			for (int j = 0; j < magassag; j++)
-			{
-				for (int i = 0; i < szelesseg; i++)
-				{
-					CTerkepiCella tc = null;
-					if (cellak[j][i].tulaj != null)
-					{
-						tc = Fel(cellak[j][i]);
-						if (tc != null && tc.tulaj != null)
-						{
-							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
-						}
-						tc = JobbraFel(cellak[j][i]);
-						if (tc != null && tc.tulaj != null)
-						{
-							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
-						}
-						tc = JobbraLe(cellak[j][i]);
-						if (tc != null && tc.tulaj != null)
-						{
-							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
-						}
-						tc = Le(cellak[j][i]);
-						if (tc != null && tc.tulaj != null)
-						{
-							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
-						}
-						tc = BalraLe(cellak[j][i]);
-						if (tc != null && tc.tulaj != null)
-						{
-							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
-						}
-						tc = BalraFel(cellak[j][i]);
-						if (tc != null && tc.tulaj != null)
-						{
-							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
-							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
-						}
-					}
-				}
-			}
 		}
 
 		private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)

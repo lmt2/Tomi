@@ -34,7 +34,7 @@ namespace harcocska
             range = 3;
             vedekezesikepesseg = 2;
             tamadasikepesseg = 3;
-            bitmap = "katona.png";
+            bitmap = "katona";
             Console.WriteLine("Katona gyartas");
             
         }
@@ -48,7 +48,7 @@ namespace harcocska
             range = 4;
             vedekezesikepesseg = 4;
             tamadasikepesseg = 6;
-            bitmap = "tank.png";
+            bitmap = "tank";
             Console.WriteLine("Tank gyartas");
         }
     }
