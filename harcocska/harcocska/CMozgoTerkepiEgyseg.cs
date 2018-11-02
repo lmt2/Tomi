@@ -26,12 +26,31 @@ namespace harcocska
 		
 	}
 
-	public class CKatona : CMozgoTerkepiEgyseg
-	{
-		public CKatona()
-		{
+    public class CKatona : CMozgoTerkepiEgyseg
+    {
+        public CKatona()
+        {
+            elet = 8;
+            range = 3;
+            vedekezesikepesseg = 2;
+            tamadasikepesseg = 3;
+            bitmap = "katona.png";
+            Console.WriteLine("Katona gyartas");
+            
+        }
 
-		}
+    }
+    public class CTank : CMozgoTerkepiEgyseg
+    {
+        public CTank()
+        {
+            elet = 10;
+            range = 4;
+            vedekezesikepesseg = 4;
+            tamadasikepesseg = 6;
+            bitmap = "tank.png";
+            Console.WriteLine("Tank gyartas");
+        }
+    }
 
-	}
 }

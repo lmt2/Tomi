@@ -215,7 +215,8 @@ namespace harcocska
 				{
 
 
-
+                    if (te.aktualisCella == null)
+                        break;
 					// Create Image Element
 					myImage = new CTerkepiImage(te);
 					myImage.Width = 20;

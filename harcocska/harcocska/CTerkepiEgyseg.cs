@@ -15,8 +15,9 @@ namespace harcocska
         public int tamadasikepesseg { get; set; }
         public int vedekezesikepesseg { get; set; }
 
-        public CTerkepiEgyseg() {
-            elet = 10;
+        public CTerkepiEgyseg()
+        {
+
         }
 
 

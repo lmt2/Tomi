@@ -201,14 +201,14 @@ namespace harcocska
 					}
                     if (e.IsDown && e.Key == Key.T)
                     {
-                        CMozgoTerkepiEgyseg e3 = (CMozgoTerkepiEgyseg)App.jatek.ujTank();
+                        CMozgoTerkepiEgyseg e3 =new CTank();
                         e3.aktualisCella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
                         e3.jatekos = App.jatek.jatekosok[0];
                         App.jatek.jatekosok[0].egysegekLista.Add(e3);
                     }
                     if (e.IsDown && e.Key == Key.K)
                     {
-                        CMozgoTerkepiEgyseg e3 = (CMozgoTerkepiEgyseg)App.jatek.ujKatona();
+                        CMozgoTerkepiEgyseg e3 =new CKatona();
                         e3.aktualisCella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
                         e3.jatekos = App.jatek.jatekosok[0];
                         App.jatek.jatekosok[0].egysegekLista.Add(e3);
