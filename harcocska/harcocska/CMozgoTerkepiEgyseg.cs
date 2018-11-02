@@ -32,8 +32,8 @@ namespace harcocska
         {
             elet = 14;
             range = 3;
-            vedekezesikepesseg = 2;
-            tamadasikepesseg = 3;
+            vedekezesikepesseg = 3;
+            tamadasikepesseg = 5;
             bitmap = "katona";
             Console.WriteLine("Katona gyartas");
             
