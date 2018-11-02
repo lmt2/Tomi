@@ -30,7 +30,7 @@ namespace harcocska
     {
         public CKatona()
         {
-            elet = 8;
+            elet = 14;
             range = 3;
             vedekezesikepesseg = 2;
             tamadasikepesseg = 3;
@@ -44,7 +44,7 @@ namespace harcocska
     {
         public CTank()
         {
-            elet = 10;
+            elet = 15;
             range = 4;
             vedekezesikepesseg = 4;
             tamadasikepesseg = 6;
