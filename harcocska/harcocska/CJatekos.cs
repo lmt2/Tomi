@@ -43,6 +43,27 @@ namespace harcocska
 			}
 			return System.Windows.Media.Brushes.Black;
 		}
+
+        public System.Windows.Media.SolidColorBrush getVonalszín()
+        {
+            switch (szin)
+            {
+                case ESzin.piros:
+                    return System.Windows.Media.Brushes.BlueViolet;
+                    break;
+
+                case ESzin.kek:
+                    return System.Windows.Media.Brushes.DarkBlue;
+                    break;
+
+                case ESzin.sarga:
+                    return System.Windows.Media.Brushes.Gold;
+                    break;
+
+
+            }
+            return System.Windows.Media.Brushes.Black;
+        }
     }
 	
 }

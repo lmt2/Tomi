@@ -17,7 +17,7 @@ namespace harcocska
 		bool isRunning = false;
 		bool update = false;
 		int korszamlalo=0;
-		EJatekAllapotok aktualisallapot = EJatekAllapotok.elokeszulet;
+		public EJatekAllapotok aktualisallapot = EJatekAllapotok.elokeszulet;
 		DispatcherTimer AllapotValtoTimer = new DispatcherTimer();
 		public int oldalhossz { get; set; }
 		#endregion
@@ -53,14 +53,18 @@ namespace harcocska
 			CKatona e0 = new CKatona();
 			e0.aktualisCella = App.jatek.terkep.cellak[7][7];
 			e0.range = 4;
-			e0.bitmap = "katona.png";
+            e0.tamadasikepesseg = 3;
+            e0.vedekezesikepesseg = 2;
+            e0.bitmap = "katona.png";
 			e0.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e0);
 
 			CKatona e1 = new CKatona();
 			e1.aktualisCella = App.jatek.terkep.cellak[1][0];
 			e1.range = 4;
-			e1.bitmap = "katona.png";
+            e1.tamadasikepesseg = 3;
+            e1.vedekezesikepesseg = 2;
+            e1.bitmap = "katona.png";
 			e1.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e1);
 
@@ -68,18 +72,46 @@ namespace harcocska
 			e2.aktualisCella = App.jatek.terkep.cellak[2][2];
 			e2.bitmap = "tank.png";
 			e2.range = 4;
-			e2.jatekos = jatekos2;
+            e2.tamadasikepesseg = 6;
+            e2.vedekezesikepesseg = 4;
+            e2.jatekos = jatekos2;
 			jatekos2.egysegekLista.Add(e2);
 
 			CMozgoTerkepiEgyseg e3 = new CMozgoTerkepiEgyseg();
 			e3.aktualisCella = App.jatek.terkep.cellak[5][1];
 			e3.bitmap = "tank.png";
 			e3.jatekos = jatekos3;
-			jatekos3.egysegekLista.Add(e3);
+            e3.tamadasikepesseg = 6;
+            e3.vedekezesikepesseg = 4;
+            jatekos3.egysegekLista.Add(e3);
+            
 
-			//App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[5][5], App.jatek.terkep.cellak[2][7]);
-		}
+            //App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[5][5], App.jatek.terkep.cellak[2][7]);
+        }
 
+        public CTerkepiEgyseg ujTank() {
+            CTerkepiEgyseg ret;
+            ret = new CMozgoTerkepiEgyseg();
+            
+            ret.bitmap = "tank.png";
+            
+            ret.tamadasikepesseg = 6;
+            ret.vedekezesikepesseg = 4;
+            
+            return ret;
+        }
+        public CTerkepiEgyseg ujKatona()
+        {
+            CTerkepiEgyseg ret;
+            ret = new CMozgoTerkepiEgyseg();
+
+            ret.bitmap = "katona.png";
+
+            ret.tamadasikepesseg = 3;
+            ret.vedekezesikepesseg = 2;
+
+            return ret;
+        }
 		private void AllapotValtoTimer_Tick(object sender, EventArgs e)
 		{
 			if (!isRunning)

@@ -195,9 +195,25 @@ namespace harcocska
 					{
 						if (App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed == null)
 							App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed = new List<CTerkepiCella>();
-						App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed.Add(from);
+                        CTerkepiCella c = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+                        if (c.tulaj==from.tulaj) 
+						    c.extraSzomszed.Add(from);
 					}
-				}
+                    if (e.IsDown && e.Key == Key.T)
+                    {
+                        CMozgoTerkepiEgyseg e3 = (CMozgoTerkepiEgyseg)App.jatek.ujTank();
+                        e3.aktualisCella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+                        e3.jatekos = App.jatek.jatekosok[0];
+                        App.jatek.jatekosok[0].egysegekLista.Add(e3);
+                    }
+                    if (e.IsDown && e.Key == Key.K)
+                    {
+                        CMozgoTerkepiEgyseg e3 = (CMozgoTerkepiEgyseg)App.jatek.ujKatona();
+                        e3.aktualisCella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+                        e3.jatekos = App.jatek.jatekosok[0];
+                        App.jatek.jatekosok[0].egysegekLista.Add(e3);
+                    }
+                }
 			}
 			
 		}

@@ -46,7 +46,7 @@ namespace harcocska
 				{
 					CTerkepiCella c = new CTerkepiCella(j, i);
 					c.cellaTipus = ECellaTipus.viz;
-					//c.tulaj = App.jatek.jatekosok[1];
+					c.tulaj = App.jatek.jatekosok[1];
 					sor.Add(c);
 
 					//szamlalo++;
@@ -132,7 +132,7 @@ namespace harcocska
 							if (extra != null && extra.tulaj != null)
 							{
 								Line myLine1 = new Line();
-								myLine1.Stroke = cellak[j][i].tulaj.getSzin();
+								myLine1.Stroke = cellak[j][i].tulaj.getVonalszín();
 								Point from=cellak[j][i].getScreenCoord();
 								myLine1.X1 = from.X + App.jatek.oldalhossz / 1.5;
 								myLine1.Y1 = from.Y + App.jatek.oldalhossz / 2;
@@ -187,19 +187,25 @@ namespace harcocska
 			CTerkepiImage myImage = null;
 			ContextMenu contextMenu = new ContextMenu();
 
-			//contextMenu.Items.Add("Mozgás");
+            //contextMenu.Items.Add("Mozgás");
 
-			//contextMenu.Items.Add("Harc");
+            //contextMenu.Items.Add("Harc");
 
-			MenuItem item = new MenuItem();
-			item.Header = "mozgás";
-			item.Click += delegate { MyImage_Mozgas(); };
-			contextMenu.Items.Add(item);
+            if (App.jatek.aktualisallapot == EJatekAllapotok.egysegmozgatas)
+            {
+                MenuItem item = new MenuItem();
+                item.Header = "mozgás";
+                item.Click += delegate { MyImage_Mozgas(); };
+                contextMenu.Items.Add(item);
+            }
 
-			MenuItem item1 = new MenuItem();
-			item1.Header = "harc";
-			item1.Click += delegate { MyImage_Harc(); };
-			contextMenu.Items.Add(item1);
+            if (App.jatek.aktualisallapot == EJatekAllapotok.harc)
+            {
+                MenuItem item1 = new MenuItem();
+                item1.Header = "harc";
+                item1.Click += delegate { MyImage_Harc(); };
+                contextMenu.Items.Add(item1);
+            }
 
 
 			foreach (CJatekos j in App.jatek.jatekosok)
@@ -387,8 +393,8 @@ namespace harcocska
 							{
 								if (extra != null && extra.tulaj != null)
 								{
-									szomdossagiMatrix[j * szelesseg + i][extra.Sor * szelesseg + extra.Oszlop] = 1;
-									szomdossagiMatrix[extra.Sor * szelesseg + extra.Oszlop][j * szelesseg + i] = 1;
+									szomdossagiMatrix[j * szelesseg + i][extra.Sor * szelesseg + extra.Oszlop] = 3;
+									szomdossagiMatrix[extra.Sor * szelesseg + extra.Oszlop][j * szelesseg + i] = 3;
 								}
 							}
 						
@@ -430,12 +436,12 @@ namespace harcocska
 				int ujUt = 0;
 				for (int i = 0; i < magassag * szelesseg; i++)
 				{
-					if (szomdossagiMatrix[u.Sor * szelesseg + u.Oszlop][i] == 1)
+					if (szomdossagiMatrix[u.Sor * szelesseg + u.Oszlop][i] !=0 )
 					{
 						v.Sor = i / magassag;
 						v.Oszlop = i % szelesseg;
 						
-						int alt = tavolsagTabla[u.Sor][u.Oszlop] + 1;
+						int alt = tavolsagTabla[u.Sor][u.Oszlop] + szomdossagiMatrix[u.Sor * szelesseg + u.Oszlop][i];
 						if (alt < tavolsagTabla[v.Sor][v.Oszlop])
 						{
 							tavolsagTabla[v.Sor][v.Oszlop] = alt;
@@ -580,12 +586,14 @@ namespace harcocska
 
 		private void MyImage_Mozgas()
 		{
+            if (App.jatek.aktualisallapot== EJatekAllapotok.egysegmozgatas)
 			terkepAllapot = ETerkepAllapot.egysegmozgatas;
 		}
 
 		private void MyImage_Harc()
 		{
-			terkepAllapot = ETerkepAllapot.harc;
+            if (App.jatek.aktualisallapot == EJatekAllapotok.harc)
+                terkepAllapot = ETerkepAllapot.harc;
 			for (int j = 0; j < magassag; j++)
 			{
 				for (int i = 0; i < szelesseg; i++)
