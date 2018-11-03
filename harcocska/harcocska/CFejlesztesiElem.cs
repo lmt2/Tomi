@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
+	[Serializable()]
 	public class CFejlesztesiElem
 	{
 		public string name;

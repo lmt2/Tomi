@@ -9,6 +9,7 @@ namespace harcocska
 	/// <summary>
 	/// A fejlesztési fát tároló osztály
 	/// </summary>
+	[Serializable()]
 	public class CFejlesztes
 	{
 		//ez a fa

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-    public class CTerkepiEgyseg : IHarcoloTerkepiEgyseg
+	[Serializable()]
+	public class CTerkepiEgyseg : IHarcoloTerkepiEgyseg
 	{
         public CJatekos jatekos { get; set; }
         public int elet { get; set; }

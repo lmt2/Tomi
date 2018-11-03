@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace harcocska
 {
+	[Serializable()]
 	public class TreeNode<T> : IEnumerable<TreeNode<T>>
 	{
 

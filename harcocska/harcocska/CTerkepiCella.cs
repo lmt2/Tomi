@@ -8,7 +8,8 @@ using System.Windows.Media;
 
 namespace harcocska
 {
-    public class CTerkepiCella
+	[Serializable()]
+	public class CTerkepiCella
     {
         public ECellaTipus cellaTipus { get; set; }
         public CJatekos tulaj;

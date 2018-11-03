@@ -27,8 +27,8 @@
 		</Button>
 		<Menu Height="19" VerticalAlignment="Top" Width="800" HorizontalAlignment="Center" Grid.ColumnSpan="2">
 			<MenuItem Width="36" Header="File">
-				<MenuItem/>
-				<MenuItem/>
+				<MenuItem Header="save" Click="MenuItem_Click_1"/>
+				<MenuItem Header="open" Click="MenuItem_Click_2"/>
 				<MenuItem Background="#FFEC6262" Header="Exit" Click="Exit_MenuItem_Click"/>
 			</MenuItem>
 			<MenuItem Header="Game">

@@ -15,14 +15,18 @@ using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Threading;
 using System.Drawing;
+using System.Xml.Serialization;
 
 namespace harcocska
 {
+	[Serializable()]
 	public class CTerkep
 	{
 		public int szelesseg { get; set; }
 		public int magassag { get; set; }
-		public Canvas canvas { get; set; }
+		[XmlIgnoreAttribute]
+		[NonSerialized()]
+		private Canvas canvas1;
 		public ETerkepAllapot terkepAllapot { get; set; }
 		public CTerkepiEgyseg aktualisEgyseg { get; set; }
 
@@ -59,7 +63,15 @@ namespace harcocska
 				cellak.Add(sor);
 			}
 		}
-
+		
+		public Canvas canvas
+		{
+			get { return canvas1; }
+			set
+			{
+				canvas1 = value;
+			}
+		}
 		public void terkeprajzolas()
 		{
 			
@@ -459,7 +471,7 @@ namespace harcocska
 			}
 			
 		}
-
+		[Serializable()]
 		public struct csucs
 		{
 			public int Sor;

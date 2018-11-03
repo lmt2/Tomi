@@ -217,6 +217,18 @@ namespace harcocska
 			}
 			
 		}
+
+		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+		{
+			CGame.WriteToBinaryFile<CGame>(System.AppDomain.CurrentDomain.BaseDirectory+"\\harcocska.bin", App.jatek);
+		}
+
+		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+		{
+			App.jatek=CGame.ReadFromBinaryFile<CGame>(System.AppDomain.CurrentDomain.BaseDirectory+"\\harcocska.bin");
+			App.jatek.terkep.canvas = canvas1;
+			App.jatek.init1();
+		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
+	[Serializable()]
 	public class CMozgoTerkepiEgyseg : CTerkepiEgyseg, IMozgoTerkepiEgyseg
 	{
 		public int range { get; set; }
@@ -25,8 +26,8 @@ namespace harcocska
 
 		
 	}
-
-    public class CKatona : CMozgoTerkepiEgyseg
+	[Serializable()]
+	public class CKatona : CMozgoTerkepiEgyseg
     {
         public CKatona()
         {
@@ -40,7 +41,8 @@ namespace harcocska
         }
 
     }
-    public class CTank : CMozgoTerkepiEgyseg
+	[Serializable()]
+	public class CTank : CMozgoTerkepiEgyseg
     {
         public CTank()
         {

@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Threading;
+using System.IO;
+using System.Xml.Serialization;
 
 
 namespace harcocska
 {
-    public class CGame
+	[Serializable()]
+	public class CGame
     {
 		#region members
 		public List<CJatekos> jatekosok = new List<CJatekos>();
@@ -18,6 +21,8 @@ namespace harcocska
 		bool update = false;
 		int korszamlalo=0;
 		public EJatekAllapotok aktualisallapot = EJatekAllapotok.elokeszulet;
+		[NonSerialized()]
+		[XmlIgnoreAttribute]
 		DispatcherTimer AllapotValtoTimer = new DispatcherTimer();
 		public int oldalhossz { get; set; }
 		public static Random sorsolás = new Random();
@@ -28,8 +33,16 @@ namespace harcocska
 			
 		}
 
+		public void init1()
+		{
+			AllapotValtoTimer = new DispatcherTimer();
+			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
+			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
+			App.jatek.run();
+			
 
-		public void init() {
+		}
+			public void init() {
 			Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory);
 			oldalhossz = 30;
 
@@ -134,7 +147,26 @@ namespace harcocska
 		{
 			AllapotValtoTimer.Start();
 		}
-    }
+		public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+		{
+			using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+			{
+				var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+				binaryFormatter.Serialize(stream, objectToWrite);
+			}
+		}
+		public static T ReadFromBinaryFile<T>(string filePath)
+		{
+			using (Stream stream = File.Open(filePath, FileMode.Open))
+			{
+				var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+				return (T)binaryFormatter.Deserialize(stream);
+			}
+		}
+
+	}
 
 	
+
+
 }
