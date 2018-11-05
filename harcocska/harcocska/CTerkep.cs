@@ -29,7 +29,6 @@ namespace harcocska
 		private Canvas canvas1;
 		public ETerkepAllapot terkepAllapot { get; set; }
 		public CTerkepiEgyseg aktualisEgyseg { get; set; }
-
 		public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
 
 		public List<List<int>> szomdossagiMatrix = new List<List<int>>();
@@ -76,11 +75,14 @@ namespace harcocska
 		{
 			
 			canvas.Children.Clear();
-			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
-				Dijkstra(aktualisEgyseg.aktualisCella);
+			//if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
+			//{
+			//	Dijkstra(aktualisEgyseg.aktualisCella);
+			//}
+				
 
-			if (terkepAllapot == ETerkepAllapot.harc)
-				Dijkstra(aktualisEgyseg.aktualisCella);
+			//if (terkepAllapot == ETerkepAllapot.harc)
+			//	Dijkstra(aktualisEgyseg.aktualisCella);
 
 			List<Line> lines = new List<Line>();
 			for (int j = 0; j < magassag; j++)
@@ -163,27 +165,27 @@ namespace harcocska
 
 					}
 
-					if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
-					{
-						if (tavolsagTabla[j][i] < 50000)
-						{
-							TextBlock textBlock = new TextBlock();
-							textBlock.Text = tavolsagTabla[j][i].ToString();
-							//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
-							Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
-							Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y + App.jatek.oldalhossz / 2-5);
-							canvas.Children.Add(textBlock);
-						}
-					}
+					//if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
+					//{
+					//	if (tavolsagTabla[j][i] < 50000)
+					//	{
+					//		TextBlock textBlock = new TextBlock();
+					//		textBlock.Text = tavolsagTabla[j][i].ToString();
+					//		//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
+					//		Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
+					//		Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y + App.jatek.oldalhossz / 2-5);
+					//		canvas.Children.Add(textBlock);
+					//	}
+					//}
 
 
 
-					TextBlock textBlock1 = new TextBlock();
-					textBlock1.Text = String.Format("{0},{1}",j,i);
-					//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
-					Canvas.SetLeft(textBlock1, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
-					Canvas.SetTop(textBlock1, cellak[j][i].getScreenCoord().Y - App.jatek.oldalhossz+2);
-					canvas.Children.Add(textBlock1);
+					//TextBlock textBlock1 = new TextBlock();
+					//textBlock1.Text = String.Format("{0},{1}",j,i);
+					////textBlock.Foreground = new SolidColorBrush(Brushes.Black);
+					//Canvas.SetLeft(textBlock1, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
+					//Canvas.SetTop(textBlock1, cellak[j][i].getScreenCoord().Y - App.jatek.oldalhossz+2);
+					//canvas.Children.Add(textBlock1);
 
 
 
@@ -203,13 +205,13 @@ namespace harcocska
 
             //contextMenu.Items.Add("Harc");
 
-            if (App.jatek.aktualisallapot == EJatekAllapotok.egysegmozgatas)
-            {
-                MenuItem item = new MenuItem();
-                item.Header = "mozgás";
-                item.Click += delegate { MyImage_Mozgas(); };
-                contextMenu.Items.Add(item);
-            }
+            //if (App.jatek.aktualisallapot == EJatekAllapotok.egysegmozgatas)
+            //{
+            //    MenuItem item = new MenuItem();
+            //    item.Header = "mozgás";
+            //    item.Click += delegate { MyImage_Mozgas(); };
+            //    contextMenu.Items.Add(item);
+            //}
 
             if (App.jatek.aktualisallapot == EJatekAllapotok.harc)
             {
@@ -243,6 +245,7 @@ namespace harcocska
 					myBitmapImage.UriSource = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, te.bitmap+"_"+szamlalo.ToString()+".png"), UriKind.Absolute);
 
 					
+					
 
 					myBitmapImage.DecodePixelWidth = 20;
 					myBitmapImage.EndInit();
@@ -252,12 +255,21 @@ namespace harcocska
 
 					myImage.MouseUp += MyImage_MouseUp;
 					myImage.MouseRightButtonDown += MyImage_RightMouseDown;
+					myImage.MouseLeftButtonDown += MyImage_MouseLeftButtonDown;
 					myImage.ContextMenu = contextMenu;
+
+					
 
 					
 					Canvas.SetTop(myImage, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2);
 					Canvas.SetLeft(myImage, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2);
 
+					TextBlock textBlockElet = new TextBlock();
+					textBlockElet.Text = String.Format("{0}", te.elet.ToString());
+					//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
+					Canvas.SetTop(textBlockElet, te.aktualisCella.getScreenCoord().Y - App.jatek.oldalhossz / 2-12);
+					Canvas.SetLeft(textBlockElet, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2+12);
+					canvas.Children.Add(textBlockElet);
 
 					if (te.elet == 0)
 					{
@@ -284,6 +296,24 @@ namespace harcocska
 
 				}
 			}
+			canvas.InvalidateVisual();
+		}
+
+		private void MyImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			aktualisEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
+
+			Dijkstra(aktualisEgyseg.aktualisCella);
+			terkepAllapot = ETerkepAllapot.egysegmozgatas;
+			terkeprajzolas();
+
+			Image ti = e.Source as CTerkepiImage;
+			DataObject data = new DataObject(typeof(CTerkepiImage), (CTerkepiImage)sender);
+			DragDrop.DoDragDrop(ti, data, DragDropEffects.All);
+
+			
+			//terkepAllapot = ETerkepAllapot.egysegmozgatas;
+			//throw new NotImplementedException();
 		}
 
 		public CTerkepiCella getTerkepiCellaAtScreenPosition(Point p)
@@ -615,8 +645,10 @@ namespace harcocska
 		private void MyImage_RightMouseDown(object sender, MouseButtonEventArgs e)
 		{
 
-			aktualisEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
+			//aktualisEgyseg = ((CTerkepiImage)sender).terkepiEgyseg;
 		}
+
+
 
 		private void MyImage_RightMouseUp(object sender, MouseButtonEventArgs e)
 		{
@@ -641,26 +673,11 @@ namespace harcocska
 				tempHarcoloEgyseg = (IHarcoloTerkepiEgyseg)aktualisEgyseg;
 				if (tempHarcoloEgyseg != null)
 					tempHarcoloEgyseg.Tamadas(getTerkepiEgysegAtScreenPosition(windowCoord));
+				App.jatek.terkep.terkeprajzolas();
 				terkepAllapot = ETerkepAllapot.szabad;
 			}
-			if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
-			{
-				
-				if (tavolsagTabla[tc.Sor][tc.Oszlop] > ((CMozgoTerkepiEgyseg)aktualisEgyseg).range)
-				{
-					return;
-				}
-				IMozgoTerkepiEgyseg tempMozgoEgyseg = null;
-				tempMozgoEgyseg = (IMozgoTerkepiEgyseg)aktualisEgyseg;
-				if (tempMozgoEgyseg != null)
-				{
-					CTerkepiCella cella = getTerkepiCellaAtScreenPosition(windowCoord);
-					if (cella.tulaj != null)
-						tempMozgoEgyseg.mozgasIde(cella);
-				}
-
-				terkepAllapot = ETerkepAllapot.szabad;
-			}
+			
+			//}
 		}
 	}
 

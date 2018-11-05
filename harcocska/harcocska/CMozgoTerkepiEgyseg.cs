@@ -31,8 +31,9 @@ namespace harcocska
     {
         public CKatona()
         {
-            elet = 14;
-            range = 3;
+            eletOriginal = 14;
+			elet = eletOriginal;
+			range = 3;
             vedekezesikepesseg = 3;
             tamadasikepesseg = 5;
             bitmap = "katona";
@@ -46,8 +47,9 @@ namespace harcocska
     {
         public CTank()
         {
-            elet = 15;
-            range = 4;
+			eletOriginal = 15;
+			elet = eletOriginal;
+			range = 4;
             vedekezesikepesseg = 4;
             tamadasikepesseg = 6;
             bitmap = "tank";

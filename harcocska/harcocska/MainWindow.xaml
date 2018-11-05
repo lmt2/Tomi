@@ -5,35 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:harcocska"
         mc:Ignorable="d"
-        Title="Harcocska" Height="737.561" Width="800" Background="{x:Null}">
+        Title="Harcocska" Height="737.561" Width="800" Background="{x:Null}" Loaded="Window_Loaded">
 	<Grid RenderTransformOrigin="0.502,0.611" Background="Gray" Margin="0,0,-8,0">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="171*"/>
 			<ColumnDefinition Width="127*"/>
 		</Grid.ColumnDefinitions>
-		<Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="385" Margin="0,24,0,0" VerticalAlignment="Top" Width="594" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" MouseLeftButtonUp="canvas1_MouseLeftButtonUp" MouseUp="canvas1_MouseUp_1" MouseRightButtonUp="canvas1_MouseRightButtonUp"/>
-		<Button x:Name="b1" Content="Tick" HorizontalAlignment="Left" Margin="40,46,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="33" Grid.Column="1">
+		<Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="385" Margin="0,24,0,0" VerticalAlignment="Top" Width="594" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" MouseLeftButtonUp="canvas1_MouseLeftButtonUp" MouseUp="canvas1_MouseUp_1" MouseRightButtonUp="canvas1_MouseRightButtonUp" DragOver="canvas1_DragOver" Drop="canvas1_Drop" MouseWheel="canvas1_MouseWheel"/>
+		<Button x:Name="b1" Content="Következő lépés" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="96" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="33">
 			<Button.Effect>
 				<DropShadowEffect BlurRadius="20"/>
 			</Button.Effect>
-			<Button.RenderTransform>
-				<TransformGroup>
-					<ScaleTransform/>
-					<SkewTransform/>
-					<RotateTransform Angle="-13.066"/>
-					<TranslateTransform/>
-				</TransformGroup>
-			</Button.RenderTransform>
 		</Button>
 		<Menu Height="19" VerticalAlignment="Top" Width="800" HorizontalAlignment="Center" Grid.ColumnSpan="2">
 			<MenuItem Width="36" Header="File">
+				<MenuItem Header="new" HorizontalAlignment="Left" Height="22" Width="140" Click="MenuItem_Click_3"/>
 				<MenuItem Header="save" Click="MenuItem_Click_1"/>
 				<MenuItem Header="open" Click="MenuItem_Click_2"/>
 				<MenuItem Background="#FFEC6262" Header="Exit" Click="Exit_MenuItem_Click"/>
 			</MenuItem>
-			<MenuItem Header="Game">
-				<MenuItem Header="Start" Click="MenuItem_Click" Margin="0,0,-20,0"/>
-				<MenuItem Header="térképrajzolás" HorizontalAlignment="Left" Height="21" Width="165" Margin="0,0,-25,0" Click="MenuItem_Terkeprajzolas_Click"/>
+			<MenuItem Header="Game" Width="45">
+				<MenuItem Header="Start" Click="MenuItem_Click" Width="220" Margin="0,0,-20,0"/>
+				<MenuItem Header="térképrajzolás" HorizontalAlignment="Left" Height="21" Width="220" Margin="0,0,-25,0" Click="MenuItem_Terkeprajzolas_Click"/>
+				<MenuItem Header="Mindenki feltámasztása" HorizontalAlignment="Left" Height="20" Width="220" Margin="0,0,-80,0" Click="MenuItem_Click_4"/>
 			</MenuItem>
 		</Menu>
 		<StackPanel x:Name="stackpanel" HorizontalAlignment="Right" Margin="0,40,10,34" Width="289" Grid.Column="1"/>

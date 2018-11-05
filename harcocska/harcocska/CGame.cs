@@ -35,14 +35,21 @@ namespace harcocska
 
 		public void init1()
 		{
-			AllapotValtoTimer = new DispatcherTimer();
+			if (AllapotValtoTimer==null)
+				AllapotValtoTimer = new DispatcherTimer();
 			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
 			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
+			App.jatek.terkep.canvas.AllowDrop = true;
+
 			App.jatek.run();
-			
+			App.jatek.terkep.terkeprajzolas();
+
+
 
 		}
 			public void init() {
+
+
 			Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory);
 			oldalhossz = 30;
 
@@ -55,6 +62,8 @@ namespace harcocska
 
 			terkep = new CTerkep();
 
+			if (AllapotValtoTimer == null)
+				AllapotValtoTimer = new DispatcherTimer();
 			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
 			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
 
@@ -133,10 +142,24 @@ namespace harcocska
 			update = false;
 
 		}
-
 		public void start()
 		{
 			isRunning = true;
+		}
+
+		public void mindenkiFeltamasztasa()
+		{
+			foreach (CJatekos j in App.jatek.jatekosok)
+			{
+
+				foreach (CTerkepiEgyseg te in j.egysegekLista)
+				{
+
+
+					te.elet = te.eletOriginal;
+
+				}
+			}
 		}
 		public void lepes()
 		{

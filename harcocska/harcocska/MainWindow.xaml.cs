@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace harcocska
 {
@@ -33,11 +34,16 @@ namespace harcocska
 		public MainWindow()
         {
             InitializeComponent();
+		}
+		#endregion
 
+		private void init()
+		{
 			App.jatek.init();
 			App.jatek.terkep.canvas = canvas1;
+			App.jatek.terkep.canvas.AllowDrop = true;
 			RajzoloTimer.Tick += RajzoloTimer_Tick;
-			RajzoloTimer.Interval = new TimeSpan(0, 0, 2);
+			RajzoloTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
 			RajzoloTimer.Start();
 
 			UserControl1 u1 = new UserControl1(App.jatek.jatekosok[0]);
@@ -47,16 +53,16 @@ namespace harcocska
 			stackpanel.Children.Add(u2);
 			stackpanel.Children.Add(u3);
 
-			
+
 			App.jatek.run();
 			var window = Window.GetWindow(canvas1);
 			window.KeyDown += HandleKeyPressOnCanvas;
 
+			App.jatek.terkep.terkeprajzolas();
 		}
-		#endregion
 		private void RajzoloTimer_Tick(object sender, EventArgs e)
 		{
-			App.jatek.terkep.terkeprajzolas();
+			//App.jatek.terkep.terkeprajzolas();
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		/// <summary>
@@ -121,7 +127,6 @@ namespace harcocska
 		private void MenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			App.jatek.start();
-			
 		}
 
 
@@ -135,7 +140,7 @@ namespace harcocska
 			App.jatek.terkep.OnLeftMouseDown(pointToWindow);
 
             from = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
-            Console.WriteLine("Kezdopont:{0},{1}",from.Sor,from.Oszlop);
+            //Console.WriteLine("Kezdopont:{0},{1}",from.Sor,from.Oszlop);
         }
 
 		private void canvas1_MouseUp_1(object sender, MouseButtonEventArgs e)
@@ -163,6 +168,8 @@ namespace harcocska
 				return;
 			}
 		}
+
+
 		private void HandleKeyPressOnCanvas(object sender, KeyEventArgs e)
 		{
 			Point pointToWindow = Mouse.GetPosition(canvas1);
@@ -214,20 +221,120 @@ namespace harcocska
                         App.jatek.jatekosok[0].egysegekLista.Add(e3);
                     }
                 }
+				App.jatek.terkep.terkeprajzolas();
 			}
+			
+
+		}
+
+		//save to file
+		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			if (saveFileDialog.ShowDialog() == true)
+			{
+				Properties.Settings.Default.fileName = saveFileDialog.FileName;
+				Properties.Settings.Default.Save();
+				CGame.WriteToBinaryFile<CGame>(saveFileDialog.FileName, App.jatek);
+			}
+		}
+
+		//open from file
+		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+			if (openFileDialog.ShowDialog() == true)
+			{
+				Properties.Settings.Default.fileName = openFileDialog.FileName;
+				this.Title = "Harcocska [" + Properties.Settings.Default.fileName + "]";
+				Properties.Settings.Default.Save();
+				App.jatek = CGame.ReadFromBinaryFile<CGame>(openFileDialog.FileName);
+				App.jatek.terkep.canvas = canvas1;
+				App.jatek.init1();
+			}
+		}
+
+		private void canvas1_DragOver(object sender, DragEventArgs e)
+		{
+
+			
 			
 		}
 
-		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+		private void canvas1_Drop(object sender, DragEventArgs e)
 		{
-			CGame.WriteToBinaryFile<CGame>(System.AppDomain.CurrentDomain.BaseDirectory+"\\harcocska.bin", App.jatek);
+			App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
+			Point pointToWindow = e.GetPosition(canvas1);
+			CTerkepiImage img= (CTerkepiImage)e.Data.GetData(typeof(CTerkepiImage));
+
+			CTerkepiCella cella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
+			if (App.jatek.terkep.tavolsagTabla[cella.Sor][cella.Oszlop] > ((CMozgoTerkepiEgyseg)img.terkepiEgyseg).range)
+			{
+				return;
+			}
+			IMozgoTerkepiEgyseg tempMozgoEgyseg = null;
+			tempMozgoEgyseg = (IMozgoTerkepiEgyseg)img.terkepiEgyseg;
+			if (tempMozgoEgyseg != null)
+			{
+				
+				if (cella.tulaj != null)
+					tempMozgoEgyseg.mozgasIde(cella);
+			}
+
+			App.jatek.terkep.terkeprajzolas();
+
 		}
 
-		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+		//zoom
+		private void canvas1_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			App.jatek=CGame.ReadFromBinaryFile<CGame>(System.AppDomain.CurrentDomain.BaseDirectory+"\\harcocska.bin");
+			if (e.Delta==-120)
+				App.jatek.oldalhossz-=5;
+			if (e.Delta == 120)
+				App.jatek.oldalhossz += 5;
+			App.jatek.terkep.terkeprajzolas();
+		}
+
+		//
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				App.jatek = CGame.ReadFromBinaryFile<CGame>(Properties.Settings.Default.fileName);
+				
+			}
+			catch {
+				init();
+			}
+			this.Title = "Harcocska [" + Properties.Settings.Default.fileName+"]";
+			App.jatek.terkep.canvas = canvas1;
+			UserControl1 u1 = new UserControl1(App.jatek.jatekosok[0]);
+			UserControl1 u2 = new UserControl1(App.jatek.jatekosok[1]);
+			UserControl1 u3 = new UserControl1(App.jatek.jatekosok[2]);
+			stackpanel.Children.Add(u1);
+			stackpanel.Children.Add(u2);
+			stackpanel.Children.Add(u3);
+			
+			var window = Window.GetWindow(canvas1);
+			window.KeyDown += HandleKeyPressOnCanvas;
+			App.jatek.init1();
+			App.jatek.run();
+
+		}
+
+		//új, üres térkép
+		private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+		{
+			App.jatek.jatekosok.Clear();
+			init();
 			App.jatek.terkep.canvas = canvas1;
 			App.jatek.init1();
+		}
+
+		private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+		{
+			App.jatek.mindenkiFeltamasztasa();
+			App.jatek.terkep.terkeprajzolas();
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 

@@ -10,7 +10,8 @@ namespace harcocska
 	public class CTerkepiEgyseg : IHarcoloTerkepiEgyseg
 	{
         public CJatekos jatekos { get; set; }
-        public int elet { get; set; }
+		public int eletOriginal { get; set; }
+		public int elet { get; set; }
         public CTerkepiCella aktualisCella { get; set; }
 		public string bitmap { get; set; }
         public int tamadasikepesseg { get; set; }
