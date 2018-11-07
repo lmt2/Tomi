@@ -25,6 +25,7 @@ namespace harcocska
 		[XmlIgnoreAttribute]
 		DispatcherTimer AllapotValtoTimer = new DispatcherTimer();
 		public int oldalhossz { get; set; }
+
 		public static Random sorsolás = new Random();
 		#endregion
 
@@ -121,13 +122,25 @@ namespace harcocska
 					break;
 
 				case EJatekAllapotok.fejlesztes:
+					foreach (CJatekos j in App.jatek.jatekosok)
+					{
+						foreach (CTerkepiEgyseg te in j.egysegekLista)
+						{
+							if ((CMozgoTerkepiEgyseg)te!=null)
+							{
+								((CMozgoTerkepiEgyseg)te).lepettMar = false;
+							}
+						}
+					}
 					aktualisallapot = EJatekAllapotok.egysegmozgatas;
+					App.jatek.terkep.terkeprajzolas();
 					Console.WriteLine("egysegmozgatas");
 					break;
 
 				case EJatekAllapotok.egysegmozgatas:
 					aktualisallapot = EJatekAllapotok.harc;
 					Console.WriteLine("harc");
+					App.jatek.terkep.terkeprajzolas();
 					korszamlalo++;
 					break;
 
@@ -154,7 +167,6 @@ namespace harcocska
 
 				foreach (CTerkepiEgyseg te in j.egysegekLista)
 				{
-
 
 					te.elet = te.eletOriginal;
 

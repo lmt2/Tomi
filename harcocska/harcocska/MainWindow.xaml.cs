@@ -62,6 +62,29 @@ namespace harcocska
 		}
 		private void RajzoloTimer_Tick(object sender, EventArgs e)
 		{
+			switch (App.jatek.aktualisallapot)
+			{
+				case EJatekAllapotok.elokeszulet:
+					b1.Content = "elokeszulet (next:penzosztas)";
+					break;
+
+				case EJatekAllapotok.penzosztas:
+					b1.Content = "penzosztas (next:fejlesztes)";
+					break;
+
+				case EJatekAllapotok.fejlesztes:
+					b1.Content = "fejlesztes (next:egysegmozgatas)";
+					break;
+
+				case EJatekAllapotok.egysegmozgatas:
+					b1.Content = "egysegmozgatas (next:harc)";
+					break;
+
+				case EJatekAllapotok.harc:
+					b1.Content = "harc (next:penzosztas)";
+					break;
+
+			}
 			//App.jatek.terkep.terkeprajzolas();
 		}
 		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
@@ -265,24 +288,17 @@ namespace harcocska
 		{
 			App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
 			Point pointToWindow = e.GetPosition(canvas1);
-			CTerkepiImage img= (CTerkepiImage)e.Data.GetData(typeof(CTerkepiImage));
-
+			CTerkepiImage img = (CTerkepiImage)e.Data.GetData(typeof(CTerkepiImage));
 			CTerkepiCella cella = App.jatek.terkep.getTerkepiCellaAtScreenPosition(pointToWindow);
-			if (App.jatek.terkep.tavolsagTabla[cella.Sor][cella.Oszlop] > ((CMozgoTerkepiEgyseg)img.terkepiEgyseg).range)
-			{
-				return;
-			}
 			IMozgoTerkepiEgyseg tempMozgoEgyseg = null;
 			tempMozgoEgyseg = (IMozgoTerkepiEgyseg)img.terkepiEgyseg;
 			if (tempMozgoEgyseg != null)
 			{
-				
+
 				if (cella.tulaj != null)
-					tempMozgoEgyseg.mozgasIde(cella);
+					tempMozgoEgyseg.mozgasCellara(cella);
 			}
-
 			App.jatek.terkep.terkeprajzolas();
-
 		}
 
 		//zoom
@@ -317,6 +333,10 @@ namespace harcocska
 			
 			var window = Window.GetWindow(canvas1);
 			window.KeyDown += HandleKeyPressOnCanvas;
+
+			RajzoloTimer.Tick += RajzoloTimer_Tick;
+			RajzoloTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
+			RajzoloTimer.Start();
 			App.jatek.init1();
 			App.jatek.run();
 

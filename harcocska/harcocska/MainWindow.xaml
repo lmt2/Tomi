@@ -12,7 +12,7 @@
 			<ColumnDefinition Width="127*"/>
 		</Grid.ColumnDefinitions>
 		<Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="385" Margin="0,24,0,0" VerticalAlignment="Top" Width="594" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" MouseLeftButtonUp="canvas1_MouseLeftButtonUp" MouseUp="canvas1_MouseUp_1" MouseRightButtonUp="canvas1_MouseRightButtonUp" DragOver="canvas1_DragOver" Drop="canvas1_Drop" MouseWheel="canvas1_MouseWheel"/>
-		<Button x:Name="b1" Content="Következő lépés" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="96" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="33">
+		<Button x:Name="b1" Content="Következő lépés" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="181" RenderTransformOrigin="0.5,0.5" Click="Button_Click_1" Background="#FFDDDDDD" Height="33">
 			<Button.Effect>
 				<DropShadowEffect BlurRadius="20"/>
 			</Button.Effect>

@@ -271,6 +271,26 @@ namespace harcocska
 					Canvas.SetLeft(textBlockElet, te.aktualisCella.getScreenCoord().X + App.jatek.oldalhossz / 2+12);
 					canvas.Children.Add(textBlockElet);
 
+					if ( App.jatek.aktualisallapot== EJatekAllapotok.egysegmozgatas && ((CMozgoTerkepiEgyseg)te != null) && !((CMozgoTerkepiEgyseg)te).lepettMar)
+					{
+						Line myLine1 = new Line();
+						myLine1.Stroke = j.getVonalszín();
+						Point from = te.aktualisCella.getScreenCoord();
+						from.Offset(App.jatek.oldalhossz / 1.5, App.jatek.oldalhossz / 3);
+						myLine1.X1 = from.X;
+						myLine1.Y1 = from.Y;
+
+						Point to = from;
+						to.Offset( App.jatek.oldalhossz / 2 , 0);
+						myLine1.X2 = to.X;
+						myLine1.Y2 = to.Y;
+						//myLine1.HorizontalAlignment = HorizontalAlignment.Left;
+						//myLine1.VerticalAlignment = VerticalAlignment.Center;
+						myLine1.StrokeThickness = 1;
+
+						canvas.Children.Add(myLine1);
+					}
+
 					if (te.elet == 0)
 					{
 						Image myImage1 = new Image();
@@ -306,12 +326,13 @@ namespace harcocska
 			Dijkstra(aktualisEgyseg.aktualisCella);
 			terkepAllapot = ETerkepAllapot.egysegmozgatas;
 			terkeprajzolas();
-
-			Image ti = e.Source as CTerkepiImage;
-			DataObject data = new DataObject(typeof(CTerkepiImage), (CTerkepiImage)sender);
-			DragDrop.DoDragDrop(ti, data, DragDropEffects.All);
-
+			if (!((CMozgoTerkepiEgyseg)aktualisEgyseg).lepettMar) { 
+				Image ti = e.Source as CTerkepiImage;
+				DataObject data = new DataObject(typeof(CTerkepiImage), (CTerkepiImage)sender);
+				DragDrop.DoDragDrop(ti, data, DragDropEffects.All);
+			}
 			
+
 			//terkepAllapot = ETerkepAllapot.egysegmozgatas;
 			//throw new NotImplementedException();
 		}

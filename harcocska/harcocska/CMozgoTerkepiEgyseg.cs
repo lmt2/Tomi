@@ -10,18 +10,21 @@ namespace harcocska
 	public class CMozgoTerkepiEgyseg : CTerkepiEgyseg, IMozgoTerkepiEgyseg
 	{
 		public int range { get; set; }
+		public bool lepettMar { get; set; }
 
 		public CMozgoTerkepiEgyseg()
 		{
 			range = 1;
 		}
-		void IMozgoTerkepiEgyseg.MozgasJobbra()
+
+		void IMozgoTerkepiEgyseg.mozgasCellara(CTerkepiCella to)
 		{
-			aktualisCella = App.jatek.terkep.Jobbra(aktualisCella);
-		}
-		void IMozgoTerkepiEgyseg.mozgasIde(CTerkepiCella tc)
-		{
-			this.aktualisCella = tc;
+			if (App.jatek.terkep.tavolsagTabla[to.Sor][to.Oszlop] > ((CMozgoTerkepiEgyseg)this).range)
+			{
+				return;
+			}
+			((CMozgoTerkepiEgyseg)this).lepettMar = true;
+			this.aktualisCella = to;
 		}
 
 		
