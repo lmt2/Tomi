@@ -8,7 +8,7 @@ namespace harcocska
 {
 	public interface IMozgoTerkepiEgyseg
 	{
-		void mozgasCellara(CTerkepiCella to);
+		void mozgasCellara(CTerkep t, CTerkepiCella to);
 	}
 
 	public interface IHarcoloTerkepiEgyseg

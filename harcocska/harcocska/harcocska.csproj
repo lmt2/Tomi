@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AFFCED9E-974A-441D-B720-9B2AE8631CB7}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>harcocska</RootNamespace>
     <AssemblyName>harcocska</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -50,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>harcocska.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -73,18 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CFejlesztes.cs" />
-    <Compile Include="CFejlesztesiElem.cs" />
-    <Compile Include="CGame.cs" />
-    <Compile Include="CJatekos.cs" />
-    <Compile Include="CTerkep.cs" />
-    <Compile Include="CTerkepiCella.cs" />
-    <Compile Include="CTerkepiEgyseg.cs" />
     <Compile Include="CTerkepiImage.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="IMozgoTerkepiEgyseg.cs" />
-    <Compile Include="CMozgoTerkepiEgyseg.cs" />
-    <Compile Include="TreeNode.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -142,6 +131,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HarcocskaLib\HarcocskaLib.csproj">
+      <Project>{d247b1d6-7748-4747-bfaf-a15758cf0141}</Project>
+      <Name>HarcocskaLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -17,9 +17,9 @@ namespace harcocska
 			range = 1;
 		}
 
-		void IMozgoTerkepiEgyseg.mozgasCellara(CTerkepiCella to)
+		void IMozgoTerkepiEgyseg.mozgasCellara(CTerkep t, CTerkepiCella to)
 		{
-			if (App.jatek.terkep.tavolsagTabla[to.Sor][to.Oszlop] > ((CMozgoTerkepiEgyseg)this).range)
+			if (t.tavolsagTabla[to.Sor][to.Oszlop] > ((CMozgoTerkepiEgyseg)this).range)
 			{
 				return;
 			}

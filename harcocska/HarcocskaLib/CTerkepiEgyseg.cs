@@ -28,10 +28,6 @@ namespace harcocska
         void IHarcoloTerkepiEgyseg.Tamadas(CTerkepiEgyseg tamadott)
 		{
 
-            if (tamadott==null || tamadott.jatekos == this.jatekos) {
-				App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
-                return;
-            }
             List<int> veletlentomb=new List<int>();
             for (int i = 1; i <= this.tamadasikepesseg; i++) {
                 veletlentomb.Add(1);
@@ -62,7 +58,7 @@ namespace harcocska
 
             if (this.elet < 0)
                 this.elet = 0;
-			App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
+
 		}
 
 	}

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows.Threading;
+
 using System.IO;
 using System.Xml.Serialization;
+using System.Timers;
 
 
 namespace harcocska
@@ -23,7 +20,7 @@ namespace harcocska
 		public EJatekAllapotok aktualisallapot = EJatekAllapotok.elokeszulet;
 		[NonSerialized()]
 		[XmlIgnoreAttribute]
-		DispatcherTimer AllapotValtoTimer = new DispatcherTimer();
+		Timer AllapotValtoTimer = new Timer();
 		public int oldalhossz { get; set; }
 
 		public static Random sorsolás = new Random();
@@ -37,13 +34,12 @@ namespace harcocska
 		public void init1()
 		{
 			if (AllapotValtoTimer==null)
-				AllapotValtoTimer = new DispatcherTimer();
-			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
-			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
-			App.jatek.terkep.canvas.AllowDrop = true;
+				AllapotValtoTimer = new Timer();
+			AllapotValtoTimer.Elapsed += AllapotValtoTimer_Tick;
+			AllapotValtoTimer.Interval = 2000;
 
-			App.jatek.run();
-			App.jatek.terkep.terkeprajzolas();
+			run();
+			
 
 
 
@@ -61,12 +57,13 @@ namespace harcocska
 			jatekosok.Add(jatekos2);
 			jatekosok.Add(jatekos3);
 
-			terkep = new CTerkep();
+			terkep = new CTerkep(this);
+
 
 			if (AllapotValtoTimer == null)
-				AllapotValtoTimer = new DispatcherTimer();
-			AllapotValtoTimer.Tick += AllapotValtoTimer_Tick;
-			AllapotValtoTimer.Interval = new TimeSpan(0, 0, 1);
+				AllapotValtoTimer = new Timer();
+			AllapotValtoTimer.Elapsed += AllapotValtoTimer_Tick;
+			AllapotValtoTimer.Interval = 2000;
 
 			Console.WriteLine("elokeszulet");
 
@@ -75,23 +72,23 @@ namespace harcocska
 			jatekos3.f = new CFejlesztes();
 
 			CKatona e0 = new CKatona();
-            e0.aktualisCella = App.jatek.terkep.cellak[7][7];
+            e0.aktualisCella = terkep.cellak[7][7];
 			e0.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e0);
 
 			CKatona e1 = new CKatona();
 			e1.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e1);
-            e1.aktualisCella = App.jatek.terkep.cellak[9][17];
+            e1.aktualisCella = terkep.cellak[9][17];
 
             CTank e2 = new CTank();
             e2.jatekos = jatekos2;
-            e2.aktualisCella = App.jatek.terkep.cellak[2][10];
+            e2.aktualisCella = terkep.cellak[2][10];
             jatekos2.egysegekLista.Add(e2);
 
             CTank e3 = new CTank();
             jatekos3.egysegekLista.Add(e3);
-            e3.aktualisCella = App.jatek.terkep.cellak[1][8];
+            e3.aktualisCella = terkep.cellak[1][8];
             e3.jatekos = jatekos3;
 
 
@@ -122,7 +119,7 @@ namespace harcocska
 					break;
 
 				case EJatekAllapotok.fejlesztes:
-					foreach (CJatekos j in App.jatek.jatekosok)
+					foreach (CJatekos j in jatekosok)
 					{
 						foreach (CTerkepiEgyseg te in j.egysegekLista)
 						{
@@ -133,14 +130,14 @@ namespace harcocska
 						}
 					}
 					aktualisallapot = EJatekAllapotok.egysegmozgatas;
-					App.jatek.terkep.terkeprajzolas();
+					//terkep.terkeprajzolas();
 					Console.WriteLine("egysegmozgatas");
 					break;
 
 				case EJatekAllapotok.egysegmozgatas:
 					aktualisallapot = EJatekAllapotok.harc;
 					Console.WriteLine("harc");
-					App.jatek.terkep.terkeprajzolas();
+					//terkep.terkeprajzolas();
 					korszamlalo++;
 					break;
 
@@ -162,7 +159,7 @@ namespace harcocska
 
 		public void mindenkiFeltamasztasa()
 		{
-			foreach (CJatekos j in App.jatek.jatekosok)
+			foreach (CJatekos j in jatekosok)
 			{
 
 				foreach (CTerkepiEgyseg te in j.egysegekLista)

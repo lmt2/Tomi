@@ -12,21 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using harcocska;
 
-namespace harcocska
+namespace Windows
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
-    public partial class UserControl1 : UserControl
-    {
+	/// <summary>
+	/// Interaction logic for UserControl1.xaml
+	/// </summary>
+	public partial class UserControl1 : UserControl
+	{
 		public CJatekos jatekos = null;
-		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
 		public UserControl1()
-        {
-            InitializeComponent();
-        }
-		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+		{
+			InitializeComponent();
+		}
 		public UserControl1(CJatekos j)
 		{
 			InitializeComponent();
@@ -34,9 +34,7 @@ namespace harcocska
 			nevLabel.Content = jatekos.nev;
 			fafeltoltes();
 			//RecursiveFaBejaras((TreeViewItem)treeView1.Items[0], "barakk2");
-
 		}
-		//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 		public void fafeltoltes()
 		{
 			treeView1.Items.Clear();
@@ -80,7 +78,7 @@ namespace harcocska
 				{
 					ExpandAllNodes(treeItem);
 					treeItem.IsExpanded = true;
-					
+
 				}
 				treeIcon(treeItem);
 			}
@@ -110,7 +108,8 @@ namespace harcocska
 			}
 		}
 
-		private void treeIcon(TreeViewItem treeItem) {
+		private void treeIcon(TreeViewItem treeItem)
+		{
 			TreeNode<CFejlesztesiElem> found = jatekos.f.Root.FindTreeNode(node => node.Data != null && node.Data.name == (string)treeItem.Header);
 			//if (found!=null)
 			//{
@@ -177,6 +176,4 @@ namespace harcocska
 			return sb.ToString();
 		}
 	}
-
-	
 }

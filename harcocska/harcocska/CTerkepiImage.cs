@@ -14,8 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Threading;
+using harcocska;
 
-namespace harcocska
+namespace Windows
 {
 	public class CTerkepiImage : Image
 	{
