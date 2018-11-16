@@ -25,9 +25,12 @@ namespace harcocska
 
 
 
-        void IHarcoloTerkepiEgyseg.Tamadas(CTerkepiEgyseg tamadott)
+        void IHarcoloTerkepiEgyseg.Tamadas(CTerkep t, CTerkepiEgyseg tamadott)
 		{
-
+            if (t.tavolsagTabla[tamadott.aktualisCella.Sor][tamadott.aktualisCella.Oszlop] > ((CMozgoTerkepiEgyseg)this).range)
+            {
+                return;
+            }
             List<int> veletlentomb=new List<int>();
             for (int i = 1; i <= this.tamadasikepesseg; i++) {
                 veletlentomb.Add(1);

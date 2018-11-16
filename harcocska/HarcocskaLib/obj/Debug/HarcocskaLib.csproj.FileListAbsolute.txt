@@ -8,3 +8,4 @@ C:\!lmt\Dev\Tomi\harcocska\HarcocskaLib\bin\Debug\HarcocskaLib.pdb
 C:\!lmt\Dev\Tomi\harcocska\HarcocskaLib\obj\Debug\HarcocskaLib.csproj.CoreCompileInputs.cache
 C:\!lmt\Dev\Tomi\harcocska\HarcocskaLib\obj\Debug\HarcocskaLib.dll
 C:\!lmt\Dev\Tomi\harcocska\HarcocskaLib\obj\Debug\HarcocskaLib.pdb
+C:\!lmt\Dev\Tomi\harcocska\HarcocskaLib\obj\Debug\HarcocskaLib.csprojAssemblyReference.cache

@@ -92,7 +92,6 @@ namespace harcocska
             e3.jatekos = jatekos3;
 
 
-            //App.jatek.terkep.Tavolsag(App.jatek.terkep.cellak[5][5], App.jatek.terkep.cellak[2][7]);
         }
 
         

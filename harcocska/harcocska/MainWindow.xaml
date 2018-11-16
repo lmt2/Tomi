@@ -5,27 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Windows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="538" Width="800">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="29*"/>
-			<ColumnDefinition Width="7*"/>
-		</Grid.ColumnDefinitions>
-		<Canvas x:Name="canvas" HorizontalAlignment="Left" Height="372" Margin="0,37,0,0" VerticalAlignment="Top" Width="582" MouseWheel="canvas_MouseWheel" Drop="canvas_Drop"/>
-		<StackPanel x:Name="stackpanel" HorizontalAlignment="Right" Height="497" Margin="587,0,0,0" VerticalAlignment="Top" Width="205" Grid.ColumnSpan="2"/>
-		<Menu HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="688" Grid.ColumnSpan="2">
-			<MenuItem Header="File">
-				<MenuItem Header="new" Click="MenuItem_Click_3"/>
-				<MenuItem Header="open" Click="MenuItem_Click"/>
-				<MenuItem Header="save" Click="MenuItem_Click_4"/>
-				<MenuItem Header="exit" Click="MenuItem_Click_1"/>
-			</MenuItem>
-			<MenuItem Header="Game">
-				<MenuItem Header="start" Click="MenuItem_Click_2"/>
-				<MenuItem/>
-			</MenuItem>
-		</Menu>
-		<Button x:Name="b1" Content="Button" HorizontalAlignment="Left" Margin="10,22,0,0" VerticalAlignment="Top" Width="75" Click="b1_Click"/>
+        Title="MainWindow" Height="563.85" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="29*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="stackpanel" HorizontalAlignment="Right" Grid.ColumnSpan="2" VerticalAlignment="Top">
+            <Slider x:Name="zoom" Maximum="100" Minimum="5" ValueChanged="zoom_ValueChanged" />
+        </StackPanel>
+        <Button Content="Button" Name="b1" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="192"/>
+        <Menu HorizontalAlignment="Center" Height="20" VerticalAlignment="Top" Width="688" Grid.ColumnSpan="2">
+            <MenuItem Header="File">
+                <MenuItem Header="new" Click="MenuItem_Click_3"/>
+                <MenuItem Header="open" Click="MenuItem_Click"/>
+                <MenuItem Header="save" Click="MenuItem_Click_4"/>
+                <MenuItem Header="exit" Click="MenuItem_Click_1"/>
+            </MenuItem>
+            <MenuItem Header="Game">
+                <MenuItem Header="start" Click="MenuItem_Click_2"/>
+                <MenuItem/>
+            </MenuItem>
+        </Menu>
 
-	</Grid>
+        <ScrollViewer x:Name="scrollviewer1" Margin="0,25,0,0" HorizontalScrollBarVisibility="Visible" CanContentScroll="True" PanningMode="Both">
+            <Canvas Name="canvas"/>
+
+        </ScrollViewer>
+        
+
+    </Grid>
 </Window>

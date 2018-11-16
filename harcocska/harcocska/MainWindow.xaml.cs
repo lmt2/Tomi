@@ -25,9 +25,12 @@ namespace Windows
 	{
 		DispatcherTimer RajzoloTimer = new DispatcherTimer();
 		CTerkepiCella from;
-		public CTerkepiEgyseg aktualisEgyseg { get; set; }
+		private CTerkepiEgyseg aktualisEgyseg { get; set; }
+        private bool pan = false;
+        private double mouseDeltaX;
+        private double mouseDeltaY;
 
-		public MainWindow()
+        public MainWindow()
 		{
 			InitializeComponent();
 		}
@@ -35,7 +38,8 @@ namespace Windows
 		private void init()
 		{
 			App.jatek.init();
-			canvas.AllowDrop = true;
+            zoom.Value = App.jatek.oldalhossz;
+            canvas.AllowDrop = true;
 			RajzoloTimer.Tick += RajzoloTimer_Tick;
 			RajzoloTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
 			RajzoloTimer.Start();
@@ -52,9 +56,49 @@ namespace Windows
 			var window = Window.GetWindow(canvas);
 			window.KeyDown += HandleKeyPressOnCanvas;
 
+            canvas.MouseWheel += Canvas_MouseWheel;
+            canvas.Drop += canvas_Drop;
+            canvas.MouseLeftButtonDown += Canvas_MouseLeftButtonDown;
+            canvas.MouseRightButtonDown += Canvas_MouseRightButtonDown;
+            canvas.MouseRightButtonUp += Canvas_MouseRightButtonUp;
+            canvas.MouseMove += Canvas_MouseMove;
+
+            b1.Click += b1_Click; 
+
 			terkeprajzolas();
 		}
-		private void RajzoloTimer_Tick(object sender, EventArgs e)
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (pan) {
+                scrollviewer1.ScrollToHorizontalOffset(scrollviewer1.HorizontalOffset+ (mouseDeltaX- e.GetPosition(canvas).X));
+                scrollviewer1.ScrollToVerticalOffset(scrollviewer1.VerticalOffset + (mouseDeltaY - e.GetPosition(canvas).Y));
+
+            }
+ 
+        }
+
+        private void Canvas_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Arrow;
+            pan = false;
+        }
+
+        private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.ScrollAll;
+            mouseDeltaX = e.GetPosition(canvas).X;
+            mouseDeltaY = e.GetPosition(canvas).Y;
+            pan = true;
+        }
+
+        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Point pointToWindow = e.GetPosition(canvas);
+            OnLeftMouseDown(pointToWindow);
+        }
+
+        private void RajzoloTimer_Tick(object sender, EventArgs e)
 		{
 			switch (App.jatek.aktualisallapot)
 			{
@@ -237,12 +281,12 @@ namespace Windows
 			if ((tc.Oszlop % 2) == 0)
 			{
 				p1.X = (int)(tc.Oszlop * offsetX() + tc.Oszlop * App.jatek.oldalhossz);
-				p1.Y = (int)(tc.Sor * 2 * offsetY());
+				p1.Y = (int)(tc.Sor * 2 * offsetY()+ offsetY());
 			}
 			else
 			{
 				p1.X = (int)(tc.Oszlop * offsetX() + tc.Oszlop * App.jatek.oldalhossz);
-				p1.Y = (int)(tc.Sor * 2 * offsetY() + offsetY());
+				p1.Y = (int)(tc.Sor * 2 * offsetY() + 2*offsetY());
 			}
 
 			return p1;
@@ -346,10 +390,16 @@ namespace Windows
 			if (App.jatek.aktualisallapot == EJatekAllapotok.harc)
 				App.jatek.terkep.terkepAllapot = ETerkepAllapot.harc;
 		}
+
 		public void terkeprajzolas()
 		{
-
-			canvas.Children.Clear();
+            int m = App.jatek.terkep.magassag * (2 * offsetY()) + offsetY();
+            int sz = App.jatek.terkep.szelesseg * (offsetX() + App.jatek.oldalhossz) + offsetX();
+            //if (sz>100 && sz<2000 && m>100 && m < 2000) {
+                canvas.Height = m;
+                canvas.Width = sz;
+            //}
+            canvas.Children.Clear();
 			//if (terkepAllapot == ETerkepAllapot.egysegmozgatas)
 			//{
 			//	Dijkstra(aktualisEgyseg.aktualisCella);
@@ -587,7 +637,6 @@ namespace Windows
 						Canvas.SetTop(myImage1, getScreenCoord(te.aktualisCella).Y - App.jatek.oldalhossz / 2);
 						Canvas.SetLeft(myImage1, getScreenCoord(te.aktualisCella).X + App.jatek.oldalhossz / 2);
 					}
-					//((IMozgoTerkepiEgyseg)te).MozgasJobbra();
 
 				}
 			}
@@ -612,14 +661,6 @@ namespace Windows
 			}
 		}
 
-		private void canvas_MouseWheel(object sender, MouseWheelEventArgs e)
-		{
-			if (e.Delta == -120)
-				App.jatek.oldalhossz -= 5;
-			if (e.Delta == 120)
-				App.jatek.oldalhossz += 5;
-			terkeprajzolas();
-		}
 
 		private void canvas_Drop(object sender, DragEventArgs e)
 		{
@@ -637,5 +678,44 @@ namespace Windows
 			}
 			terkeprajzolas();
 		}
-	}
+
+        private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            if (e.Delta == -120 && App.jatek.oldalhossz > 5)
+                App.jatek.oldalhossz -= 5;
+            if (e.Delta == 120 && App.jatek.oldalhossz < 100)
+                App.jatek.oldalhossz += 5;
+            zoom.Value = App.jatek.oldalhossz;
+            terkeprajzolas();
+        }
+
+        public void OnLeftMouseDown(Point windowCoord)
+        {
+            CTerkepiCella tc = getTerkepiCellaAtScreenPosition(windowCoord);
+            if (App.jatek.terkep.terkepAllapot == ETerkepAllapot.harc)
+            {
+                IHarcoloTerkepiEgyseg tempHarcoloEgyseg = null;
+                tempHarcoloEgyseg = (IHarcoloTerkepiEgyseg)aktualisEgyseg;
+                if (tempHarcoloEgyseg != null)
+                    tempHarcoloEgyseg.Tamadas(App.jatek.terkep,getTerkepiEgysegAtScreenPosition(windowCoord));
+                terkeprajzolas();
+                App.jatek.terkep.terkepAllapot = ETerkepAllapot.szabad;
+            }
+
+            //}
+        }
+
+        private void zoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (App.jatek == null)
+                return;
+            if (App.jatek.terkep == null)
+                return;
+            if (e.NewValue >=5 && e.NewValue <= 100) { 
+                App.jatek.oldalhossz = (int)e.NewValue;
+                terkeprajzolas();
+            }
+        }
+    }
 }
