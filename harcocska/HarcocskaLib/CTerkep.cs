@@ -20,7 +20,7 @@ namespace harcocska
 		
 		public ETerkepAllapot terkepAllapot { get; set; }
 		
-		public List<List<CTerkepiCella>> cellak = new List<List<CTerkepiCella>>();
+		public List<List<CTerkepiCella>> sorok = new List<List<CTerkepiCella>>();
 
 		public List<List<int>> szomdossagiMatrix = new List<List<int>>();
 		public List<List<int>> latogatottVertex = new List<List<int>>();
@@ -51,7 +51,7 @@ namespace harcocska
 
 
 				}
-				cellak.Add(sor);
+				sorok.Add(sor);
 			}
 		}
 		
@@ -85,47 +85,47 @@ namespace harcocska
 				for (int i = 0; i < szelesseg; i++)
 				{
 					CTerkepiCella tc = null;
-					if (cellak[j][i].tulaj != null)
+					if (sorok[j][i].tulaj != null)
 					{
-						tc = Fel(cellak[j][i]);
+						tc = Fel(sorok[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
 							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
-						tc = JobbraFel(cellak[j][i]);
+						tc = JobbraFel(sorok[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
 							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
-						tc = JobbraLe(cellak[j][i]);
+						tc = JobbraLe(sorok[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
 							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
-						tc = Le(cellak[j][i]);
+						tc = Le(sorok[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
 							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
-						tc = BalraLe(cellak[j][i]);
+						tc = BalraLe(sorok[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
 							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
-						tc = BalraFel(cellak[j][i]);
+						tc = BalraFel(sorok[j][i]);
 						if (tc != null && tc.tulaj != null)
 						{
 							szomdossagiMatrix[j * szelesseg + i][tc.Sor * szelesseg + tc.Oszlop] = 1;
 							szomdossagiMatrix[tc.Sor * szelesseg + tc.Oszlop][j * szelesseg + i] = 1;
 						}
 						
-						if (cellak[j][i].extraSzomszed != null){ 
-							foreach (CTerkepiCella extra in cellak[j][i].extraSzomszed)
+						if (sorok[j][i].extraSzomszed != null){ 
+							foreach (CTerkepiCella extra in sorok[j][i].extraSzomszed)
 							{
 								if (extra != null && extra.tulaj != null)
 								{
@@ -205,13 +205,13 @@ namespace harcocska
 			{
 				if ((tc.Sor - 1 < 0) || (tc.Oszlop - 1 < 0))
 					return ret;
-				ret = cellak[tc.Sor - 1][tc.Oszlop - 1];
+				ret = sorok[tc.Sor - 1][tc.Oszlop - 1];
 			}
 			else
 			{
 				if (tc.Oszlop - 1 < 0)
 					return ret;
-				ret = cellak[tc.Sor][tc.Oszlop - 1];
+				ret = sorok[tc.Sor][tc.Oszlop - 1];
 			}
 			return ret;
 		}
@@ -223,13 +223,13 @@ namespace harcocska
 				return ret;
 			if ((tc.Oszlop % 2) == 0)
 			{
-				ret = cellak[tc.Sor][tc.Oszlop - 1];
+				ret = sorok[tc.Sor][tc.Oszlop - 1];
 			}
 			else
 			{
 				if (tc.Sor + 1 > magassag - 1)
 					return ret;
-				ret = cellak[tc.Sor + 1][tc.Oszlop - 1];
+				ret = sorok[tc.Sor + 1][tc.Oszlop - 1];
 			}
 			return ret;
 		}
@@ -242,13 +242,13 @@ namespace harcocska
 			{
 				if ((tc.Sor - 1 < 0) || (tc.Oszlop + 1 > szelesseg - 1))
 					return ret;
-				ret = cellak[tc.Sor - 1][tc.Oszlop + 1];
+				ret = sorok[tc.Sor - 1][tc.Oszlop + 1];
 			}
 			else
 			{
 				if (tc.Oszlop + 1 > szelesseg - 1)
 					return ret;
-				ret = cellak[tc.Sor][tc.Oszlop + 1];
+				ret = sorok[tc.Sor][tc.Oszlop + 1];
 			}
 			return ret;
 		}
@@ -260,13 +260,13 @@ namespace harcocska
 			{
 				if ((tc.Oszlop + 1) > (szelesseg - 1))
 					return ret;
-				ret = cellak[tc.Sor][tc.Oszlop + 1];
+				ret = sorok[tc.Sor][tc.Oszlop + 1];
 			}
 			else
 			{
 				if (((tc.Sor + 1) > (magassag - 1) || (tc.Oszlop + 1) > (szelesseg - 1)))
 					return ret;
-				ret = cellak[tc.Sor + 1][tc.Oszlop + 1];
+				ret = sorok[tc.Sor + 1][tc.Oszlop + 1];
 			}
 			return ret;
 		}
@@ -275,7 +275,7 @@ namespace harcocska
 			CTerkepiCella ret = null;
 			if (tc.Sor + 1 > magassag - 1)
 				return ret;
-			ret = cellak[tc.Sor + 1][tc.Oszlop];
+			ret = sorok[tc.Sor + 1][tc.Oszlop];
 			return ret;
 		}
 		public CTerkepiCella Fel(CTerkepiCella tc)
@@ -283,20 +283,20 @@ namespace harcocska
 			CTerkepiCella ret = null;
 			if (tc.Sor - 1 < 0)
 				return ret;
-			ret = cellak[tc.Sor - 1][tc.Oszlop];
+			ret = sorok[tc.Sor - 1][tc.Oszlop];
 			return ret;
 		}
 
 		public CTerkepiCella Balra(CTerkepiCella tc)
 		{
 			CTerkepiCella ret = null;
-			ret = cellak[tc.Sor][tc.Oszlop - 1];
+			ret = sorok[tc.Sor][tc.Oszlop - 1];
 			return ret;
 		}
 		public CTerkepiCella Jobbra(CTerkepiCella tc)
 		{
 			CTerkepiCella ret = null;
-			ret = cellak[tc.Sor][tc.Oszlop + 1];
+			ret = sorok[tc.Sor][tc.Oszlop + 1];
 			return ret;
 		}
 

@@ -15,6 +15,9 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using harcocska;
+using System.Threading;
+using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Windows
 {
@@ -29,16 +32,65 @@ namespace Windows
         private bool pan = false;
         private double mouseDeltaX;
         private double mouseDeltaY;
+        int m;
+        int sz;
+        public int oldalhossz { get; set; }
+
+        
+        
 
         public MainWindow()
 		{
 			InitializeComponent();
-		}
+        }
 
-		private void init()
+        private void initOpen()
+        {
+            CGame.host = harcocska.Properties.Settings.Default.remoteHost;
+            CGame.port = harcocska.Properties.Settings.Default.remotePort;
+            CGame.isServer = harcocska.Properties.Settings.Default.isServer;
+
+            App.jatek.init1();
+            oldalhossz = 30;
+            zoom.Value = oldalhossz;
+            canvas.AllowDrop = true;
+            RajzoloTimer.Tick += RajzoloTimer_Tick;
+            RajzoloTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
+            RajzoloTimer.Start();
+
+            UserControl1 u1 = new UserControl1(App.jatek.jatekosok[0]);
+            UserControl1 u2 = new UserControl1(App.jatek.jatekosok[1]);
+            UserControl1 u3 = new UserControl1(App.jatek.jatekosok[2]);
+            stackpanel.Children.Add(u1);
+            stackpanel.Children.Add(u2);
+            stackpanel.Children.Add(u3);
+
+
+            App.jatek.run();
+            var window = Window.GetWindow(canvas);
+            window.KeyDown += HandleKeyPressOnCanvas;
+
+            canvas.MouseWheel += Canvas_MouseWheel;
+            canvas.Drop += canvas_Drop;
+            canvas.MouseLeftButtonDown += Canvas_MouseLeftButtonDown;
+            canvas.MouseRightButtonDown += Canvas_MouseRightButtonDown;
+            canvas.MouseRightButtonUp += Canvas_MouseRightButtonUp;
+            canvas.MouseMove += Canvas_MouseMove;
+
+            b1.Click += b1_Click;
+
+            terkeprajzolas();
+        }
+
+        private void init()
 		{
-			App.jatek.init();
-            zoom.Value = App.jatek.oldalhossz;
+            CGame.host = harcocska.Properties.Settings.Default.remoteHost;
+            CGame.port = harcocska.Properties.Settings.Default.remotePort;
+            CGame.isServer = harcocska.Properties.Settings.Default.isServer;
+
+            oldalhossz = 30;
+            App.jatek.init();
+            zoom.Value = oldalhossz;
             canvas.AllowDrop = true;
 			RajzoloTimer.Tick += RajzoloTimer_Tick;
 			RajzoloTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
@@ -73,7 +125,6 @@ namespace Windows
             if (pan) {
                 scrollviewer1.ScrollToHorizontalOffset(scrollviewer1.HorizontalOffset+ (mouseDeltaX- e.GetPosition(canvas).X));
                 scrollviewer1.ScrollToVerticalOffset(scrollviewer1.VerticalOffset + (mouseDeltaY - e.GetPosition(canvas).Y));
-
             }
  
         }
@@ -131,12 +182,13 @@ namespace Windows
 			OpenFileDialog openFileDialog = new OpenFileDialog();
 			if (openFileDialog.ShowDialog() == true)
 			{
-				Properties.Settings.Default.fileName = openFileDialog.FileName;
-				this.Title = "Harcocska [" + Properties.Settings.Default.fileName + "]";
-				Properties.Settings.Default.Save();
+                harcocska.Properties.Settings.Default.fileName = openFileDialog.FileName;
+				this.Title = "Harcocska [" + harcocska.Properties.Settings.Default.fileName + "]";
+                harcocska.Properties.Settings.Default.Save();
 				App.jatek = CGame.ReadFromBinaryFile<CGame>(openFileDialog.FileName);
+                initOpen();
 				App.jatek.init1();
-				terkeprajzolas();
+				//terkeprajzolas();
 			}
 		}
 
@@ -147,7 +199,8 @@ namespace Windows
 
 		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
 		{
-			Close();
+            harcocska.Properties.Settings.Default.Save();
+            Close();
 		}
 
 		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -186,26 +239,28 @@ namespace Windows
 					}
 					if (e.IsDown && e.Key == Key.LeftShift)
 					{
-						if (getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed == null)
-							getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed = new List<CTerkepiCella>();
-						CTerkepiCella c = getTerkepiCellaAtScreenPosition(pointToWindow);
-						if (c.tulaj == from.tulaj)
-							c.extraSzomszed.Add(from);
-					}
+                        if (from != null) { 
+						    if (getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed == null)
+							    getTerkepiCellaAtScreenPosition(pointToWindow).extraSzomszed = new List<CTerkepiCella>();
+						    CTerkepiCella c = getTerkepiCellaAtScreenPosition(pointToWindow);
+						    if (c.tulaj == from.tulaj)
+							    c.extraSzomszed.Add(from);
+                        }
+                    }
 					if (e.IsDown && e.Key == Key.T)
 					{
 						CMozgoTerkepiEgyseg e3 = new CTank();
 						e3.aktualisCella = getTerkepiCellaAtScreenPosition(pointToWindow);
-						e3.jatekos = App.jatek.jatekosok[0];
-						App.jatek.jatekosok[0].egysegekLista.Add(e3);
+						e3.jatekos = e3.aktualisCella.tulaj;
+                        e3.aktualisCella.tulaj.egysegekLista.Add(e3);
 					}
 					if (e.IsDown && e.Key == Key.K)
 					{
 						CMozgoTerkepiEgyseg e3 = new CKatona();
 						e3.aktualisCella = getTerkepiCellaAtScreenPosition(pointToWindow);
-						e3.jatekos = App.jatek.jatekosok[0];
-						App.jatek.jatekosok[0].egysegekLista.Add(e3);
-					}
+						e3.jatekos = e3.aktualisCella.tulaj;
+                        e3.aktualisCella.tulaj.egysegekLista.Add(e3);
+                    }
 				}
 				terkeprajzolas();
 			}
@@ -219,12 +274,12 @@ namespace Windows
 			{
 				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
 				{
-					PointCollection curvePoints = getScreenCoords(App.jatek.terkep.cellak[i][j]);
+					PointCollection curvePoints = getScreenCoords(App.jatek.terkep.sorok[i][j]);
 					for (int k = 0; k < 6; k++)
 					{
 						if (IsPointInPolygon4(curvePoints, p))
 						{
-							ret = App.jatek.terkep.cellak[i][j];
+							ret = App.jatek.terkep.sorok[i][j];
 							return ret;
 						}
 					}
@@ -266,26 +321,26 @@ namespace Windows
 			}
 			return result;
 		}
-		public static int offsetX()
+		public int offsetX()
 		{
-			return (int)(Math.Cos(Math.PI * 60 / 180.0) * App.jatek.oldalhossz);
+			return (int)(Math.Cos(Math.PI * 60 / 180.0) * oldalhossz);
 		}
-		public static int offsetY()
+		public int offsetY()
 		{
-			return (int)(Math.Sin(Math.PI * 60 / 180.0) * App.jatek.oldalhossz);
+			return (int)(Math.Sin(Math.PI * 60 / 180.0) * oldalhossz);
 		}
 
-		public Point getScreenCoord(CTerkepiCella tc)
+		public Point getCanvasCoord(CTerkepiCella tc)
 		{
 			Point p1 = new Point();
 			if ((tc.Oszlop % 2) == 0)
 			{
-				p1.X = (int)(tc.Oszlop * offsetX() + tc.Oszlop * App.jatek.oldalhossz);
+				p1.X = (int)(tc.Oszlop * offsetX() + tc.Oszlop * oldalhossz);
 				p1.Y = (int)(tc.Sor * 2 * offsetY()+ offsetY());
 			}
 			else
 			{
-				p1.X = (int)(tc.Oszlop * offsetX() + tc.Oszlop * App.jatek.oldalhossz);
+				p1.X = (int)(tc.Oszlop * offsetX() + tc.Oszlop * oldalhossz);
 				p1.Y = (int)(tc.Sor * 2 * offsetY() + 2*offsetY());
 			}
 
@@ -294,14 +349,14 @@ namespace Windows
 
 		public PointCollection getScreenCoords(CTerkepiCella tc)
 		{
-			Point p1 = getScreenCoord(tc);
+			Point p1 = getCanvasCoord(tc);
 
 			Point p2 = p1;
 			p2.X += offsetX();
 			p2.Y += offsetY();
 
 			Point p3 = p2;
-			p3.X += App.jatek.oldalhossz;
+			p3.X += oldalhossz;
 
 			Point p4 = p3;
 			p4.X += offsetX();
@@ -312,7 +367,7 @@ namespace Windows
 			p5.Y -= offsetY();
 
 			Point p6 = p5;
-			p6.X -= App.jatek.oldalhossz;
+			p6.X -= oldalhossz;
 
 			PointCollection curvePoints = new PointCollection();
 			curvePoints.Add(p1);
@@ -393,8 +448,8 @@ namespace Windows
 
 		public void terkeprajzolas()
 		{
-            int m = App.jatek.terkep.magassag * (2 * offsetY()) + offsetY();
-            int sz = App.jatek.terkep.szelesseg * (offsetX() + App.jatek.oldalhossz) + offsetX();
+            m = App.jatek.terkep.magassag * (2 * offsetY()) + offsetY();
+            sz = App.jatek.terkep.szelesseg * (offsetX() + oldalhossz) + offsetX();
             //if (sz>100 && sz<2000 && m>100 && m < 2000) {
                 canvas.Height = m;
                 canvas.Width = sz;
@@ -414,16 +469,16 @@ namespace Windows
 			{
 				for (int i = 0; i < App.jatek.terkep.szelesseg; i++)
 				{
-					PointCollection curvePoints = getScreenCoords(App.jatek.terkep.cellak[j][i]);
+					PointCollection curvePoints = getScreenCoords(App.jatek.terkep.sorok[j][i]);
 
 
 					Polygon p = new Polygon();
 					RenderOptions.SetEdgeMode((DependencyObject)p, EdgeMode.Aliased);
 					p.Stroke = Brushes.Black;
 
-					if (App.jatek.terkep.cellak[j][i].tulaj != null)
+					if (App.jatek.terkep.sorok[j][i].tulaj != null)
 					{
-						p.Fill = getSzin(App.jatek.terkep.cellak[j][i].tulaj);
+						p.Fill = getSzin(App.jatek.terkep.sorok[j][i].tulaj);
 					}
 					else
 					{
@@ -464,23 +519,23 @@ namespace Windows
 					//myLine.StrokeThickness = 10;
 					//canvas.Children.Add(myLine);
 
-					if (App.jatek.terkep.cellak[j][i].extraSzomszed != null)
+					if (App.jatek.terkep.sorok[j][i].extraSzomszed != null)
 					{
-						foreach (CTerkepiCella extra in App.jatek.terkep.cellak[j][i].extraSzomszed)
+						foreach (CTerkepiCella extra in App.jatek.terkep.sorok[j][i].extraSzomszed)
 						{
 							if (extra != null && extra.tulaj != null)
 							{
 								Line myLine1 = new Line();
-								myLine1.Stroke = getVonalszín(App.jatek.terkep.cellak[j][i].tulaj);
-								Point from = getScreenCoord(App.jatek.terkep.cellak[j][i]);
-								myLine1.X1 = from.X + App.jatek.oldalhossz / 1.5;
-								myLine1.Y1 = from.Y + App.jatek.oldalhossz / 2;
+								myLine1.Stroke = getVonalszín(App.jatek.terkep.sorok[j][i].tulaj);
+								Point from = getCanvasCoord(App.jatek.terkep.sorok[j][i]);
+								myLine1.X1 = from.X + oldalhossz / 1.5;
+								myLine1.Y1 = from.Y + oldalhossz / 2;
 
-								Point to = getScreenCoord(extra);
-								myLine1.X2 = to.X + App.jatek.oldalhossz / 1.5;
-								myLine1.Y2 = to.Y + App.jatek.oldalhossz / 2;
-								myLine1.HorizontalAlignment = HorizontalAlignment.Left;
-								myLine1.VerticalAlignment = VerticalAlignment.Center;
+								Point to = getCanvasCoord(extra);
+								myLine1.X2 = to.X + oldalhossz / 1.5;
+								myLine1.Y2 = to.Y + oldalhossz / 2;
+								//myLine1.HorizontalAlignment = HorizontalAlignment.Left;
+								//myLine1.VerticalAlignment = VerticalAlignment.Center;
 								myLine1.StrokeThickness = 1;
 
 								lines.Add(myLine1);
@@ -497,8 +552,8 @@ namespace Windows
 					//		TextBlock textBlock = new TextBlock();
 					//		textBlock.Text = tavolsagTabla[j][i].ToString();
 					//		//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
-					//		Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
-					//		Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y + App.jatek.oldalhossz / 2-5);
+					//		Canvas.SetLeft(textBlock, cellak[j][i].getScreenCoord().X + oldalhossz / 1.5);
+					//		Canvas.SetTop(textBlock, cellak[j][i].getScreenCoord().Y + oldalhossz / 2-5);
 					//		canvas.Children.Add(textBlock);
 					//	}
 					//}
@@ -508,8 +563,8 @@ namespace Windows
 					//TextBlock textBlock1 = new TextBlock();
 					//textBlock1.Text = String.Format("{0},{1}",j,i);
 					////textBlock.Foreground = new SolidColorBrush(Brushes.Black);
-					//Canvas.SetLeft(textBlock1, cellak[j][i].getScreenCoord().X + App.jatek.oldalhossz / 1.5);
-					//Canvas.SetTop(textBlock1, cellak[j][i].getScreenCoord().Y - App.jatek.oldalhossz+2);
+					//Canvas.SetLeft(textBlock1, cellak[j][i].getScreenCoord().X + oldalhossz / 1.5);
+					//Canvas.SetTop(textBlock1, cellak[j][i].getScreenCoord().Y - oldalhossz+2);
 					//canvas.Children.Add(textBlock1);
 
 
@@ -586,27 +641,27 @@ namespace Windows
 
 
 
-					Canvas.SetTop(myImage, getScreenCoord(te.aktualisCella).Y - App.jatek.oldalhossz / 2);
-					Canvas.SetLeft(myImage, getScreenCoord(te.aktualisCella).X + App.jatek.oldalhossz / 2);
+					Canvas.SetTop(myImage, getCanvasCoord(te.aktualisCella).Y - oldalhossz / 2);
+					Canvas.SetLeft(myImage, getCanvasCoord(te.aktualisCella).X + oldalhossz / 2);
 
 					TextBlock textBlockElet = new TextBlock();
 					textBlockElet.Text = String.Format("{0}", te.elet.ToString());
 					//textBlock.Foreground = new SolidColorBrush(Brushes.Black);
-					Canvas.SetTop(textBlockElet, getScreenCoord(te.aktualisCella).Y - App.jatek.oldalhossz / 2 - 12);
-					Canvas.SetLeft(textBlockElet, getScreenCoord(te.aktualisCella).X + App.jatek.oldalhossz / 2 + 12);
+					Canvas.SetTop(textBlockElet, getCanvasCoord(te.aktualisCella).Y - oldalhossz / 2 - 12);
+					Canvas.SetLeft(textBlockElet, getCanvasCoord(te.aktualisCella).X + oldalhossz / 2 + 12);
 					canvas.Children.Add(textBlockElet);
 
 					if (App.jatek.aktualisallapot == EJatekAllapotok.egysegmozgatas && ((CMozgoTerkepiEgyseg)te != null) && !((CMozgoTerkepiEgyseg)te).lepettMar)
 					{
 						Line myLine1 = new Line();
 						myLine1.Stroke = getVonalszín(j);
-						Point from = getScreenCoord(te.aktualisCella);
-						from.Offset(App.jatek.oldalhossz / 1.5, App.jatek.oldalhossz / 3);
+						Point from = getCanvasCoord(te.aktualisCella);
+						from.Offset(oldalhossz / 1.5, oldalhossz / 3);
 						myLine1.X1 = from.X;
 						myLine1.Y1 = from.Y;
 
 						Point to = from;
-						to.Offset(App.jatek.oldalhossz / 2, 0);
+						to.Offset(oldalhossz / 2, 0);
 						myLine1.X2 = to.X;
 						myLine1.Y2 = to.Y;
 						//myLine1.HorizontalAlignment = HorizontalAlignment.Left;
@@ -634,8 +689,8 @@ namespace Windows
 						myBitmapImage1.EndInit();
 						myImage1.Source = myBitmapImage1;
 						canvas.Children.Add(myImage1);
-						Canvas.SetTop(myImage1, getScreenCoord(te.aktualisCella).Y - App.jatek.oldalhossz / 2);
-						Canvas.SetLeft(myImage1, getScreenCoord(te.aktualisCella).X + App.jatek.oldalhossz / 2);
+						Canvas.SetTop(myImage1, getCanvasCoord(te.aktualisCella).Y - oldalhossz / 2);
+						Canvas.SetLeft(myImage1, getCanvasCoord(te.aktualisCella).X + oldalhossz / 2);
 					}
 
 				}
@@ -655,8 +710,8 @@ namespace Windows
 			SaveFileDialog saveFileDialog = new SaveFileDialog();
 			if (saveFileDialog.ShowDialog() == true)
 			{
-				Properties.Settings.Default.fileName = saveFileDialog.FileName;
-				Properties.Settings.Default.Save();
+                harcocska.Properties.Settings.Default.fileName = saveFileDialog.FileName;
+                harcocska.Properties.Settings.Default.Save();
 				CGame.WriteToBinaryFile<CGame>(saveFileDialog.FileName, App.jatek);
 			}
 		}
@@ -681,14 +736,27 @@ namespace Windows
 
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            Point pointToWindow = e.GetPosition(canvas);
+            CTerkepiCella tc = getTerkepiCellaAtScreenPosition(pointToWindow);
+            Point regiCanvasCoord = getCanvasCoord(tc);
 
-            if (e.Delta == -120 && App.jatek.oldalhossz > 5)
-                App.jatek.oldalhossz -= 5;
-            if (e.Delta == 120 && App.jatek.oldalhossz < 100)
-                App.jatek.oldalhossz += 5;
-            zoom.Value = App.jatek.oldalhossz;
+            double ho = scrollviewer1.HorizontalOffset;
+            double vo = scrollviewer1.VerticalOffset;
+
+            if (e.Delta == -120 && oldalhossz > 5)
+                oldalhossz -= 15;
+            if (e.Delta == 120 && oldalhossz < 100)
+                oldalhossz += 15;
+            zoom.Value = oldalhossz;
+            
             terkeprajzolas();
+
+            Point ujCanvasCoord = getCanvasCoord(tc);
+
+            scrollviewer1.ScrollToHorizontalOffset(ho+(ujCanvasCoord.X-regiCanvasCoord.X));
+            scrollviewer1.ScrollToVerticalOffset(vo + (ujCanvasCoord.Y - regiCanvasCoord.Y));
         }
+
 
         public void OnLeftMouseDown(Point windowCoord)
         {
@@ -713,9 +781,59 @@ namespace Windows
             if (App.jatek.terkep == null)
                 return;
             if (e.NewValue >=5 && e.NewValue <= 100) { 
-                App.jatek.oldalhossz = (int)e.NewValue;
+                oldalhossz = (int)e.NewValue;
                 terkeprajzolas();
             }
         }
+
+        private void MenuItem_Click_5(object sender, RoutedEventArgs e)
+        {
+            App.jatek.terkep.terkepAllapot = ETerkepAllapot.szerkesztes;
+        }
+
+        private void MenuItem_Click_6(object sender, RoutedEventArgs e)
+        {
+            App.jatek.mindenkiFeltamasztasa();
+        }
+
+        private void MenuItem_Click_7(object sender, RoutedEventArgs e)
+        {
+            App.jatek.Listen();
+        }
+
+        private void MenuItem_Click_8(object sender, RoutedEventArgs e)
+        {
+            App.jatek.wsSzerver.serverListenStop();
+        }
+
+        private void MenuItem_Click_9(object sender, RoutedEventArgs e)
+        {
+            App.jatek.halozatiKliens.clientConnectToServer();
+        }
+
+        private void MenuItem_Click_10(object sender, RoutedEventArgs e)
+        {
+            App.jatek.halozatiKliens.sendObject("BBBBBBBBBBBBBBBBBBBBB");
+        }
+
+        private void MenuItem_Click_11(object sender, RoutedEventArgs e)
+        {
+            App.jatek.wsSzerver.getKezeloFromWSname("LMT-I5").SendObject("XXXXXXXXXXXXXXXXXXXXXXX");
+        }
+
+        private void MenuItem_Click_12(object sender, RoutedEventArgs e)
+        {
+            //App.jatek.server.sendToClient(1, "cccccccccccccccccccccccccccccccc");
+        }
+
+        private void MenuItem_Click_13(object sender, RoutedEventArgs e)
+        {
+            NetworkSettings ns = new NetworkSettings();
+            ns.ShowDialog();
+        }
     }
+
+
+
+
 }

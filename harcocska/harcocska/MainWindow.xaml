@@ -24,7 +24,17 @@
             </MenuItem>
             <MenuItem Header="Game">
                 <MenuItem Header="start" Click="MenuItem_Click_2"/>
-                <MenuItem/>
+                <MenuItem Header="szerkesztés" Click="MenuItem_Click_5"/>
+                <MenuItem Header="mindenki feltámasztása" HorizontalAlignment="Left" Height="24" Width="204" Click="MenuItem_Click_6" Margin="0,0,-60,0"/>
+                <MenuItem Header="Listen start" HorizontalAlignment="Left" Height="22" Width="201" Click="MenuItem_Click_7" Margin="0,0,-57,0"/>
+                <MenuItem Header="Listen stop" HorizontalAlignment="Left" Height="24" Width="200" Click="MenuItem_Click_8" Margin="0,0,-56,0"/>
+                <MenuItem Header="Connect to server" HorizontalAlignment="Left" Height="28" Width="204" Margin="0,0,-60,0" Click="MenuItem_Click_9"/>
+                <MenuItem Header="Send to server" HorizontalAlignment="Left" Height="25" Width="190" Margin="0,0,-46,0" Click="MenuItem_Click_10"/>
+                <MenuItem Header="Send to client 1" HorizontalAlignment="Left" Height="22" Width="184" Margin="0,0,-40,0" Click="MenuItem_Click_11"/>
+                <MenuItem Header="Send to client 2" HorizontalAlignment="Left" Height="21" Width="189" Margin="0,0,-45,0" Click="MenuItem_Click_12"/>
+            </MenuItem>
+            <MenuItem Header="Beállítások" Height="20" Width="100">
+                <MenuItem Header="Hálózati beállítások" HorizontalAlignment="Left" Height="20" Width="210" Margin="0,0,-70,0" Click="MenuItem_Click_13"/>
             </MenuItem>
         </Menu>
 
@@ -32,7 +42,7 @@
             <Canvas Name="canvas"/>
 
         </ScrollViewer>
-        
+
 
     </Grid>
 </Window>

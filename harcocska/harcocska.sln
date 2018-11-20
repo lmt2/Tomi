@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "harcocska", "harcocska\harc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarcocskaLib", "HarcocskaLib\HarcocskaLib.csproj", "{D247B1D6-7748-4747-BFAF-A15758CF0141}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkLib", "NetworkLib\NetworkLib.csproj", "{B4BA0E65-8685-4BF8-BD43-5B1DE243857A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D247B1D6-7748-4747-BFAF-A15758CF0141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D247B1D6-7748-4747-BFAF-A15758CF0141}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D247B1D6-7748-4747-BFAF-A15758CF0141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4BA0E65-8685-4BF8-BD43-5B1DE243857A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4BA0E65-8685-4BF8-BD43-5B1DE243857A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4BA0E65-8685-4BF8-BD43-5B1DE243857A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4BA0E65-8685-4BF8-BD43-5B1DE243857A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

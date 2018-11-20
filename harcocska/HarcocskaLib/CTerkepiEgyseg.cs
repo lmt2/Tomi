@@ -22,9 +22,6 @@ namespace harcocska
 
         }
 
-
-
-
         void IHarcoloTerkepiEgyseg.Tamadas(CTerkep t, CTerkepiEgyseg tamadott)
 		{
             if (t.tavolsagTabla[tamadott.aktualisCella.Sor][tamadott.aktualisCella.Oszlop] > ((CMozgoTerkepiEgyseg)this).range)

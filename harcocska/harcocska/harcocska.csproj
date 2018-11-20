@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AFFCED9E-974A-441D-B720-9B2AE8631CB7}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>harcocska</RootNamespace>
     <AssemblyName>harcocska</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -73,7 +73,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConsoleTraceListener1.cs" />
     <Compile Include="CTerkepiImage.cs" />
+    <Compile Include="NetworkSettings.xaml.cs">
+      <DependentUpon>NetworkSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TextWriterTraceListener1.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -89,6 +94,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NetworkSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,6 +145,10 @@
     <ProjectReference Include="..\HarcocskaLib\HarcocskaLib.csproj">
       <Project>{d247b1d6-7748-4747-bfaf-a15758cf0141}</Project>
       <Name>HarcocskaLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkLib\NetworkLib.csproj">
+      <Project>{B4BA0E65-8685-4BF8-BD43-5B1DE243857A}</Project>
+      <Name>NetworkLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

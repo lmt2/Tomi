@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using harcocska;
+using System.Timers;
+using System.Threading;
 
 namespace Windows
 {
@@ -22,20 +24,35 @@ namespace Windows
 	public partial class UserControl1 : UserControl
 	{
 		public CJatekos jatekos = null;
+        System.Timers.Timer AllapotValtoTimer = new System.Timers.Timer();
 
-		public UserControl1()
+        public UserControl1()
 		{
 			InitializeComponent();
-		}
+        }
 		public UserControl1(CJatekos j)
 		{
 			InitializeComponent();
 			jatekos = j;
 			nevLabel.Content = jatekos.nev;
 			fafeltoltes();
-			//RecursiveFaBejaras((TreeViewItem)treeView1.Items[0], "barakk2");
-		}
-		public void fafeltoltes()
+            if (AllapotValtoTimer == null)
+                AllapotValtoTimer = new System.Timers.Timer();
+            AllapotValtoTimer.Elapsed += AllapotValtoTimer_Tick;
+            AllapotValtoTimer.Interval = 1010;
+            AllapotValtoTimer.Start();
+            //RecursiveFaBejaras((TreeViewItem)treeView1.Items[0], "barakk2");
+        }
+
+        private void AllapotValtoTimer_Tick(object sender, ElapsedEventArgs e)
+        {
+            if (jatekos != null)
+                Dispatcher.BeginInvoke(
+                    new ThreadStart(() => penz.Content = jatekos.penztarca));
+            
+        }
+
+        public void fafeltoltes()
 		{
 			treeView1.Items.Clear();
 

@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Timers;
-
+using System.Diagnostics;
+using network;
 
 namespace harcocska
 {
 	[Serializable()]
 	public class CGame
     {
-		#region members
-		public List<CJatekos> jatekosok = new List<CJatekos>();
+        #region members
+        
+
+        public List<CJatekos> jatekosok = new List<CJatekos>();
         public CTerkep terkep = null;
 		bool isRunning = false;
 		bool update = false;
@@ -21,9 +24,18 @@ namespace harcocska
 		[NonSerialized()]
 		[XmlIgnoreAttribute]
 		Timer AllapotValtoTimer = new Timer();
-		public int oldalhossz { get; set; }
+        [NonSerialized()]
+        [XmlIgnoreAttribute]
+        public CHalozatiSzerver wsSzerver;
+        [NonSerialized()]
+        [XmlIgnoreAttribute]
+        public CHalozatiKliens halozatiKliens;
 
-		public static Random sorsolás = new Random();
+        public static string host = "";
+        public static int port = 11000;
+        public static bool isServer = false;
+
+        public static Random sorsolás = new Random();
 		#endregion
 
 		public CGame()
@@ -38,22 +50,41 @@ namespace harcocska
 			AllapotValtoTimer.Elapsed += AllapotValtoTimer_Tick;
 			AllapotValtoTimer.Interval = 2000;
 
-			run();
+            halozatiKliens = new CHalozatiKliens(CGame.host, CGame.port, "");
+            halozatiKliens.autoconnect = false;
+            //halozatiKliens.HalozatiEsemeny += new HalozatiKliensEvent(KliensEsemeny_kezelo);
+
+            run();
 			
 
 
 
 		}
-			public void init() {
+		public void init() {
 
 
 			Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory);
-			oldalhossz = 30;
+			
 
 			CJatekos jatekos1 = new CJatekos("aaaaa", ESzin.piros);
 			CJatekos jatekos2 = new CJatekos("bbbbb", ESzin.kek);
 			CJatekos jatekos3 = new CJatekos("ccccc", ESzin.sarga);
-			jatekosok.Add(jatekos1);
+            CBank bankocska1 = new CBank();
+            bankocska1.penztermelokepesseg = 0.1;
+            jatekos1.bank = bankocska1;
+
+            CBank bankocska2 = new CBank();
+            bankocska2.penztermelokepesseg = 0.2;
+            jatekos2.bank = bankocska2;
+
+            CBank bankocska3 = new CBank();
+            bankocska3.penztermelokepesseg = 0.3;
+            jatekos3.bank = bankocska3;
+
+
+
+
+            jatekosok.Add(jatekos1);
 			jatekosok.Add(jatekos2);
 			jatekosok.Add(jatekos3);
 
@@ -72,32 +103,100 @@ namespace harcocska
 			jatekos3.f = new CFejlesztes();
 
 			CKatona e0 = new CKatona();
-            e0.aktualisCella = terkep.cellak[7][7];
+            e0.aktualisCella = terkep.sorok[7][7];
 			e0.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e0);
 
 			CKatona e1 = new CKatona();
 			e1.jatekos = jatekos1;
 			jatekos1.egysegekLista.Add(e1);
-            e1.aktualisCella = terkep.cellak[9][17];
+            e1.aktualisCella = terkep.sorok[9][17];
 
             CTank e2 = new CTank();
             e2.jatekos = jatekos2;
-            e2.aktualisCella = terkep.cellak[2][10];
+            e2.aktualisCella = terkep.sorok[2][10];
             jatekos2.egysegekLista.Add(e2);
 
             CTank e3 = new CTank();
             jatekos3.egysegekLista.Add(e3);
-            e3.aktualisCella = terkep.cellak[1][8];
+            e3.aktualisCella = terkep.sorok[1][8];
             e3.jatekos = jatekos3;
 
 
         }
 
-        
-       
-      
-		private void AllapotValtoTimer_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// Szerver mód
+        /// </summary>
+        public void Listen()
+        {
+            if (wsSzerver == null)
+            {
+                wsSzerver = new CHalozatiSzerver(CGame.port);
+
+                //wsSzerver.KliensekEsemenyei += new KliensKezeloHalozatiEvent(KliensekEsemenyei_kezelo);
+                wsSzerver.serverListenStart();
+            }
+            else
+            {
+                if (!wsSzerver.listening)
+                    wsSzerver.serverListenStart();
+            }
+        }
+
+        /// <summary>
+        /// Szerver mód
+        /// </summary>
+        public void ListenStop()
+        {
+            if (wsSzerver != null)
+            {
+                wsSzerver.serverListenStop();
+            }
+        }
+
+        /// <summary>
+        /// Kliens mód
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public bool KliensEsemeny_kezelo(object sender, string command)
+        {
+            switch (command)
+            {
+                case "kapcsolodva":
+                    
+                    //notifyIcon1.Icon = Properties.Resources.zold;
+                    return true;
+               
+
+
+                     
+
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Szerver mód
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public bool KliensekEsemenyei_kezelo(object sender, string command)
+        {
+            switch (command)
+            {
+                case "process":
+
+                default:
+                    Trace.WriteLine("Default case");
+                    return false;
+            }
+        }
+
+        private void AllapotValtoTimer_Tick(object sender, EventArgs e)
 		{
 			if (!isRunning)
 				return;
@@ -113,7 +212,8 @@ namespace harcocska
 					break;
 
 				case EJatekAllapotok.penzosztas:
-					aktualisallapot = EJatekAllapotok.fejlesztes;
+                    penzosztas();
+                    aktualisallapot = EJatekAllapotok.fejlesztes;
 					Console.WriteLine("fejlesztes");
 					break;
 
@@ -151,7 +251,25 @@ namespace harcocska
 			update = false;
 
 		}
-		public void start()
+
+        private void penzosztas()
+        {
+            foreach (CJatekos j in jatekosok)
+            {
+                int hanyteruletemvan = 0;
+                foreach (List<CTerkepiCella> sor in terkep.sorok)
+                {
+                    foreach (CTerkepiCella tc in sor) {
+                        if (tc.tulaj!=null && tc.tulaj.nev == j.nev)
+                            hanyteruletemvan++;
+                    }
+                }
+                
+                j.penztarca += (int)(j.bank.penztermelokepesseg * hanyteruletemvan);
+            }
+        }
+
+        public void start()
 		{
 			isRunning = true;
 		}

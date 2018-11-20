@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace harcocska
 {
-	public interface IMozgoTerkepiEgyseg
-	{
-		void mozgasCellara(CTerkep t, CTerkepiCella to);
-	}
-
-	
-
+    public interface IHarcoloTerkepiEgyseg
+    {
+        void Tamadas(CTerkep t, CTerkepiEgyseg te);
+    }
 }

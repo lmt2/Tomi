@@ -5,9 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Windows"
              mc:Ignorable="d" Height="238.005" Width="300.578">
-	<Grid Margin="0,0,10,10">
-		<Label x:Name="nevLabel" Content="Label" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="63"/>
-		<TreeView x:Name="treeView1" HorizontalAlignment="Left" Height="190" Margin="115,32,0,0" VerticalAlignment="Top" Width="169"/>
+    <Grid Margin="0,0,10,10" Background="#FFC3F7F9">
 
-	</Grid>
+        <TreeView x:Name="treeView1" HorizontalAlignment="Left" Height="190" Margin="115,32,0,0" VerticalAlignment="Top" Width="169"/>
+
+        <Grid HorizontalAlignment="Left" Height="134" VerticalAlignment="Top" Width="100" Margin="10,6,0,0" Grid.Column="2" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="Játékos:" Grid.Column="0" Grid.Row="0"/>
+            <Label x:Name="nevLabel" Grid.Row="0" Grid.Column="1" Content="Label" FontWeight="Bold" Background="#FFFDB0B0" />
+            <Label Content="Pénz:" Grid.Column="0" Grid.Row="1"/>
+            <Label x:Name="penz" Grid.Row="1" Grid.Column="1" Content="Label" />
+        </Grid>
+
+    </Grid>
 </UserControl>

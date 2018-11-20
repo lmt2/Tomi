@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Windows.Properties {
+namespace harcocska.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -32,6 +32,42 @@ namespace Windows.Properties {
             }
             set {
                 this["fileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string remoteHost {
+            get {
+                return ((string)(this["remoteHost"]));
+            }
+            set {
+                this["remoteHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11000")]
+        public int remotePort {
+            get {
+                return ((int)(this["remotePort"]));
+            }
+            set {
+                this["remotePort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool isServer {
+            get {
+                return ((bool)(this["isServer"]));
+            }
+            set {
+                this["isServer"] = value;
             }
         }
     }
